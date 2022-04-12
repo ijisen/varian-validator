@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "strict": true,
+    "baseUrl": "./",
+    /* Base directory to resolve non-absolute module names. */
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "outDir": "dist",
+    "declarationDir": ".",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": false,
+    "moduleResolution": "node",
+    "lib": [
+      "es2015",
+      "es6",
+      "dom.iterable",
+      "dom"
+    ],
+    "noUnusedLocals": true,
+    "noEmit": false,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "downlevelIteration": true,
+    "noUnusedParameters": false,
+    "resolveJsonModule": true,
+    "skipLibCheck": false,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true
+  },
+  "include": [
+    "src/**/*",
+    "typings/typings.d.ts"
+  ],
+  "exclude": [
+    "dist",
+    "tests"
+  ]
+}
