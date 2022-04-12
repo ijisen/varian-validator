@@ -1,9 +1,9 @@
 /**! 
- * varian-validator v0.0.1 
+ * varian-validator v0.0.2 
  * Lightweight JavaScript form validation. 
  * 
- * Copyright (c) 2022 ji sen  (https://github.com/jaywcjlove) 
- * http://ijisen.github.io/validator.js 
+ * Copyright (c) 2022 ji sen  (https://github.com/ijisen) 
+ * https://github.com/ijisen/varian-validator 
  * Licensed under the MIT license 
  */
 
@@ -31,7 +31,8 @@
       console.log(options);
     }
 
-    var version = '0.0.1';
+    var version = '0.0.1'; // export {}
+
     var validator = {
       version: version,
       matchedData: matchedData,

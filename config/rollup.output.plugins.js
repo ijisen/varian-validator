@@ -7,6 +7,7 @@ import typescript from "@rollup/plugin-typescript";
 import { babel } from '@rollup/plugin-babel';
 
 export default [
+  // nodeResolve(),
   typescript(),
   // json(),
   // commonjs({ extensions: ['.js', '.ts'] }),
