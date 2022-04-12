@@ -1,9 +1,21 @@
 import assertString from './util/assertString';
 
-import merge from './util/merge';
 import isByteLength from './isByteLength';
 import isFQDN from './http/isFQDN';
-import isIP from './isIP';
+import { isIP } from '@/lib/http/IP';
+
+export interface DefaultEmailOptions {
+  allow_display_name: boolean;
+  require_display_name: boolean;
+  allow_utf8_local_part: boolean;
+  require_tld: boolean;
+  blacklisted_chars: string;
+  ignore_max_length: boolean;
+  host_blacklist: any[]
+  allow_ip_domain: boolean;
+  domain_specific_validation: boolean;
+}
+
 
 const default_email_options = {
   allow_display_name: false,
@@ -25,13 +37,14 @@ const emailUserUtf8Part = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\u00A0-\uD7FF\uF900
 const quotedEmailUserUtf8 = /^([\s\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|(\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*$/i;
 const defaultMaxEmailLength = 254;
 /* eslint-enable max-len */
+
 /* eslint-enable no-control-regex */
 
 /**
  * Validate display name according to the RFC2822: https://tools.ietf.org/html/rfc2822#appendix-A.1.2
  * @param {String} display_name
  */
-function validateDisplayName(display_name) {
+function validateDisplayName(display_name: string) {
   const display_name_without_quotes = display_name.replace(/^"(.+)"$/, '$1');
   // display name with only spaces is not valid
   if (!display_name_without_quotes.trim()) {
@@ -59,9 +72,12 @@ function validateDisplayName(display_name) {
 }
 
 
-export default function isEmail(str, options) {
+export default function isEmail(str: string, options: Partial<DefaultEmailOptions> = {}) {
   assertString(str);
-  options = merge(options, default_email_options);
+  options = {
+    ...default_email_options,
+    ...options
+  };
 
   if (options.require_display_name || options.allow_display_name) {
     const display_email = str.match(splitNameAddress);
@@ -93,9 +109,13 @@ export default function isEmail(str, options) {
 
   const parts = str.split('@');
   const domain = parts.pop();
-  const lower_domain = domain.toLowerCase();
+  if (!domain) {
+    return false
+  }
 
-  if (options.host_blacklist.includes(lower_domain)) {
+  const lower_domain = domain.toLowerCase();
+  // @ts-ignore
+  if (options.host_blacklist && options.host_blacklist.includes(lower_domain)) {
     return false;
   }
 
@@ -115,7 +135,7 @@ export default function isEmail(str, options) {
     const username = user.split('+')[0];
 
     // Dots are not included in gmail length restriction
-    if (!isByteLength(username.replace(/\./g, ''), { min: 6, max: 30 })) {
+    if (!isByteLength(username.replace(/\./g, ''), {min: 6, max: 30})) {
       return false;
     }
 
@@ -128,13 +148,15 @@ export default function isEmail(str, options) {
   }
 
   if (options.ignore_max_length === false && (
-    !isByteLength(user, { max: 64 }) ||
-    !isByteLength(domain, { max: 254 }))
+    !isByteLength(user, {max: 64}) ||
+    !isByteLength(domain, {max: 254}))
   ) {
     return false;
   }
 
-  if (!isFQDN(domain, { require_tld: options.require_tld })) {
+  if (!isFQDN(domain, {
+    require_tld: options.require_tld === true
+  })) {
     if (!options.allow_ip_domain) {
       return false;
     }
