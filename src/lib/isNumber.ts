@@ -4,7 +4,7 @@
  * @param[number]
  * @param[allowNegative] 是否允许为负数
  */
-export default (number: any, allowNegative = false) => {
+const isNumber = (number: any, allowNegative = false) => {
   /**
    * isNaN([]) || isNaN('') || isNaN(true) || isNaN(false) || isNaN(null) => false
    * */
@@ -27,3 +27,5 @@ export default (number: any, allowNegative = false) => {
     }
   }
 };
+
+export default isNumber;
