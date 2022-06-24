@@ -7,7 +7,7 @@
  * TTL：为缓存时间，数值越小，修改记录各地生效时间越快，默认为10分钟。
  *
  * */
-import { isIPv6 } from "@/lib/http/net";
+import { isIPv6 } from "@/lib/http/IP";
 
 const isAAAA = (str: string) => {
   return isIPv6(str);

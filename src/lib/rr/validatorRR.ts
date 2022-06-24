@@ -5,7 +5,7 @@ import isTXT from "@/lib/rr/isTXT";
 import isNS from "@/lib/rr/isNS";
 import isCAA from "@/lib/rr/isCAA";
 import isSRV from "@/lib/rr/isSRV";
-import { EnumRecordType } from "@/lib/rr/index";
+import { EnumRecordType } from "@/lib/rr/index.d";
 
 // is rdata
 export const isRdata = (str: string, type: EnumRecordType) => {

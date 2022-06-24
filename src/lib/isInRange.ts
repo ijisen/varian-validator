@@ -1,7 +1,7 @@
 import isNumber from "./isNumber";
 
 /**
- * 取值范围校验
+ * 数字取值范围校验
  * */
 export default (str: any, min: number, max: number) => {
   if(!isNumber(str)) {
