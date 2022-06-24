@@ -33,7 +33,7 @@ const default_fqdn_options = {
   allow_wildcard: false
 };
 
-export default function isFQDN(str: string, options: IsFQDNConfig) {
+export default function isFQDN(str: string, options:  Partial<IsFQDNConfig>) {
   assertString(str);
   console.log(options);
   options = {
@@ -108,10 +108,7 @@ export default function isFQDN(str: string, options: IsFQDNConfig) {
       return false;
     }
 
-    if(!options.allow_underscores && /_/.test(part)) {
-      return false;
-    }
+    return !(!options.allow_underscores && /_/.test(part));
 
-    return true;
   });
 }
