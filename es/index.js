@@ -1,28 +1,8 @@
-function matchedData(options) {
-  if (options === void 0) {
-    options = {};
-  }
+var Button = 'export default Button;';
 
-  console.log(options);
-}
-function getData(options) {
-  if (options === void 0) {
-    options = {
-      include: true,
-      only: false
-    };
-  }
-
-  console.log(options);
-}
-
-var version = '0.0.1'; // export {}
-
-var validator = {
-  version: version,
-  matchedData: matchedData,
-  getData: getData
+var index = {
+  version: 'version'
 };
 
-export { validator as default };
+export { Button, index as version };
 //# sourceMappingURL=index.js.map

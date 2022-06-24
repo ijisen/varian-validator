@@ -8,38 +8,21 @@
  */
 
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Validator = factory());
-})(this, (function () { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+    typeof define === 'function' && define.amd ? define(['exports'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Validator = {}));
+})(this, (function (exports) { 'use strict';
 
-    function matchedData(options) {
-      if (options === void 0) {
-        options = {};
-      }
+    var Button = 'export default Button;';
 
-      console.log(options);
-    }
-    function getData(options) {
-      if (options === void 0) {
-        options = {
-          include: true,
-          only: false
-        };
-      }
-
-      console.log(options);
-    }
-
-    var version = '0.0.1'; // export {}
-
-    var validator = {
-      version: version,
-      matchedData: matchedData,
-      getData: getData
+    var index = {
+      version: 'version'
     };
 
-    return validator;
+    exports.Button = Button;
+    exports.version = index;
+
+    Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 //# sourceMappingURL=validator.js.map

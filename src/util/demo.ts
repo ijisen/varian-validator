@@ -12,9 +12,11 @@ export interface anyOpts {
 
 export function matchedData(options: Partial<MatchedDataOptions> = {}) {
   console.log(options)
+  console.log(options.include)
 }
 
 
 export function getData(options: MatchedDataOptions = { include: true, only: false }) {
+  console.log(options.include)
   console.log(options)
 }

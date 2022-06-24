@@ -1,14 +1,6 @@
-import {
-  matchedData,
-  getData
-} from './util/demo'
 
-const version = '0.0.1';
-// https://github.com/validatorjs/validator.js/tree/master/src
-// export {}
-const validator = {
-  version,
-  matchedData,
-  getData
-};
-export default validator
+export type { ButtonProps } from './button/index';
+export { default as Button } from './button/index';
+
+
+export { default as version } from './version/index';
