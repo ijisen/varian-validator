@@ -3,6 +3,7 @@
  * @param[str] 需要判断的值
  * @param[option] {ignore_whitespace: boolean} 是否忽略空格
  * */
+import isValidParamsTypes from "@/lib/util/isValidDataTypes";
 
 
 interface DefaultIsEmptyOptions {
@@ -13,7 +14,7 @@ const default_is_empty_options = {
   ignore_whitespace: false
 };
 const isEmpty = (str: any, options?: DefaultIsEmptyOptions) => {
-  if(typeof str !== "string" && typeof str !== 'number') {
+  if(!isValidParamsTypes(str)) {
     return false
   }
   str = `${str}`;

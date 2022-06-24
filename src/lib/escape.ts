@@ -2,10 +2,11 @@
  * 标签语义化
  *
  * */
-import assertString from './util/assertString';
 
-export default (str: string) => {
-  assertString(str);
+export default (str: any) => {
+  if(typeof str !== "string") {
+    return false
+  }
   return (str.replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#x27;')

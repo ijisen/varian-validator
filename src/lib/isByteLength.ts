@@ -1,13 +1,14 @@
-import assertString from './util/assertString';
-
 /* eslint-disable prefer-rest-params */
 export interface IsByteLengthOptions {
   min?: number;
   max: number;
 }
 
-export default function isByteLength(str: string, options: IsByteLengthOptions) {
-  assertString(str);
+export default function isByteLength(str: any, options: IsByteLengthOptions) {
+  if(typeof str !== "string") {
+    return false
+  }
+  str += '';
   let min;
   let max;
   if(typeof (options) === 'object') {

@@ -1,4 +1,8 @@
-import assertString from './util/assertString';
+/**
+ * uuid 合法性校验
+ *
+ * */
+import isValidParamsTypes from "@/lib/util/isValidDataTypes";
 
 const uuid = {
   1: /^[0-9A-F]{8}-[0-9A-F]{4}-1[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$/i,
@@ -9,8 +13,10 @@ const uuid = {
   all: /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i,
 };
 
-export default function isUUID(str, version) {
-  assertString(str);
+export default function isUUID(str: any, version: any) {
+  if(!isValidParamsTypes(str)) {
+    return false
+  }
   const pattern = uuid[![undefined, null].includes(version) ? version : 'all'];
   return !!pattern && pattern.test(str);
 }

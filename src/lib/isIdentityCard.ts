@@ -1,10 +1,12 @@
-import assertString from './util/assertString';
+/**
+ * 证件号码验证函数
+ *
+ * */
 import isInt from './isInt';
+import isValidParamsTypes from "@/lib/util/isValidDataTypes";
 
 const validators = {
-  PL: (str) => {
-    assertString(str);
-
+  PL: (str: string) => {
     const weightOfDigits = {
       1: 1,
       2: 3,
@@ -19,7 +21,7 @@ const validators = {
       11: 0,
     };
 
-    if (str != null && str.length === 11 && isInt(str, { allow_leading_zeroes: true })) {
+    if(str != null && str.length === 11 && isInt(str, { allow_leading_zeroes: true })) {
       const digits = str.split('').slice(0, -1);
       const sum = digits.reduce((acc, digit, index) =>
         acc + (Number(digit) * weightOfDigits[index + 1]), 0);
@@ -27,16 +29,14 @@ const validators = {
       const modulo = sum % 10;
       const lastDigit = Number(str.charAt(str.length - 1));
 
-      if ((modulo === 0 && lastDigit === 0) || lastDigit === 10 - modulo) {
+      if((modulo === 0 && lastDigit === 0) || lastDigit === 10 - modulo) {
         return true;
       }
     }
 
     return false;
   },
-  ES: (str) => {
-    assertString(str);
-
+  ES: (str: string) => {
     const DNI = /^[0-9X-Z][0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKE]$/;
 
     const charsValue = {
@@ -54,24 +54,23 @@ const validators = {
     const sanitized = str.trim().toUpperCase();
 
     // validate the data structure
-    if (!DNI.test(sanitized)) {
+    if(!DNI.test(sanitized)) {
       return false;
     }
 
     // validate the control digit
     const number = sanitized.slice(0, -1).replace(/[X,Y,Z]/g, char => charsValue[char]);
 
+    // @ts-ignore
     return sanitized.endsWith(controlDigits[number % 23]);
   },
-  FI: (str) => {
+  FI: (str: string) => {
     // https://dvv.fi/en/personal-identity-code#:~:text=control%20character%20for%20a-,personal,-identity%20code%20calculated
-    assertString(str);
-
-    if (str.length !== 11) {
+    if(str.length !== 11) {
       return false;
     }
 
-    if (!str.match(/^\d{6}[\-A\+]\d{3}[0-9ABCDEFHJKLMNPRSTUVWXY]{1}$/)) {
+    if(!str.match(/^\d{6}[\-A\+]\d{3}[0-9ABCDEFHJKLMNPRSTUVWXY]{1}$/)) {
       return false;
     }
 
@@ -83,7 +82,7 @@ const validators = {
 
     return checkDigit === str.slice(10, 11);
   },
-  IN: (str) => {
+  IN: (str: string) => {
     const DNI = /^[1-9]\d{3}\s?\d{4}\s?\d{4}$/;
 
     // multiplication table
@@ -116,7 +115,7 @@ const validators = {
     const sanitized = str.trim();
 
     // validate the data structure
-    if (!DNI.test(sanitized)) {
+    if(!DNI.test(sanitized)) {
       return false;
     }
     let c = 0;
@@ -128,11 +127,11 @@ const validators = {
 
     return c === 0;
   },
-  IR: (str) => {
-    if (!str.match(/^\d{10}$/)) return false;
+  IR: (str: string) => {
+    if(!str.match(/^\d{10}$/)) return false;
     str = (`0000${str}`).substr(str.length - 6);
 
-    if (parseInt(str.substr(3, 6), 10) === 0) return false;
+    if(parseInt(str.substr(3, 6), 10) === 0) return false;
 
     const lastNumber = parseInt(str.substr(9, 1), 10);
     let sum = 0;
@@ -147,16 +146,16 @@ const validators = {
       (sum < 2 && lastNumber === sum) || (sum >= 2 && lastNumber === 11 - sum)
     );
   },
-  IT: function IT(str) {
-    if (str.length !== 9) return false;
-    if (str === 'CA00000AA') return false; // https://it.wikipedia.org/wiki/Carta_d%27identit%C3%A0_elettronica_italiana
+  IT: function IT(str: string) {
+    if(str.length !== 9) return false;
+    if(str === 'CA00000AA') return false; // https://it.wikipedia.org/wiki/Carta_d%27identit%C3%A0_elettronica_italiana
     return str.search(/C[A-Z]\d{5}[A-Z]{2}/is) > -1;
   },
-  NO: (str) => {
+  NO: (str: string) => {
     const sanitized = str.trim();
-    if (isNaN(Number(sanitized))) return false;
-    if (sanitized.length !== 11) return false;
-    if (sanitized === '00000000000') return false;
+    if(isNaN(Number(sanitized))) return false;
+    if(sanitized.length !== 11) return false;
+    if(sanitized === '00000000000') return false;
 
     // https://no.wikipedia.org/wiki/F%C3%B8dselsnummer
     const f = sanitized.split('').map(Number);
@@ -167,11 +166,11 @@ const validators = {
       + (2 * f[3]) + (7 * f[4]) + (6 * f[5]) + (5 * f[6])
       + (4 * f[7]) + (3 * f[8]) + (2 * k1)) % 11)) % 11;
 
-    if (k1 !== f[9] || k2 !== f[10]) return false;
+    if(k1 !== f[9] || k2 !== f[10]) return false;
     return true;
   },
-  TH: (str) => {
-    if (!str.match(/^[1-8]\d{12}$/)) return false;
+  TH: (str: string) => {
+    if(!str.match(/^[1-8]\d{12}$/)) return false;
 
     // validate check digit
     let sum = 0;
@@ -180,22 +179,22 @@ const validators = {
     }
     return str[12] === ((11 - (sum % 11)) % 10).toString();
   },
-  LK: (str) => {
+  LK: (str: string) => {
     const old_nic = /^[1-9]\d{8}[vx]$/i;
     const new_nic = /^[1-9]\d{11}$/i;
 
-    if (str.length === 10 && old_nic.test(str)) return true;
-    else if (str.length === 12 && new_nic.test(str)) return true;
+    if(str.length === 10 && old_nic.test(str)) return true;
+    else if(str.length === 12 && new_nic.test(str)) return true;
     return false;
   },
-  'he-IL': (str) => {
+  'he-IL': (str: string) => {
     const DNI = /^\d{9}$/;
 
     // sanitize user input
     const sanitized = str.trim();
 
     // validate the data structure
-    if (!DNI.test(sanitized)) {
+    if(!DNI.test(sanitized)) {
       return false;
     }
 
@@ -209,7 +208,7 @@ const validators = {
     }
     return sum % 10 === 0;
   },
-  'ar-LY': (str) => {
+  'ar-LY': (str: string) => {
     // Libya National Identity Number NIN is 12 digits, the first digit is either 1 or 2
     const NIN = /^(1|2)\d{11}$/;
 
@@ -217,24 +216,24 @@ const validators = {
     const sanitized = str.trim();
 
     // validate the data structure
-    if (!NIN.test(sanitized)) {
+    if(!NIN.test(sanitized)) {
       return false;
     }
     return true;
   },
-  'ar-TN': (str) => {
+  'ar-TN': (str: string) => {
     const DNI = /^\d{8}$/;
 
     // sanitize user input
     const sanitized = str.trim();
 
     // validate the data structure
-    if (!DNI.test(sanitized)) {
+    if(!DNI.test(sanitized)) {
       return false;
     }
     return true;
   },
-  'zh-CN': (str) => {
+  'zh-CN': (str: string) => {
     const provincesAndCities = [
       '11', // 北京
       '12', // 天津
@@ -277,23 +276,23 @@ const validators = {
 
     const parityBit = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
 
-    const checkAddressCode = addressCode => provincesAndCities.includes(addressCode);
+    const checkAddressCode = (addressCode: string) => provincesAndCities.includes(addressCode);
 
-    const checkBirthDayCode = (birDayCode) => {
+    const checkBirthDayCode = (birDayCode: string) => {
       const yyyy = parseInt(birDayCode.substring(0, 4), 10);
       const mm = parseInt(birDayCode.substring(4, 6), 10);
       const dd = parseInt(birDayCode.substring(6), 10);
       const xdata = new Date(yyyy, mm - 1, dd);
-      if (xdata > new Date()) {
+      if(xdata > new Date()) {
         return false;
         // eslint-disable-next-line max-len
-      } else if ((xdata.getFullYear() === yyyy) && (xdata.getMonth() === mm - 1) && (xdata.getDate() === dd)) {
+      } else if((xdata.getFullYear() === yyyy) && (xdata.getMonth() === mm - 1) && (xdata.getDate() === dd)) {
         return true;
       }
       return false;
     };
 
-    const getParityBit = (idCardNo) => {
+    const getParityBit = (idCardNo: string) => {
       let id17 = idCardNo.substring(0, 17);
 
       let power = 0;
@@ -305,44 +304,44 @@ const validators = {
       return parityBit[mod];
     };
 
-    const checkParityBit = idCardNo => getParityBit(idCardNo) === idCardNo.charAt(17).toUpperCase();
+    const checkParityBit = (idCardNo: string) => getParityBit(idCardNo) === idCardNo.charAt(17).toUpperCase();
 
 
-    const check15IdCardNo = (idCardNo) => {
+    const check15IdCardNo = (idCardNo: string) => {
       let check = /^[1-9]\d{7}((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))\d{3}$/.test(idCardNo);
-      if (!check) return false;
+      if(!check) return false;
       let addressCode = idCardNo.substring(0, 2);
       check = checkAddressCode(addressCode);
-      if (!check) return false;
+      if(!check) return false;
       let birDayCode = `19${idCardNo.substring(6, 12)}`;
       check = checkBirthDayCode(birDayCode);
-      if (!check) return false;
+      if(!check) return false;
       return true;
     };
 
-    const check18IdCardNo = (idCardNo) => {
+    const check18IdCardNo = (idCardNo: string) => {
       let check = /^[1-9]\d{5}[1-9]\d{3}((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))\d{3}(\d|x|X)$/.test(idCardNo);
-      if (!check) return false;
+      if(!check) return false;
       let addressCode = idCardNo.substring(0, 2);
       check = checkAddressCode(addressCode);
-      if (!check) return false;
+      if(!check) return false;
       let birDayCode = idCardNo.substring(6, 14);
       check = checkBirthDayCode(birDayCode);
-      if (!check) return false;
+      if(!check) return false;
       return checkParityBit(idCardNo);
     };
 
-    const checkIdCardNo = (idCardNo) => {
+    const checkIdCardNo = (idCardNo: string) => {
       let check = /^\d{15}|(\d{17}(\d|x|X))$/.test(idCardNo);
-      if (!check) return false;
-      if (idCardNo.length === 15) {
+      if(!check) return false;
+      if(idCardNo.length === 15) {
         return check15IdCardNo(idCardNo);
       }
       return check18IdCardNo(idCardNo);
     };
     return checkIdCardNo(str);
   },
-  'zh-TW': (str) => {
+  'zh-TW': (str: string) => {
     const ALPHABET_CODES = {
       A: 10,
       B: 11,
@@ -374,16 +373,17 @@ const validators = {
 
     const sanitized = str.trim().toUpperCase();
 
-    if (!/^[A-Z][0-9]{9}$/.test(sanitized)) return false;
+    if(!/^[A-Z][0-9]{9}$/.test(sanitized)) return false;
 
+    // @ts-ignore
     return Array.from(sanitized).reduce((sum, number, index) => {
-      if (index === 0) {
+      if(index === 0) {
         const code = ALPHABET_CODES[number];
 
         return ((code % 10) * 9) + Math.floor(code / 10);
       }
 
-      if (index === 9) {
+      if(index === 9) {
         return ((10 - (sum % 10)) - Number(number)) % 10 === 0;
       }
 
@@ -392,17 +392,24 @@ const validators = {
   },
 };
 
-export default function isIdentityCard(str, locale) {
-  assertString(str);
-  if (locale in validators) {
+/**
+ * isIdentityCard
+ * @param[str] any 证件号码
+ * @param[locale] string 证件类型
+ * */
+export default function isIdentityCard(str: any, locale: string) {
+  if(!isValidParamsTypes(str)) {
+    return false;
+  }
+  str = `${str}`;
+  if(locale in validators) {
     return validators[locale](str);
-  } else if (locale === 'any') {
+  } else if(locale === 'any') {
     for (const key in validators) {
       // https://github.com/gotwarlost/istanbul/blob/master/ignoring-code-for-coverage.md#ignoring-code-for-coverage-purposes
-      // istanbul ignore else
-      if (validators.hasOwnProperty(key)) {
+      if(validators.hasOwnProperty(key)) {
         const validator = validators[key];
-        if (validator(str)) {
+        if(validator(str)) {
           return true;
         }
       }

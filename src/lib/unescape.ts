@@ -1,7 +1,11 @@
-import assertString from './util/assertString';
-
-export default function unescape(str) {
-  assertString(str);
+/**
+ * 标签语义化编译
+ *
+ * */
+export default function unescape(str: any) {
+  if(typeof str !== "string") {
+    return false
+  }
   return (str.replace(/&quot;/g, '"')
     .replace(/&#x27;/g, "'")
     .replace(/&lt;/g, '<')

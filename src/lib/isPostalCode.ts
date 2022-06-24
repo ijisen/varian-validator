@@ -1,4 +1,8 @@
-import assertString from './util/assertString';
+/**
+ * 邮编格式验证
+ *
+ * */
+import isValidParamsTypes from "@/lib/util/isValidDataTypes";
 
 // common patterns
 const threeDigit = /^\d{3}$/;
@@ -75,17 +79,19 @@ const patterns = {
 
 export const locales = Object.keys(patterns);
 
-export default function isPostalCode(str, locale) {
-  assertString(str);
-  if (locale in patterns) {
+export default function isPostalCode(str: any, locale: string) {
+  if(!isValidParamsTypes(str)) {
+    return false
+  }
+  if(locale in patterns) {
     return patterns[locale].test(str);
-  } else if (locale === 'any') {
+  } else if(locale === 'any') {
     for (const key in patterns) {
       // https://github.com/gotwarlost/istanbul/blob/master/ignoring-code-for-coverage.md#ignoring-code-for-coverage-purposes
       // istanbul ignore else
-      if (patterns.hasOwnProperty(key)) {
+      if(patterns.hasOwnProperty(key)) {
         const pattern = patterns[key];
-        if (pattern.test(str)) {
+        if(pattern.test(str)) {
           return true;
         }
       }

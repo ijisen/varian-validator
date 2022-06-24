@@ -4,6 +4,8 @@
  * @param[extend]: 是否支持拓展
  * @param[trueBoolean]: 拓展布尔值
  * */
+import isValidParamsTypes from "@/lib/util/isValidDataTypes";
+
 const looseBooleans = ['yes', 'true', '1'];
 const isBooleanTrue = (str: any, extend: Boolean, trueBooleans = looseBooleans) => {
   const type_str = typeof str;
@@ -11,7 +13,7 @@ const isBooleanTrue = (str: any, extend: Boolean, trueBooleans = looseBooleans) 
     return str
   }
 
-  if(typeof str !== "number" && typeof str !== 'string') {
+  if(!isValidParamsTypes(str)) {
     return false
   }
 

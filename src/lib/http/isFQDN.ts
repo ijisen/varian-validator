@@ -1,4 +1,4 @@
-import assertString from '@/lib/util/assertString';
+import utilIsString from '@/lib/util/utilIsString';
 import { IsFQDNConfig } from "./http.d";
 
 //
@@ -34,7 +34,7 @@ const default_fqdn_options = {
 };
 
 export default function isFQDN(str: string, options:  Partial<IsFQDNConfig>) {
-  assertString(str);
+  utilIsString(str);
   console.log(options);
   options = {
     ...default_fqdn_options,
