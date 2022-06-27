@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.2 
+ * varian-validator v0.0.3 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2022 ji sen  (https://github.com/ijisen) 

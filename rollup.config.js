@@ -1,6 +1,8 @@
 import plugins from './config/rollup.output.plugins'
 import format from './config/rollup.output.format';
 
+
+import dts from "rollup-plugin-dts";
 // 代码压缩
 import { terser } from 'rollup-plugin-terser';
 // 添加[package.jsons]说明文本
@@ -57,5 +59,14 @@ export default [
       ...plugins,
       terser({})
     ]
-  }
+  },
+  {
+    // 生成 .d.ts 类型声明文件
+    input: 'src/index.ts',
+    output: {
+      file: "lib/index.d.ts",
+      format: 'es',
+    },
+    plugins: [dts()],
+  },
 ]
