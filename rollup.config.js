@@ -1,13 +1,14 @@
 import plugins from './config/rollup.output.plugins'
 import format from './config/rollup.output.format';
-
-
-import dts from "rollup-plugin-dts";
-// 代码压缩
-import { terser } from 'rollup-plugin-terser';
+import { terser } from "rollup-plugin-terser";
+import pkg from './package.json';
 // 添加[package.jsons]说明文本
 import banner from 'bannerjs';
-import pkg from './package.json';
+
+
+// `npm run build` -> `production` is true
+// `npm run dev` -> `production` is false
+const production = !process.env.ROLLUP_WATCH;
 
 export default [
   {
@@ -19,8 +20,8 @@ export default [
         format: format.cjs,
         // name: 'Validator',
         exports: 'auto',
-        // banner: banner.multibanner(),
-        sourcemap: true
+        banner: banner.multibanner(),
+        sourcemap: true,
       },
       {
         // file: pkg.module,
@@ -28,7 +29,7 @@ export default [
         // es/index
         format: format.esm,
         // name: 'Validator',
-        // banner: banner.multibanner(),
+        banner: banner.multibanner(),
         sourcemap: true
       },
       {
@@ -41,7 +42,7 @@ export default [
         sourcemap: true
       }
     ],
-    plugins: plugins
+    plugins: plugins.js
   },
   {
     input: 'src/index.ts',
@@ -56,17 +57,15 @@ export default [
       }
     ],
     plugins: [
-      ...plugins,
-      terser({})
+      ...plugins.js,
+      production && terser({})
     ]
   },
   {
-    // 生成 .d.ts 类型声明文件
     input: 'src/index.ts',
-    output: {
-      file: "lib/index.d.ts",
-      format: 'es',
-    },
-    plugins: [dts()],
-  },
+    output: [
+      { file: pkg.typings, format: "es" }
+    ],
+    plugins: plugins.ts
+  }
 ]

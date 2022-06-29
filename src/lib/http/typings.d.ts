@@ -11,7 +11,8 @@ export interface IsFQDNConfig {
   allow_wildcard: boolean;
 }
 
-interface isFQDNRes {
+export interface isFQDNRes {
   success: boolean;
   message: string;
 }
+

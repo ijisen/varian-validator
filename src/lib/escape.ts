@@ -2,8 +2,7 @@
  * 标签语义化
  *
  * */
-
-export default (str: any) => {
+const escape = (str: any) => {
   if(typeof str !== "string") {
     return false
   }
@@ -16,3 +15,5 @@ export default (str: any) => {
     .replace(/\\/g, '&#x5C;')
     .replace(/`/g, '&#96;'));
 }
+
+export default escape
