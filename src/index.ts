@@ -1,6 +1,5 @@
-// import { version as _version } from '../package.json';
 
-// export const version: string = '_version';
+export { version } from './version';
 
 export type { ButtonProps } from './button';
 export { default as Button } from './button';

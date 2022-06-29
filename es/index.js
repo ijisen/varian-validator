@@ -7,6 +7,10 @@
  * Licensed under the ISC license 
  */
 
+var version$1 = "0.04";
+
+const version = version$1;
+
 const Button = 'export default Button;';
 
 /**
@@ -21,12 +25,15 @@ const escape = str => {
   return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\//g, '&#x2F;').replace(/\\/g, '&#x5C;').replace(/`/g, '&#96;');
 };
 
-const setErrorCodeLang = (lang = "zh-CN"
-/* EnumLanguageType.zh */
-) => {
-  if (lang === "en-US"
-  /* EnumLanguageType.en */
-  ) {
+let EnumLanguageType;
+
+(function (EnumLanguageType) {
+  EnumLanguageType["en"] = "en-US";
+  EnumLanguageType["zh"] = "zh-CN";
+})(EnumLanguageType || (EnumLanguageType = {}));
+
+const setErrorCodeLang = (lang = EnumLanguageType.zh) => {
+  if (lang === EnumLanguageType.en) {
     return 'en';
   }
 
@@ -36,7 +43,6 @@ const setErrorCodeLang = (lang = "zh-CN"
 /**
  * Error codes and messages.
  * */
-
 const errorCodes = {
   zh: {
     DOMAIN_IS_EMPTY: '校验内容为空',
@@ -409,46 +415,43 @@ var isSRV = (str => {
   return values.length === 4 && isInRange(values[0], 0, 65535) && isInRange(values[1], 0, 65535) && isPort(values[2]) && isDomain(values[3]);
 });
 
+let EnumRecordType; // is rdata
+
+(function (EnumRecordType) {
+  EnumRecordType["A"] = "A";
+  EnumRecordType["AAAA"] = "AAAA";
+  EnumRecordType["NS"] = "NS";
+  EnumRecordType["MX"] = "MX";
+  EnumRecordType["CNAME"] = "CNAME";
+  EnumRecordType["CAA"] = "CAA";
+  EnumRecordType["SRV"] = "SRV";
+  EnumRecordType["TXT"] = "TXT";
+})(EnumRecordType || (EnumRecordType = {}));
+
 const isRdata = (str, type) => {
   switch (type.toUpperCase()) {
-    case "A"
-    /* EnumRecordType.A */
-    :
+    case EnumRecordType.A:
       return isIPv4(str);
 
-    case "AAAA"
-    /* EnumRecordType.AAAA */
-    :
+    case EnumRecordType.AAAA:
       return isIPv6(str);
 
-    case "CNAME"
-    /* EnumRecordType.CNAME */
-    :
+    case EnumRecordType.CNAME:
       return isDomain(str);
 
-    case "MX"
-    /* EnumRecordType.MX */
-    :
+    case EnumRecordType.MX:
       return isMX(str);
 
-    case "TXT"
-    /* EnumRecordType.TXT */
-    :
+    case EnumRecordType.TXT:
       return isTXT(str);
 
-    case "NS"
-    /* EnumRecordType.NS */
-    :
+    case EnumRecordType.NS:
       return isNS(str);
 
-    case "CAA"
-    /* EnumRecordType.CAA */
-    :
+    case EnumRecordType.CAA:
       return isCAA(str);
 
-    case "SRV"
-    /* EnumRecordType.SRV */
-    :
+    case EnumRecordType.SRV:
       return isSRV(str);
 
     default:
@@ -456,5 +459,5 @@ const isRdata = (str, type) => {
   }
 };
 
-export { Button, escape, isDomain, isFQDN, isRdata };
+export { Button, escape, isDomain, isFQDN, isRdata, version };
 //# sourceMappingURL=index.js.map

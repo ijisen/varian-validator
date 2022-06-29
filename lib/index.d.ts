@@ -1,3 +1,5 @@
+declare const version: string;
+
 interface ButtonProps {
     size: string;
 }
@@ -43,4 +45,4 @@ declare const enum EnumRecordType {
 }
 declare const isRdata: (str: string, type: EnumRecordType) => boolean | isFQDNRes;
 
-export { Button, ButtonProps, escape, isDomain, isFQDN, isRdata };
+export { Button, ButtonProps, escape, isDomain, isFQDN, isRdata, version };
