@@ -26,7 +26,7 @@ export default {
     babel({
       babelHelpers: 'bundled',
       extensions: ['.js', '.ts']
-    }),
+    })
   ],
   ts: [
     json(),

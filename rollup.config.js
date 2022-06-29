@@ -10,6 +10,7 @@ import banner from 'bannerjs';
 // `npm run dev` -> `production` is false
 const production = !process.env.ROLLUP_WATCH;
 
+
 export default [
   {
     input: 'src/index.ts',
@@ -21,7 +22,7 @@ export default [
         // name: 'Validator',
         exports: 'auto',
         banner: banner.multibanner(),
-        sourcemap: true,
+        sourcemap: true
       },
       {
         // file: pkg.module,
