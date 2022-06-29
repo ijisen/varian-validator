@@ -12,8 +12,6 @@
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "start": "rollup -c rollup.config.js -w",
-    "build:es": "babel src -d es --env-name=es",
-    "build:node": "babel src -d .",
     "test": "tests/index"
   },
   "repository": {

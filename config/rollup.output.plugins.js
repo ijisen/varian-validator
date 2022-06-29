@@ -15,12 +15,14 @@ export default {
       verbose: true,
       runOnce: true
     }),
-    typescript(),
-    // commonjs(),
+    typescript({
+      tsconfig: './tsconfig.json'
+    }),
+    commonjs(),
     json(),
-   /* nodeResolve({
+    nodeResolve({
       extensions: ['.mjs', '.js', '.json', '.node', '.ts']
-    }),*/
+    }),
     babel({
       babelHelpers: 'bundled',
       extensions: ['.js', '.ts']
@@ -28,9 +30,9 @@ export default {
   ],
   ts: [
     json(),
-    /*nodeResolve({
+    nodeResolve({
       extensions: ['.mjs', '.js', '.json', '.node', '.ts']
-    }),*/
+    }),
     dts()
   ]
 }
