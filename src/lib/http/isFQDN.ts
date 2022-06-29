@@ -1,6 +1,6 @@
 import setErrorCodeLang from '../util/setErrorCodeLang';
 
-import { IsFQDNConfig, isFQDNRes } from './http.d';
+import { IsFQDNConfig, isFQDNRes } from './typings.d';
 
 /**
  * Error codes and messages.

@@ -1,6 +1,6 @@
 {
   "name": "varian-validator",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Lightweight JavaScript form validation.",
   "homepage": "https://github.com/ijisen/varian-validator",
   "author": "ji sen  (https://github.com/ijisen)",
@@ -41,7 +41,7 @@
     "bannerjs": "2.1.0",
     "jest": "^28.1.1",
     "jest-environment-jsdom": "^28.1.1",
-    "rollup": "2.62.0",
+    "rollup": "2.75.7",
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-terser": "7.0.2",
     "ts-jest": "^28.0.5",

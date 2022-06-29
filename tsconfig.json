@@ -41,6 +41,7 @@
   },
   "include": [
     "src/**/*",
+    "src/**/*.d.ts",
     "typings/typings.d.ts"
   ],
   "exclude": [
