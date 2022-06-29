@@ -14,6 +14,56 @@ export default [
   {
     input: 'src/index.ts',
     output: [
+      {
+        file: pkg.main,
+        // /lib/index
+        format: format.cjs,
+        // name: 'Validator',
+        exports: 'auto',
+        banner: banner.multibanner(),
+        sourcemap: true,
+      },
+      {
+        // file: pkg.module,
+        file: pkg.module,
+        // es/index
+        format: format.esm,
+        // name: 'Validator',
+        banner: banner.multibanner(),
+        sourcemap: true
+      },
+      {
+        file: pkg.unpkg,
+        // dist/validator.js
+        format: format.umd,
+        // 当format为 life/umd时必须提供；做为全局变量挂在window下面。 window.A
+        name: 'Validator',
+        banner: banner.multibanner(),
+        sourcemap: true
+      }
+    ],
+    plugins: plugins.js
+  },
+  {
+    input: 'src/index.ts',
+    output: [
+      {
+        file: 'dist/validator.min.js',
+        format: format.umd,
+        // 当format为 life/umd时必须提供；做为全局变量挂在window下面。 window.A
+        name: 'Validator',
+        banner: banner.onebanner(),
+        sourcemap: true
+      }
+    ],
+    plugins: [
+      ...plugins.js,
+      production && terser({})
+    ]
+  },
+  {
+    input: 'src/index.ts',
+    output: [
       { file: pkg.typings, format: "es" }
     ],
     plugins: plugins.ts
