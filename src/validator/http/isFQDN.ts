@@ -1,4 +1,4 @@
-import setErrorCodeLang from '../util/setErrorCodeLang';
+import setErrorCodeLang from '../../utils/setErrorCodeLang';
 
 import { IsFQDNConfig, isFQDNRes } from './typings.d';
 

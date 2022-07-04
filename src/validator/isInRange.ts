@@ -1,4 +1,4 @@
-import isNumber from "./isNumber";
+import { isNumber } from "@/utils/isNumber";
 
 /**
  * 数字取值范围校验

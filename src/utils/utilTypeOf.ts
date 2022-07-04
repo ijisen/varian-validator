@@ -3,7 +3,16 @@
  * null, {}, array and date are objects, which confuses
  */
 
-export type EnumUtilTypeOf = 'undefined' | 'object' | 'array' | 'boolean' | 'number' | 'string' | 'function' | 'symbol' | 'bigint';
+export type EnumUtilTypeOf =
+  'undefined'
+  | 'object'
+  | 'array'
+  | 'boolean'
+  | 'number'
+  | 'string'
+  | 'function'
+  | 'symbol'
+  | 'bigint';
 
 const utilTypeOf = (input: any): EnumUtilTypeOf => {
   const rawObject = Object.prototype.toString.call(input).toLowerCase();

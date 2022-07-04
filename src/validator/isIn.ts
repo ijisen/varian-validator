@@ -1,6 +1,6 @@
-import utilToString from './util/utilToString';
-import isValidParamsTypes from "./util/isValidDataTypes";
-import utilTypeOf from "./util/utilTypeOf";
+import utilToString from '../utils/utilToString';
+import isValidParamsTypes from "../utils/isValidDataTypes";
+import utilTypeOf from "../utils/utilTypeOf";
 
 /**
  * 是否包含数据判断

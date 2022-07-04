@@ -1,8 +1,4 @@
-/**
- * 邮编格式验证
- *
- * */
-import isValidParamsTypes from "./util/isValidDataTypes";
+import isValidParamsTypes from "../utils/isValidDataTypes";
 
 /**
  * 邮编格式验证

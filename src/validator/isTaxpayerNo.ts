@@ -1,4 +1,4 @@
-import isValidParamsTypes from "./util/isValidDataTypes";
+import isValidParamsTypes from "../utils/isValidDataTypes";
 
 /**
  * 纳税人识别码 合法性验证

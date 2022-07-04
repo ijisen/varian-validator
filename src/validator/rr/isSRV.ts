@@ -1,6 +1,6 @@
 import isDomain from "../http/isDomain";
 import isPort from "../http/isPort"
-import utilStringToArray from "../util/utilStringToArray";
+import utilStringToArray from "../../utils/utilStringToArray";
 import isInRange from "../isInRange";
 
 

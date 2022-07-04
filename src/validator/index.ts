@@ -5,14 +5,14 @@
  *
  * */
 
-export type { ValidParamsDefaultTypes } from './util/isValidDataTypes'
-export { default as isValidParamsTypes } from './util/isValidDataTypes'
-export type { EnumLanguageType } from './util/setErrorCodeLang'
-export { default as setErrorCodeLang } from './util/setErrorCodeLang'
-export { default as utilStringToArray } from './util/utilStringToArray'
-export { default as utilToString } from './util/utilToString'
-export type { EnumUtilTypeOf } from './util/utilTypeOf'
-export { default as utilTypeOf } from './util/utilTypeOf'
+// export type { ValidParamsDefaultTypes } from '../commonjs/isValidDataTypes'
+// export { default as isValidParamsTypes } from '../commonjs/isValidDataTypes'
+// export type { EnumLanguageType } from '../commonjs/setErrorCodeLang'
+// export { default as setErrorCodeLang } from '../commonjs/setErrorCodeLang'
+// export { default as utilStringToArray } from '../commonjs/utilStringToArray'
+// export { default as utilToString } from '../commonjs/utilToString'
+// export type { EnumUtilTypeOf } from '../commonjs/utilTypeOf'
+// export { default as utilTypeOf } from '../commonjs/utilTypeOf'
 /** ========  END 公共 模块 ======== */
 
 /**
@@ -40,8 +40,6 @@ export { default as isZone } from './rr/isZone';
 /** ========  END 域名解析 模块 ======== */
 
 
-export { default as escape } from './escape';
-export { default as unescape } from './unescape';
 export { default as IsBankCard } from './IsBankCard';
 export { default as isBooleanTrue } from './isBooleanTrue';
 export type { IsByteLengthOptions } from './isByteLength';
@@ -49,7 +47,6 @@ export { default as isByteLength } from './isByteLength';
 export { default as isCellPhone } from './isCellPhone';
 export { default as isCreditCard } from './isCreditCard';
 export { default as isEmail } from './isEmail';
-export { isEmptyStr, isEmptyArray } from './isEmpty';
 export { default as isEthereumAddress } from './isEthereumAddress';
 export { default as isFixedPhone } from './isFixedPhone';
 export { default as isIdentityCard } from './isIdentityCard';
@@ -57,7 +54,6 @@ export { default as isIMEI } from './isIMEI';
 export { default as isIn } from './isIn';
 export { default as isInRange } from './isInRange';
 export { default as isInt } from './isInt';
-export { default as isNumber } from './isNumber';
 export { default as isPostalCode } from './isPostalCode';
 export type { IsStrongPasswordOptions, IAnalysisType } from './isStrongPassword';
 export { default as isStrongPassword } from './isStrongPassword';

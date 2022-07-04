@@ -11,7 +11,7 @@
  * ------> [value]： CA的域名或用于违规通知的电子邮箱。
  */
 import isInRange from "../isInRange";
-import utilStringToArray from "../util/utilStringToArray";
+import utilStringToArray from "../../utils/utilStringToArray";
 
 // （如：0 iodef "mailto:admin@dns-example.com"）
 // （如：0 issue "symantec.com"）

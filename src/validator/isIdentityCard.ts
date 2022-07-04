@@ -1,5 +1,5 @@
 import isInt from './isInt';
-import isValidParamsTypes from "./util/isValidDataTypes";
+import isValidParamsTypes from "../utils/isValidDataTypes";
 
 /**
  * 证件号码验证函数

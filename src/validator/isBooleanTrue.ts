@@ -1,4 +1,4 @@
-import isValidParamsTypes from "./util/isValidDataTypes";
+import isValidParamsTypes from "../utils/isValidDataTypes";
 
 /**
  * 布尔值判断
