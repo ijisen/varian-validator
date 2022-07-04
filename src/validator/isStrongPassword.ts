@@ -2,7 +2,7 @@
  * 密码强度验证
  *
  * */
-import isValidParamsTypes from "../utils/isValidDataTypes";
+import isValidParamsTypes from "../utils/isValidParamsTypes";
 
 const upperCaseRegex = /^[A-Z]$/;
 const lowerCaseRegex = /^[a-z]$/;

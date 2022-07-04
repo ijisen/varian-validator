@@ -1,5 +1,5 @@
 /**
- * 存储localStorage
+ * 存储 localStorage
  * @param[name] storage 关键字
  * @param[data] storage 值
  * @return boolean  储存成功与否

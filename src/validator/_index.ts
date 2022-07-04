@@ -5,8 +5,8 @@
  *
  * */
 
-// export type { ValidParamsDefaultTypes } from '../commonjs/isValidDataTypes'
-// export { default as isValidParamsTypes } from '../commonjs/isValidDataTypes'
+// export type { ValidParamsDefaultTypes } from '../commonjs/isValidParamsTypes'
+// export { default as isValidParamsTypes } from '../commonjs/isValidParamsTypes'
 // export type { EnumLanguageType } from '../commonjs/setErrorCodeLang'
 // export { default as setErrorCodeLang } from '../commonjs/setErrorCodeLang'
 // export { default as utilStringToArray } from '../commonjs/utilStringToArray'

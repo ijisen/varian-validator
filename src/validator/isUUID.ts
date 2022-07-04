@@ -1,4 +1,4 @@
-import isValidParamsTypes from "../utils/isValidDataTypes";
+import isValidParamsTypes from "../utils/isValidParamsTypes";
 
 /**
  * uuid 合法性校验

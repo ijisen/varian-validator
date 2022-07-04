@@ -17,84 +17,6 @@
 
   const version = version$1;
 
-  /**
-   * Better way to handle type checking
-   * null, {}, array and date are objects, which confuses
-   */
-  const utilTypeOf = input => {
-    const rawObject = Object.prototype.toString.call(input).toLowerCase();
-    const typeOfRegex = /\[object (.*)]/g; // @ts-ignore
-
-    return typeOfRegex.exec(rawObject)[1];
-  };
-
-  /**
-   * 判断函数参数是否为有效数据类型
-   * @param[str] any 参数
-   * @param[types] [any] 支持参数类型, 默认支持 ['string', 'number']
-   * */
-
-  const isValidParamsTypes = (str, types) => {
-    let defaultTypes = ['string', 'number'];
-
-    if (utilTypeOf(types) !== 'array') {
-      types = defaultTypes;
-    }
-
-    return types && types.includes(utilTypeOf(str));
-  };
-
-  /**
-   * 语言类型
-   * */
-  let EnumLanguageType;
-  /**
-   * 设置错误消息语言类型
-   * */
-
-  (function (EnumLanguageType) {
-    EnumLanguageType["en"] = "en-US";
-    EnumLanguageType["zh"] = "zh-CN";
-  })(EnumLanguageType || (EnumLanguageType = {}));
-
-  const setErrorCodeLang = (lang = EnumLanguageType.zh) => {
-    if (lang === EnumLanguageType.en) {
-      return 'en';
-    }
-
-    return 'zh';
-  };
-
-  /**
-   * 字符串 转 数组
-   * String to Array
-   * */
-  const utilStringToArray = (str, separator) => {
-    if (typeof str === 'string') {
-      str = str.trim();
-      return str.split(separator || /\s+/);
-    }
-
-    return [];
-  };
-
-  /**
-   * 字符串格式判断
-   * */
-  const utilToString = input => {
-    if (typeof input === 'object' && input !== null) {
-      if (typeof input.toString === 'function') {
-        input = input.toString();
-      } else {
-        input = '[object Object]';
-      }
-    } else if (input === null || typeof input === 'undefined' || isNaN(input) && !input.length) {
-      input = '';
-    }
-
-    return String(input);
-  };
-
   const v4Seg = '(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])';
   const v4Str = `(${v4Seg}[.]){3}${v4Seg}`;
   const IPv4Reg = new RegExp(`^${v4Str}$`); // IPv6 Segment
@@ -123,6 +45,27 @@
     if (isIPv4(s)) return 4;
     if (isIPv6(s)) return 6;
     return 0;
+  };
+
+  /**
+   * 语言类型
+   * */
+  let EnumLanguageType;
+  /**
+   * 设置错误消息语言类型
+   * */
+
+  (function (EnumLanguageType) {
+    EnumLanguageType["en"] = "en-US";
+    EnumLanguageType["zh"] = "zh-CN";
+  })(EnumLanguageType || (EnumLanguageType = {}));
+
+  const setErrorCodeLang = (lang = EnumLanguageType.zh) => {
+    if (lang === EnumLanguageType.en) {
+      return 'en';
+    }
+
+    return 'zh';
   };
 
   /**
@@ -452,6 +395,19 @@
   };
 
   /**
+   * 字符串 转 数组
+   * String to Array
+   * */
+  const utilStringToArray = (str, separator) => {
+    if (typeof str === 'string') {
+      str = str.trim();
+      return str.split(separator || /\s+/);
+    }
+
+    return [];
+  };
+
+  /**
    * CAA  =>  CA证书颁发机构授权校验
    *  使用场景： CAA(Certificate Authority Authorization)，即证书颁发机构授权。是一项新的可以添加到DNS记录中的额外字段,通过DNS机制创建CAA资源记录，可以限定域名颁发的证书和CA（证书颁发机构）之间的联系。未经授权的第三方尝试通过其他CA注册获取用于该域名的SSL/TLS证书将被拒绝。
    *  域名设置 CAA 记录，使网站所有者，可授权指定CA机构为自己的域名颁发证书，以防止HTTPS证书错误签发，从而提高网站安全性。
@@ -632,34 +588,48 @@
   };
 
   /**
-   * 标签语义化
-   *
-   * @param[str]  str
-   * eg: <h1> => &lt;h1&gt;
-   *
-   * */
-  const escape = str => {
-    if (typeof str !== "string") {
-      return false;
-    }
+   * Better way to handle type checking
+   * null, {}, array and date are objects, which confuses
+   */
+  const utilTypeOf = input => {
+    const rawObject = Object.prototype.toString.call(input).toLowerCase();
+    const typeOfRegex = /\[object (.*)]/g; // @ts-ignore
 
-    return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\//g, '&#x2F;').replace(/\\/g, '&#x5C;').replace(/`/g, '&#96;');
+    return typeOfRegex.exec(rawObject)[1];
   };
 
   /**
-   * 标签语义化编译
-   * @param[str]  str
-   * eg: &lt;h1&gt; => <h1>
+   * 判断函数参数是否为有效数据类型
+   * @param[str] any 参数
+   * @param[types] [any] 支持参数类型, 默认支持 ['string', 'number']
    * */
-  function unescape(str) {
-    if (typeof str !== "string") {
+
+  const isValidParamsTypes = (str, types) => {
+    let defaultTypes = ['string', 'number'];
+
+    if (utilTypeOf(types) !== 'array') {
+      types = defaultTypes;
+    }
+
+    return types && types.includes(utilTypeOf(str));
+  };
+
+  /**
+   * 银行卡号合法性验证
+   * @param[str] any 银行卡
+   * description： 15位或者16位或者19位
+   * */
+
+  const IsBankCard = str => {
+    // 建行16、19，农行19，工行19、交通17、民生16、兴业18、招行12、16、19
+    const reg = /^([1-9]{1})(\d{11}|\d{15}|\d{16}|\d{17}|\d{18})$/;
+
+    if (!isValidParamsTypes(str)) {
       return false;
     }
 
-    return str.replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#x2F;/g, '/').replace(/&#x5C;/g, '\\').replace(/&#96;/g, '`').replace(/&amp;/g, '&'); // &amp; replacement has to be the last one to prevent
-    // bugs with intermediate strings containing escape sequences
-    // See: https://github.com/validatorjs/validator.js/issues/1827
-  }
+    return reg.test(str);
+  };
 
   /**
    * 布尔值判断
@@ -790,33 +760,6 @@
   };
 
   /**
-   * 判断字符串是否为空值
-   * @param[str] 需要判断的值
-   * @param[option] {ignore_whitespace: boolean} 是否忽略空格
-   * */
-
-  const isEmptyStr = (str, options) => {
-    if (!isValidParamsTypes(str)) {
-      return false;
-    }
-
-    const default_is_empty_options = {
-      ignore_whitespace: false
-    };
-    str = `${str}`;
-    options = options || default_is_empty_options;
-    return (options.ignore_whitespace ? str.trim().length : str.length) === 0;
-  };
-  /**
-   * @names：判断数组是否为空数据
-   * @params[data] Array
-   * */
-
-  const isEmptyArray = (data = []) => {
-    return !Array.isArray(data) || !data.length;
-  };
-
-  /**
    * 以太坊地址校验
    * @param[str] 以太坊地址
    * */
@@ -829,6 +772,17 @@
 
     str += '';
     return ethReg.test(str);
+  };
+
+  /**
+   *
+   * 固定电话格式校验
+   * @param[str]: 电话
+   * eg: (0827-7977654) || (7977654)
+   * */
+  const isFixedPhone = str => {
+    const reg = /^(\d{3,4}-|\s)?\d{7,14}$/;
+    return reg.test(str);
   };
 
   /**
@@ -1196,6 +1150,14 @@
       }, 0);
     }
   };
+  /*
+  // 身份证
+  export function validateIDCard(str) {
+    const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+    return reg.test(str)
+  }
+  */
+
   /**
    * isIdentityCard
    * @param[str] any 证件号码
@@ -1281,6 +1243,23 @@
   }
 
   /**
+   * 字符串格式判断
+   * */
+  const utilToString = input => {
+    if (typeof input === 'object' && input !== null) {
+      if (typeof input.toString === 'function') {
+        input = input.toString();
+      } else {
+        input = '[object Object]';
+      }
+    } else if (input === null || typeof input === 'undefined' || isNaN(input) && !input.length) {
+      input = '';
+    }
+
+    return String(input);
+  };
+
+  /**
    * 是否包含数据判断
    * @param[str] 要判断的数据
    * @param[options] 匹配的数据
@@ -1315,10 +1294,6 @@
     return false;
   }
 
-  /**
-   * 邮编格式验证
-   *
-   * */
   /**
    * 邮编格式验证
    * @param[str] 邮编
@@ -1545,6 +1520,21 @@
   }
 
   /**
+   * 纳税人识别码 合法性验证
+   * @param[str] any 识别码
+   * */
+
+  const isTaxpayerNo = str => {
+    const reg = /^[0-9A-Z]{15,18}$/i;
+
+    if (!isValidParamsTypes(str)) {
+      return false;
+    }
+
+    return reg.test(str);
+  };
+
+  /**
    * URL 正在校验
    *
    * */
@@ -1751,17 +1741,16 @@
     return !!pattern && pattern.test(str);
   }
 
-  exports.escape = escape;
+  exports.IsBankCard = IsBankCard;
   exports.isBooleanTrue = isBooleanTrue;
   exports.isByteLength = isByteLength;
   exports.isCellPhone = isCellPhone;
   exports.isCreditCard = isCreditCard;
   exports.isDomain = isDomain;
   exports.isEmail = isEmail;
-  exports.isEmptyArray = isEmptyArray;
-  exports.isEmptyStr = isEmptyStr;
   exports.isEthereumAddress = isEthereumAddress;
   exports.isFQDN = isFQDN;
+  exports.isFixedPhone = isFixedPhone;
   exports.isHost = isHost;
   exports.isIMEI = isIMEI;
   exports.isIP = isIP;
@@ -1771,21 +1760,15 @@
   exports.isIn = isIn;
   exports.isInRange = isInRange;
   exports.isInt = isInt;
-  exports.isNumber = isNumber;
   exports.isPort = isPort;
   exports.isPostalCode = isPostalCode;
   exports.isRdata = isRdata;
   exports.isStrongPassword = isStrongPassword;
   exports.isTTL = isTTL;
+  exports.isTaxpayerNo = isTaxpayerNo;
   exports.isURL = isURL;
   exports.isUUID = isUUID;
-  exports.isValidParamsTypes = isValidParamsTypes;
   exports.isZone = isZone;
-  exports.setErrorCodeLang = setErrorCodeLang;
-  exports.unescape = unescape;
-  exports.utilStringToArray = utilStringToArray;
-  exports.utilToString = utilToString;
-  exports.utilTypeOf = utilTypeOf;
   exports.version = version;
 
   Object.defineProperty(exports, '__esModule', { value: true });

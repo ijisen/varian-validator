@@ -1,4 +1,4 @@
-import isValidParamsTypes from "./isValidDataTypes";
+import isValidParamsTypes from "./isValidParamsTypes";
 import filterStringSpace from "./filterStringSpace";
 
 

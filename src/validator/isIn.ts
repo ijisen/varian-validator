@@ -1,5 +1,5 @@
 import utilToString from '../utils/utilToString';
-import isValidParamsTypes from "../utils/isValidDataTypes";
+import isValidParamsTypes from "../utils/isValidParamsTypes";
 import utilTypeOf from "../utils/utilTypeOf";
 
 /**

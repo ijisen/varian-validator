@@ -1,4 +1,4 @@
-import isValidParamsTypes from "../utils/isValidDataTypes";
+import isValidParamsTypes from "../utils/isValidParamsTypes";
 
 /**
  * 是否为整数判断

@@ -1,45 +1,6 @@
 declare const version: string;
 
 /**
- * Better way to handle type checking
- * null, {}, array and date are objects, which confuses
- */
-declare type EnumUtilTypeOf = 'undefined' | 'object' | 'array' | 'boolean' | 'number' | 'string' | 'function' | 'symbol' | 'bigint';
-declare const utilTypeOf: (input: any) => EnumUtilTypeOf;
-
-/**
- * 判断函数参数是否为有效数据类型
- * @param[str] any 参数
- * @param[types] [any] 支持参数类型, 默认支持 ['string', 'number']
- * */
-
-declare type ValidParamsDefaultTypes = Array<EnumUtilTypeOf>;
-declare const isValidParamsTypes: (str: any, types?: ValidParamsDefaultTypes) => boolean | undefined;
-
-/**
- * 语言类型
- * */
-declare const enum EnumLanguageType {
-    en = "en-US",
-    zh = "zh-CN"
-}
-/**
- * 设置错误消息语言类型
- * */
-declare const setErrorCodeLang: (lang?: any) => "en" | "zh";
-
-/**
- * 字符串 转 数组
- * String to Array
- * */
-declare const utilStringToArray: (str: any, separator?: string) => any;
-
-/**
- * 字符串格式判断
- * */
-declare const utilToString: (input: any) => string;
-
-/**
  * IPV4验证
  * */
 declare const isIPv4: (s: string) => boolean;
@@ -133,20 +94,11 @@ declare const isTTL: (str: string | number, maxTTL: 65535) => boolean;
 declare const isZone: (str: string) => true | isFQDNRes;
 
 /**
- * 标签语义化
- *
- * @param[str]  str
- * eg: <h1> => &lt;h1&gt;
- *
+ * 银行卡号合法性验证
+ * @param[str] any 银行卡
+ * description： 15位或者16位或者19位
  * */
-declare const escape: (str: any) => string | false;
-
-/**
- * 标签语义化编译
- * @param[str]  str
- * eg: &lt;h1&gt; => <h1>
- * */
-declare function unescape(str: any): string | false;
+declare const IsBankCard: (str: any) => boolean;
 
 /**
  * 布尔值判断
@@ -188,25 +140,18 @@ declare function isCreditCard(str: any): boolean;
 declare const isEmail: (str: any) => boolean;
 
 /**
- * 判断字符串是否为空值
- * @param[str] 需要判断的值
- * @param[option] {ignore_whitespace: boolean} 是否忽略空格
- * */
-interface DefaultIsEmptyOptions {
-    ignore_whitespace: boolean;
-}
-declare const isEmptyStr: (str: any, options?: DefaultIsEmptyOptions) => boolean;
-/**
- * @names：判断数组是否为空数据
- * @params[data] Array
- * */
-declare const isEmptyArray: (data?: never[]) => boolean;
-
-/**
  * 以太坊地址校验
  * @param[str] 以太坊地址
  * */
 declare const isEthereumAddress: (str: any) => boolean;
+
+/**
+ *
+ * 固定电话格式校验
+ * @param[str]: 电话
+ * eg: (0827-7977654) || (7977654)
+ * */
+declare const isFixedPhone: (str: string) => boolean;
 
 /**
  * isIdentityCard
@@ -252,14 +197,6 @@ declare function isInt(str: any, options?: {
 }): boolean;
 
 /**
- * 判断参数是否为数字
- *
- * @param[number]
- * @param[allowNegative] 是否允许为负数
- */
-declare const isNumber: (number: any, allowNegative?: boolean) => boolean;
-
-/**
  * 邮编格式验证
  * @param[str] 邮编
  * @param[locale] 邮编所属地
@@ -296,6 +233,12 @@ interface IAnalysisType {
  * */
 declare function isStrongPassword(str: any, options?: Partial<IsStrongPasswordOptions>): number | boolean;
 
+/**
+ * 纳税人识别码 合法性验证
+ * @param[str] any 识别码
+ * */
+declare const isTaxpayerNo: (str: any) => boolean;
+
 declare type TProtocols = Array<'http' | 'https' | 'ftp'>;
 declare type TCheckHostMatches = Array<string | RegExp>;
 interface IIsURLDefaultUrlOptions {
@@ -329,4 +272,4 @@ declare function isURL(url: any, options: Partial<IIsURLDefaultUrlOptions>): boo
  * */
 declare function isUUID(str: any, version: any): any;
 
-export { EnumLanguageType, EnumRecordType, EnumUtilTypeOf, IAnalysisType, IIsURLDefaultUrlOptions, IsByteLengthOptions, IsFQDNConfig, IsStrongPasswordOptions, ValidParamsDefaultTypes, escape, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isFQDN, isFQDNRes, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isPort, isPostalCode, isRdata, isStrongPassword, isTTL, isURL, isUUID, isValidParamsTypes, isZone, setErrorCodeLang, unescape, utilStringToArray, utilToString, utilTypeOf, version };
+export { EnumRecordType, IAnalysisType, IIsURLDefaultUrlOptions, IsBankCard, IsByteLengthOptions, IsFQDNConfig, IsStrongPasswordOptions, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEthereumAddress, isFQDN, isFQDNRes, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isPort, isPostalCode, isRdata, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isZone, version };
