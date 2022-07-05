@@ -19,7 +19,9 @@ export default {
       tsconfig: './tsconfig.json'
     }),
     commonjs(),
-    json(),
+    json({
+      preferConst: true
+    }),
     nodeResolve({
       extensions: ['.mjs', '.js', '.json', '.node', '.ts']
     }),

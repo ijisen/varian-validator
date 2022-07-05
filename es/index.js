@@ -7,16 +7,16 @@
  * Licensed under the ISC license 
  */
 
-var version$1 = "0.0.5";
+const version$1 = "0.0.5";
 
 const version = version$1;
 
 const v4Seg = '(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])';
-const v4Str = `(${v4Seg}[.]){3}${v4Seg}`;
-const IPv4Reg = new RegExp(`^${v4Str}$`); // IPv6 Segment
+const v4Str = "(".concat(v4Seg, "[.]){3}").concat(v4Seg);
+const IPv4Reg = new RegExp("^".concat(v4Str, "$")); // IPv6 Segment
 
 const v6Seg = '(?:[0-9a-fA-F]{1,4})';
-const IPv6Reg = new RegExp('^(' + `(?:${v6Seg}:){7}(?:${v6Seg}|:)|` + `(?:${v6Seg}:){6}(?:${v4Str}|:${v6Seg}|:)|` + `(?:${v6Seg}:){5}(?::${v4Str}|(:${v6Seg}){1,2}|:)|` + `(?:${v6Seg}:){4}(?:(:${v6Seg}){0,1}:${v4Str}|(:${v6Seg}){1,3}|:)|` + `(?:${v6Seg}:){3}(?:(:${v6Seg}){0,2}:${v4Str}|(:${v6Seg}){1,4}|:)|` + `(?:${v6Seg}:){2}(?:(:${v6Seg}){0,3}:${v4Str}|(:${v6Seg}){1,5}|:)|` + `(?:${v6Seg}:){1}(?:(:${v6Seg}){0,4}:${v4Str}|(:${v6Seg}){1,6}|:)|` + `(?::((?::${v6Seg}){0,5}:${v4Str}|(?::${v6Seg}){1,7}|:))` + ')(%[0-9a-zA-Z-.:]{1,})?$');
+const IPv6Reg = new RegExp('^(' + "(?:".concat(v6Seg, ":){7}(?:").concat(v6Seg, "|:)|") + "(?:".concat(v6Seg, ":){6}(?:").concat(v4Str, "|:").concat(v6Seg, "|:)|") + "(?:".concat(v6Seg, ":){5}(?::").concat(v4Str, "|(:").concat(v6Seg, "){1,2}|:)|") + "(?:".concat(v6Seg, ":){4}(?:(:").concat(v6Seg, "){0,1}:").concat(v4Str, "|(:").concat(v6Seg, "){1,3}|:)|") + "(?:".concat(v6Seg, ":){3}(?:(:").concat(v6Seg, "){0,2}:").concat(v4Str, "|(:").concat(v6Seg, "){1,4}|:)|") + "(?:".concat(v6Seg, ":){2}(?:(:").concat(v6Seg, "){0,3}:").concat(v4Str, "|(:").concat(v6Seg, "){1,5}|:)|") + "(?:".concat(v6Seg, ":){1}(?:(:").concat(v6Seg, "){0,4}:").concat(v4Str, "|(:").concat(v6Seg, "){1,6}|:)|") + "(?::((?::".concat(v6Seg, "){0,5}:").concat(v4Str, "|(?::").concat(v6Seg, "){1,7}|:))") + ')(%[0-9a-zA-Z-.:]{1,})?$');
 /**
  * IPV4验证
  * */
@@ -41,6 +41,47 @@ const isIP = s => {
   return 0;
 };
 
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    enumerableOnly && (symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    })), keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = null != arguments[i] ? arguments[i] : {};
+    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
+      _defineProperty(target, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
+      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+    });
+  }
+
+  return target;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
 /**
  * 语言类型
  * */
@@ -54,7 +95,9 @@ let EnumLanguageType;
   EnumLanguageType["zh"] = "zh-CN";
 })(EnumLanguageType || (EnumLanguageType = {}));
 
-const setErrorCodeLang = (lang = EnumLanguageType.zh) => {
+const setErrorCodeLang = function setErrorCodeLang() {
+  let lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : EnumLanguageType.zh;
+
   if (lang === EnumLanguageType.en) {
     return 'en';
   }
@@ -123,7 +166,9 @@ const default_fqdn_options = {
  * str: m.zdns.cn || zdns.cn. || h.m.zdns.cn.
  * */
 
-function isFQDN(str, options = {}, lang) {
+function isFQDN(str) {
+  let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  let lang = arguments.length > 2 ? arguments[2] : undefined;
   let errorMessage = errorCodes[setErrorCodeLang(lang)];
 
   if (typeof str !== 'string' || str.replace(' ', '') === '') {
@@ -133,9 +178,7 @@ function isFQDN(str, options = {}, lang) {
     };
   }
 
-  options = { ...default_fqdn_options,
-    ...options
-  };
+  options = _objectSpread2(_objectSpread2({}, default_fqdn_options), options);
   console.log(options);
 
   if (!str) {
@@ -293,7 +336,9 @@ const isDomain = str => {
  * @param[number]
  * @param[allowNegative] 是否允许为负数
  */
-const isNumber = (number, allowNegative = false) => {
+const isNumber = function isNumber(number) {
+  let allowNegative = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
   /**
    * isNaN([]) || isNaN('') || isNaN(true) || isNaN(false) || isNaN(null) => false
    * */
@@ -632,7 +677,8 @@ const IsBankCard = str => {
  * @param[trueBooleans]: 拓展布尔值
  * */
 
-const isBooleanTrue = (str, extend, trueBooleans = ['yes', 'true', '1']) => {
+const isBooleanTrue = function isBooleanTrue(str, extend) {
+  let trueBooleans = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : ['yes', 'true', '1'];
   const type_str = typeof str;
 
   if (type_str === 'boolean') {
@@ -644,7 +690,7 @@ const isBooleanTrue = (str, extend, trueBooleans = ['yes', 'true', '1']) => {
   }
 
   if (extend) {
-    str = `${str}`.toLowerCase();
+    str = "".concat(str).toLowerCase();
     return trueBooleans.includes(str);
   }
 };
@@ -681,7 +727,7 @@ function isByteLength(str, options) {
  * 手机格式校验
  * @param[str]: 手机号
  * */
-const isCellPhone = function (str) {
+const isCellPhone = function isCellPhone(str) {
   try {
     const reg = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/;
     return reg.test(str);
@@ -899,7 +945,7 @@ const identityCardValidators = {
   },
   IR: str => {
     if (!str.match(/^\d{10}$/)) return false;
-    str = `0000${str}`.substr(str.length - 6);
+    str = "0000".concat(str).substr(str.length - 6);
     if (parseInt(str.substr(3, 6), 10) === 0) return false;
     const lastNumber = parseInt(str.substr(9, 1), 10);
     let sum = 0;
@@ -915,7 +961,7 @@ const identityCardValidators = {
     if (str.length !== 9) return false;
     if (str === 'CA00000AA') return false; // https://it.wikipedia.org/wiki/Carta_d%27identit%C3%A0_elettronica_italiana
 
-    return str.search(/C[A-Z]\d{5}[A-Z]{2}/is) > -1;
+    return str.search(/C[A-Z]\d{5}[A-Z]{2}/i) > -1;
   },
   NO: str => {
     const sanitized = str.trim();
@@ -1067,7 +1113,7 @@ const identityCardValidators = {
       let addressCode = idCardNo.substring(0, 2);
       check = checkAddressCode(addressCode);
       if (!check) return false;
-      let birDayCode = `19${idCardNo.substring(6, 12)}`;
+      let birDayCode = "19".concat(idCardNo.substring(6, 12));
       check = checkBirthDayCode(birDayCode);
       if (!check) return false;
       return true;
@@ -1163,7 +1209,7 @@ function isIdentityCard(str, locale) {
     return false;
   }
 
-  str = `${str}`;
+  str = "".concat(str);
 
   if (locale in identityCardValidators) {
     return identityCardValidators[locale](str);
@@ -1182,7 +1228,7 @@ function isIdentityCard(str, locale) {
     return false;
   }
 
-  throw new Error(`Invalid locale '${locale}'`);
+  throw new Error("Invalid locale '".concat(locale, "'"));
 }
 
 /**
@@ -1191,12 +1237,14 @@ function isIdentityCard(str, locale) {
  * @param[allow_hyphens] boolean 允许连字符
  * */
 
-function isIMEI(str, allow_hyphens = false) {
+function isIMEI(str) {
+  let allow_hyphens = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
   if (!isValidParamsTypes(str)) {
     return false;
   }
 
-  str = `${str}`;
+  str = "".concat(str);
   let imeiRegexWithoutHypens = /^[0-9]{15}$/;
   let imeiRegexWithHypens = /^\d{2}-\d{6}-\d{6}-\d{1}$/; // default regex for checking imei is the one without hyphens
 
@@ -1389,13 +1437,9 @@ function isPostalCode(str, locale) {
     return false;
   }
 
-  throw new Error(`Invalid locale '${locale}'`);
+  throw new Error("Invalid locale '".concat(locale, "'"));
 }
 
-/**
- * 密码强度验证
- *
- * */
 const upperCaseRegex = /^[A-Z]$/;
 const lowerCaseRegex = /^[a-z]$/;
 const numberRegex = /^[0-9]$/;
@@ -1502,9 +1546,8 @@ function isStrongPassword(str, options) {
   }
 
   const analysis = analyzePassword(str);
-  const new_options = { ...defaultOptions,
-    ...options
-  };
+
+  const new_options = _objectSpread2(_objectSpread2({}, defaultOptions), options);
 
   if (new_options.returnScore) {
     return scorePassword(analysis, new_options);
@@ -1528,10 +1571,6 @@ const isTaxpayerNo = str => {
   return reg.test(str);
 };
 
-/**
- * URL 正在校验
- *
- * */
 /*
 options for isURL method
 
@@ -1595,9 +1634,7 @@ function isURL(url, options) {
     return false;
   }
 
-  const new_options = { ...options,
-    ...default_url_options
-  };
+  const new_options = _objectSpread2(_objectSpread2({}, options), default_url_options);
 
   if (options.validate_length && url.length >= 2083) {
     return false;
