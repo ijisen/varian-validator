@@ -1,4 +1,4 @@
-declare const version: string;
+var version = "0.0.6";
 
 /**
  * IPV4验证
