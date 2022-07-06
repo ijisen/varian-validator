@@ -10,7 +10,6 @@ import banner from 'bannerjs';
 // `npm run dev` -> `production` is false
 const production = !process.env.ROLLUP_WATCH;
 
-
 export default [
   {
     input: 'src/index.ts',
@@ -59,7 +58,11 @@ export default [
     ],
     plugins: [
       ...plugins.js,
-      production && terser({})
+      production && terser({
+        compress: {
+          drop_console: true
+        }
+      })
     ]
   },
   {
