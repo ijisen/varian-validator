@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.6 
+ * varian-validator v0.0.8 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2022 ji sen  (https://github.com/ijisen) 
@@ -7,7 +7,826 @@
  * Licensed under the ISC license 
  */
 
-var version = "0.0.6";
+var version = "0.0.8";
+
+/**
+ * 判断参数是否为数字
+ *
+ * @param[number]
+ * @param[allowNegative] 是否允许为负数
+ */
+const isNumber = (number, allowNegative = false) => {
+  /**
+   * isNaN([]) || isNaN('') || isNaN(true) || isNaN(false) || isNaN(null) => false
+   * */
+  if (typeof number === 'string') {
+    number = number.replace(/\s+/g, '');
+  }
+
+  if (isNaN(number) || number === '' || typeof number === 'object' || typeof number === 'boolean') {
+    return false;
+  } else {
+    number = parseFloat(number);
+
+    if (number < 0) {
+      return allowNegative;
+    } else {
+      return true;
+    }
+  }
+};
+
+/** =======================================================
+ * @names：  算术运算
+ * @author：jisen
+ * @time：  2022-07-04
+ * @description：
+ * ======================================================== */
+/**
+ * 金额保留两位小数
+ * @param[num]
+ * @param[ceil] 是否向上取整， 默认四舍五入
+ * ceil === true, 向上取整; eg: 5.051 = 5.06
+ * ceil === false, 四舍五入; eg: 5.051 = 5.05
+ */
+
+function numberToDecimal2(num, ceil) {
+  if (!isNumber(num)) {
+    return num;
+  }
+
+  let f = parseFloat(num); // Math.ceil(19.01*100) => 1902 js BUG
+
+  f = numberMultiply(f, 100);
+
+  if (ceil) {
+    f = Math.ceil(f) / 100;
+  } else {
+    f = Math.round(f) / 100;
+  }
+
+  let s = f.toString();
+  let rs = s.indexOf('.');
+
+  if (rs < 0) {
+    rs = s.length;
+    s += '.';
+  }
+
+  while (s.length <= rs + 2) {
+    s += '0';
+  }
+
+  return s;
+}
+/**
+ * 计算值格式化
+ * */
+
+const numberFormat = num => {
+  try {
+    return num.toString().split(".")[1].length;
+  } catch (e) {
+    return 0;
+  }
+};
+/**
+ * 加法运算，避免数据相加小数点后产生多位数和计算精度损失。
+ *
+ * @param num1 加数1
+ * @param num2 加数2
+ */
+
+
+function numberAdd(num1, num2) {
+  const baseNum1 = numberFormat(num1);
+  const baseNum2 = numberFormat(num2);
+  const baseNum = Math.pow(10, Math.max(baseNum1, baseNum2));
+  return (numberMultiply(num1, baseNum) + numberMultiply(num2, baseNum)) / baseNum;
+}
+/**
+ * 减法运算，避免数据相减小数点后产生多位数和计算精度损失。
+ *
+ * @param num1 被减数
+ * @param num2 减数
+ */
+
+function numberSubtract(num1, num2) {
+  // 精度
+  let precision;
+  const baseNum1 = numberFormat(num1);
+  const baseNum2 = numberFormat(num2);
+  const baseNum = Math.pow(10, Math.max(baseNum1, baseNum2));
+  precision = baseNum1 >= baseNum2 ? baseNum1 : baseNum2;
+  return ((num1 * baseNum - num2 * baseNum) / baseNum).toFixed(precision);
+}
+/**
+ * 乘法运算，避免数据相乘小数点后产生多位数和计算精度损失。
+ *
+ * @param num1 被乘数
+ * @param num2 乘数
+ */
+
+function numberMultiply(num1, num2) {
+  let baseNum = 0;
+  baseNum += numberFormat(num1);
+  baseNum += numberFormat(num2);
+  return Number(num1.toString().replace(".", "")) * Number(num2.toString().replace(".", "")) / Math.pow(10, baseNum);
+}
+/**
+ * 除法运算，避免数据相除小数点后产生多位数和计算精度损失。
+ *
+ * @param num1 被除数
+ * @param num2 除数
+ */
+
+function numberDivide(num1, num2) {
+  const baseNum1 = numberFormat(num1);
+  const baseNum2 = numberFormat(num2);
+  const baseNum3 = Number(num1.toString().replace(".", ""));
+  const baseNum4 = Number(num2.toString().replace(".", ""));
+  return baseNum3 / baseNum4 * Math.pow(10, baseNum2 - baseNum1);
+}
+
+/**
+ * @names：数组分组提交数据
+ * @params[data] 数据
+ * @params[groupLen] 组员
+ * */
+const arrayDataGrouping = (data = [], groupLen = 10) => {
+  if (!Array.isArray(data) || !data.length) {
+    return undefined;
+  } // 数据长度
+
+
+  let dataLen = data.length;
+
+  if (dataLen <= groupLen) {
+    return [data];
+  }
+
+  data = JSON.parse(JSON.stringify(data)); // 当前数据可分组数
+
+  let group = Math.ceil(dataLen / groupLen);
+  let groupData = [];
+
+  for (let i = 1; i < group; i++) {
+    groupData.push(data.splice(0, groupLen));
+  }
+
+  groupData.push(data);
+  return groupData;
+};
+
+/**
+ * 储存 cookie 值
+ * @param[name] cookie 关键字
+ * @param[data] cookie 值
+ * @param[objHours] 储存时间
+ * @return boolean  储存成功与否
+ */
+const setCookie = (name, data, objHours) => {
+  if (!name || !data) {
+    return false;
+  }
+
+  if (typeof data === "object") {
+    data = JSON.stringify(data);
+  } // 编码
+
+
+  let str = name + "=" + encodeURI(data); // 为0时不设定过期时间，浏览器关闭时cookie自动消失
+
+  if (objHours > 0) {
+    const date = new Date();
+    const ms = objHours * 3600 * 1000;
+    date.setTime(date.getTime() + ms);
+    str += "; expires=" + date.toUTCString();
+  }
+
+  document.cookie = str;
+  return true;
+};
+/**
+ * 获取 cookie 值
+ * @param[name] cookie 关键字
+ * @return any  获取到的值
+ */
+
+const getCookieValue = name => {
+  if (!name) return false;
+  let prefix = name + "=";
+  let start = document.cookie.indexOf(prefix);
+
+  if (start === -1) {
+    return null;
+  }
+
+  let end = document.cookie.indexOf(";", start + prefix.length);
+
+  if (end === -1) {
+    end = document.cookie.length;
+  }
+
+  let value = document.cookie.substring(start + prefix.length, end);
+  value = decodeURI(value);
+
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    return value;
+  }
+};
+
+/**
+ * 解决IE不识别 2018-08-12的时间格式
+ *
+ * @param[date]: 日期
+ *
+ * eg: 2018-08-12 => 2018/08/12
+ * */
+function dateFormatReg(date) {
+  if (typeof date === 'string') {
+    date = date.replace(/-/g, '/');
+  }
+
+  return date;
+}
+/**
+ * 日期格式化.
+ * @param[date]
+ * @param[format] 格式
+ */
+
+function formatDate(date, format = 'YYYY-MM-DD') {
+  if (!date) {
+    return '';
+  }
+
+  const reg = /cst/ig; // 如果时间格式为 CST格式，则需要-14小时
+
+  if (typeof date === 'string' && reg.test(date)) {
+    date = new Date(date);
+    date.setHours(date.getHours() - 14);
+  }
+
+  date = dateFormatReg(date);
+  date = new Date(date);
+  const o = {
+    'M+': date.getMonth() + 1,
+    //month
+    'D+': date.getDate(),
+    //day
+    'd+': date.getDate(),
+    //day
+    'H+': date.getHours(),
+    //hour
+    'm+': date.getMinutes(),
+    //minute
+    's+': date.getSeconds(),
+    //second
+    'q+': Math.floor((date.getMonth() + 3) / 3),
+    //quarter
+    'S': date.getMilliseconds() //millisecond
+
+  };
+
+  if (/(Y+)/i.test(format)) {
+    format = format.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+  }
+
+  for (const k in o) {
+    if (new RegExp('(' + k + ')').test(format)) {
+      format = format.replace(RegExp.$1, RegExp.$1.length === 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length));
+    }
+  }
+
+  return format;
+}
+
+/**
+ * name：函数防抖
+ * description：函数触发后，如果函数还没执行完成，则打断执行，重新执行
+ * @params[fn]  回调函数
+ * @params[delay]  定时器延时
+ */
+const debounce = (fn = () => {}, delay = 200) => {
+  let timer = null;
+  return () => {
+    // 再次触发时，立即重新执行
+    // if (timer) {
+    clearTimeout(timer);
+    timer = null; // }
+
+    timer = setTimeout(fn, delay);
+  };
+};
+
+/**
+ * 对象深度克隆
+ *
+ * @param[obj] 要克隆的对象
+ */
+function deepClone(obj) {
+  let newObj = Array.isArray(obj) ? [] : {};
+
+  if (obj && typeof obj === "object") {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        newObj[key] = obj && typeof obj[key] === 'object' ? deepClone(obj[key]) : obj[key];
+      }
+    }
+  }
+
+  return newObj;
+}
+
+/** =======================================================
+ * @names：  域名相关公共方法
+ * @author：jisen
+ * @time：  2022-07-04
+ * @description：域名相关公共方法
+ * ======================================================== */
+
+/**
+ *  获取【域名】的TLD
+ *  abc.com => com
+ *  abc.com.cn =>cn
+ *  blog.zdns.com.cn => zdns.com.cn
+ * */
+function getDomainTld(domain) {
+  if (typeof domain !== 'string') {
+    return '';
+  }
+
+  let index = domain.indexOf('.');
+
+  if (index > -1) {
+    return domain.slice(index + 1);
+  }
+
+  return '';
+}
+/**
+ * 域名可注册年限判断
+ * .co 为五年
+ * 其它十年
+ * @params[tld] 顶级域 com|co|net
+ * */
+
+function getDomainPeriod(tld) {
+  if (typeof tld !== 'string') {
+    return 10;
+  } // 注册时间为5年的顶级域
+
+
+  const tld_arr = ['co'];
+  let _period = 10;
+
+  if (tld_arr.indexOf(tld) > -1) {
+    _period = 5;
+  }
+
+  return _period;
+}
+
+/**
+ * 标签语义化
+ *
+ * @param[str]  str
+ * eg: <h1> => &lt;h1&gt;
+ *
+ * */
+const escape = str => {
+  if (typeof str !== "string") {
+    return false;
+  }
+
+  return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\//g, '&#x2F;').replace(/\\/g, '&#x5C;').replace(/`/g, '&#96;');
+};
+
+/**
+ * @names：普通文本过滤所有的空格
+ * 部分 ajax 响应数据为字符串，且包含转义字符，无法转成JSON
+ *
+ * @params[str] string
+ * @params[options] {filterAll: boolean, returnType: boolean}
+ * @return string
+ * eg: aaa  aa  => aaa aa
+ * */
+const filterStringSpace = (str, options) => {
+  if (typeof str !== 'string') {
+    // return str;
+    return '';
+  }
+
+  const reg = /\\0|\\u0000|\s+/g; // return str.replace(/\s+/g, '');
+
+  if (options?.filterAll) {
+    return str.replace(reg, '');
+  }
+
+  return str.replace(reg, ' ');
+};
+
+/**
+ *  计算字符串长度
+ *  将字符串转Unicode计算 一个中文 = 3个子节
+ *
+ * @param[str] 字符串
+ */
+function getStrByteLength(str) {
+  let totalLength = 0;
+
+  for (let i = 0, len = str.length; i < len; i++) {
+    const charCode = str.charCodeAt(i);
+
+    if (charCode < 0x007f) {
+      totalLength += 1;
+    } else if (0x0080 <= charCode && charCode <= 0x07ff) {
+      totalLength += 2;
+    } else if (0x0800 <= charCode && charCode <= 0xffff) {
+      totalLength += 3;
+    }
+  }
+
+  console.log("信息长度为: " + totalLength + " 字节");
+}
+
+/**
+ * 获取url中的参数
+ *
+ * @param[name] 参数名
+ * @param[param] 参数  'name=xx&age=124'
+ */
+function getUrlParam(name, param) {
+  //构造一个含有目标参数的正则表达式对象
+  let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //匹配目标参数
+
+  let _params = param || window.location.search.substring(1);
+
+  let r = _params.match(reg); //返回参数值
+
+
+  if (r !== null) return decodeURIComponent(r[2]);
+  return null;
+}
+
+/**
+ * @names：特殊符号转 , 英文号
+ * @params[str] string
+ * @return string
+ * */
+const specialSymbolToComma = str => {
+  if (typeof str === "string") {
+    return str.replace(/\r|\s|\n|，/g, ',');
+  }
+
+  return "";
+};
+
+/**
+ * @names：textarea 输入内容格式化
+ * @params[str] string
+ * @return [] Array
+ * */
+
+const inputTextareaFormat = str => {
+  // 去除首尾空格
+  str = str.trim(); // 大写转小写
+
+  str = str.toLowerCase(); // 去除多余的空格
+
+  str = str.replace(/\s+|\n+/g, ' '); // 特殊符号转 ,
+
+  str = specialSymbolToComma(str); // 去重
+
+  str = [...new Set(str.split(','))];
+  return str;
+};
+
+/**
+ * Better way to handle type checking
+ * null, {}, array and date are objects, which confuses
+ */
+const utilTypeOf = input => {
+  const rawObject = Object.prototype.toString.call(input).toLowerCase();
+  const typeOfRegex = /\[object (.*)]/g; // @ts-ignore
+
+  return typeOfRegex.exec(rawObject)[1];
+};
+
+/**
+ * 判断函数参数是否为有效数据类型
+ * @param[str] any 参数
+ * @param[types] [any] 支持参数类型, 默认支持 ['string', 'number']
+ * */
+
+const isValidParamsTypes = (str, types) => {
+  let defaultTypes = ['string', 'number'];
+
+  if (utilTypeOf(types) !== 'array') {
+    types = defaultTypes;
+  }
+
+  return types && types.includes(utilTypeOf(str));
+};
+
+/**
+ * 判断字符串是否为空值
+ * @param[str] 需要判断的值
+ * @param[ignoreSpace] boolean 是否忽略空格
+ * */
+
+const isEmptyStr = (str, ignoreSpace) => {
+  if (!isValidParamsTypes(str)) {
+    return false;
+  }
+
+  str = `${str}`;
+
+  if (!ignoreSpace) {
+    str = filterStringSpace(str);
+  }
+
+  return !(str.length === 0);
+};
+/**
+ * @names：判断数组是否为空数据
+ * @params[data] Array
+ * */
+
+const isEmptyArray = (data = []) => {
+  return !Array.isArray(data) || !data.length;
+};
+
+/**
+ * 判断数据是否存在
+ * @param[value] 需要判断的数据
+ * @param[returnType] 返回类型，默认返回 boolean
+ * @return boolean || string
+ */
+const isExistValue = (value, returnType = 'boolean') => {
+  let _value = '';
+
+  if (value === 0 || value === false || value) {
+    _value = value;
+  } else {
+    // null undefined ''
+    _value = '-';
+  } // console.log(_value);
+
+
+  return returnType === 'boolean' ? _value !== '-' : _value;
+};
+
+/**
+ * 存储 localStorage
+ * @param[name] storage 关键字
+ * @param[data] storage 值
+ * @return boolean  储存成功与否
+ */
+const setLocalStorage = (name, data) => {
+  if (!name) return false;
+
+  if (typeof data !== 'string') {
+    data = JSON.stringify(data);
+  }
+
+  window.localStorage.setItem(name, data);
+  return true;
+};
+/**
+ * 获取localStorage
+ * @param[name] storage 关键字
+ * @return any  获取到的值
+ */
+
+const getLocalStorage = name => {
+  if (!name) return false;
+  const value = window.localStorage.getItem(name);
+
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    return value;
+  }
+};
+/**
+ * 删除localStorage
+ * @param[name] storage 关键字
+ * @return boolean 删除成功与否
+ */
+
+const removeLocalStorage = name => {
+  if (!name) return false;
+  window.localStorage.removeItem(name);
+  return true;
+};
+
+/**
+ * 存储 sessionStorage
+ * @param[name] session关键字
+ * @param[data] session值
+ * @return boolean  储存成功与否
+ */
+const setSessionStorage = (name, data) => {
+  if (!name) return false;
+
+  if (typeof data !== 'string') {
+    data = JSON.stringify(data);
+  }
+
+  window.sessionStorage.setItem(name, data);
+  return true;
+};
+/**
+ * 获取 sessionStorage
+ * @param[name] session关键字
+ * @return any  获取到的值
+ */
+
+const getSessionStorage = name => {
+  if (!name) return false;
+  const value = window.sessionStorage.getItem(name);
+
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    return value;
+  } // return value ? JSON.parse(value) : value
+
+};
+/**
+ * 删除 sessionStorage
+ * @param[name] session关键字
+ * @return boolean 删除成功与否
+ */
+
+const removeSessionStorage = name => {
+  if (!name) return false;
+  window.sessionStorage.removeItem(name);
+  return true;
+};
+
+/**
+ * 语言类型
+ * */
+let EnumLanguageType;
+/**
+ * 设置错误消息语言类型
+ * */
+
+(function (EnumLanguageType) {
+  EnumLanguageType["en"] = "en-US";
+  EnumLanguageType["zh"] = "zh-CN";
+})(EnumLanguageType || (EnumLanguageType = {}));
+
+const setErrorCodeLang = (lang = EnumLanguageType.zh) => {
+  if (lang === EnumLanguageType.en) {
+    return 'en';
+  }
+
+  return 'zh';
+};
+
+/**
+ * 设置页面标题
+ *
+ * @param[title] 标题
+ */
+function setHtmlTitle(title) {
+  document.title = title;
+}
+
+/**
+ * 配置url参数
+ *
+ * @param[data] 参数
+ */
+
+function setUrlParam(data) {
+  if (Object.prototype.toString.call(data) !== '[object Object]') {
+    return undefined;
+  }
+
+  let keys = Object.keys(data);
+  let str = '';
+  keys.forEach(key => {
+    const value = data[key];
+
+    if (isExistValue(value)) {
+      if (str) {
+        str += '&';
+      }
+
+      str += `${key}=${value}`;
+    }
+  });
+  return encodeURI(str);
+}
+
+/**
+ * name：函数节流
+ * description：函数触发后,如果函数还在执行中，就不再执行，
+ * @params[fn]  回调函数
+ * @params[delay]  定时器延时
+ */
+const throttle = (fn = () => {}, delay = 200) => {
+  let timer = null;
+  return () => {
+    // 函数在执行中，无论触发几次都不执行。
+    if (timer) return;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn && fn();
+      timer = null;
+    }, delay);
+  };
+};
+
+/**
+ * 标签语义化编译
+ * @param[str]  str
+ * eg: &lt;h1&gt; => <h1>
+ * */
+function unescape(str) {
+  if (typeof str !== "string") {
+    return false;
+  }
+
+  return str.replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#x2F;/g, '/').replace(/&#x5C;/g, '\\').replace(/&#96;/g, '`').replace(/&amp;/g, '&'); // &amp; replacement has to be the last one to prevent
+  // bugs with intermediate strings containing escape sequences
+  // See: https://github.com/validatorjs/validator.js/issues/1827
+}
+
+/**
+ * @names：模拟表单提交数据
+ * @params[config] Object
+ * */
+const utilsSubmitForm = config => {
+  config = config || {};
+  const action = config.url;
+  const method = config.method || 'POST';
+  const params = config.params || {};
+  const form = document.createElement('form');
+  form.style.display = 'none';
+  form.method = method;
+  form.action = action; // form.target = '_blank';
+
+  for (let [key, value] of Object.entries(params)) {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = key;
+    input.value = value;
+    form.appendChild(input);
+  }
+  /*for (let i = 0, j = params.length; i < j; i++) {
+    let input = document.createElement('input');
+    let item = params[i];
+    let key = item.key;
+    let value = item.value;
+    input.type = 'hidden';
+    input.name = key;
+    input.value = value;
+    form.appendChild(input);
+  }*/
+
+
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+};
+
+/**
+ * 字符串 转 数组
+ * String to Array
+ * */
+const utilStringToArray = (str, separator) => {
+  if (typeof str === 'string') {
+    str = str.trim();
+    return str.split(separator || /\s+/);
+  }
+
+  return [];
+};
+
+/**
+ * 字符串格式判断
+ * */
+const utilToString = input => {
+  if (typeof input === 'object' && input !== null) {
+    if (typeof input.toString === 'function') {
+      input = input.toString();
+    } else {
+      input = '[object Object]';
+    }
+  } else if (input === null || typeof input === 'undefined' || isNaN(input) && !input.length) {
+    input = '';
+  }
+
+  return String(input);
+};
 
 const v4Seg = '(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])';
 const v4Str = `(${v4Seg}[.]){3}${v4Seg}`;
@@ -37,51 +856,6 @@ const isIP = s => {
   if (isIPv4(s)) return 4;
   if (isIPv6(s)) return 6;
   return 0;
-};
-
-/**
- * 语言类型
- * */
-let EnumLanguageType;
-/**
- * 设置错误消息语言类型
- * */
-
-(function (EnumLanguageType) {
-  EnumLanguageType["en"] = "en-US";
-  EnumLanguageType["zh"] = "zh-CN";
-})(EnumLanguageType || (EnumLanguageType = {}));
-
-const setErrorCodeLang = (lang = EnumLanguageType.zh) => {
-  if (lang === EnumLanguageType.en) {
-    return 'en';
-  }
-
-  return 'zh';
-};
-
-/**
- * @names：普通文本过滤所有的空格
- * 部分 ajax 响应数据为字符串，且包含转义字符，无法转成JSON
- *
- * @params[str] string
- * @params[options] {filterAll: boolean, returnType: boolean}
- * @return string
- * eg: aaa  aa  => aaa aa
- * */
-const filterStringSpace = (str, options) => {
-  if (typeof str !== 'string') {
-    // return str;
-    return '';
-  }
-
-  const reg = /\\0|\\u0000|\s+/g; // return str.replace(/\s+/g, '');
-
-  if (options?.filterAll) {
-    return str.replace(reg, '');
-  }
-
-  return str.replace(reg, ' ');
 };
 
 /**
@@ -314,33 +1088,6 @@ const isDomain = str => {
 };
 
 /**
- * 判断参数是否为数字
- *
- * @param[number]
- * @param[allowNegative] 是否允许为负数
- */
-const isNumber = (number, allowNegative = false) => {
-  /**
-   * isNaN([]) || isNaN('') || isNaN(true) || isNaN(false) || isNaN(null) => false
-   * */
-  if (typeof number === 'string') {
-    number = number.replace(/\s+/g, '');
-  }
-
-  if (isNaN(number) || number === '' || typeof number === 'object' || typeof number === 'boolean') {
-    return false;
-  } else {
-    number = parseFloat(number);
-
-    if (number < 0) {
-      return allowNegative;
-    } else {
-      return true;
-    }
-  }
-};
-
-/**
  * 数字取值范围校验
  * @param[str] 数值
  * @param[min] 最小值
@@ -412,19 +1159,6 @@ const isTXT = str => {
 
 const isNS = str => {
   return isDomain(str);
-};
-
-/**
- * 字符串 转 数组
- * String to Array
- * */
-const utilStringToArray = (str, separator) => {
-  if (typeof str === 'string') {
-    str = str.trim();
-    return str.split(separator || /\s+/);
-  }
-
-  return [];
 };
 
 /**
@@ -609,33 +1343,6 @@ const isTTL = (str, maxTTL) => {
 const isZone = str => {
   const rootZone = '.';
   return rootZone === str || isDomain(str);
-};
-
-/**
- * Better way to handle type checking
- * null, {}, array and date are objects, which confuses
- */
-const utilTypeOf = input => {
-  const rawObject = Object.prototype.toString.call(input).toLowerCase();
-  const typeOfRegex = /\[object (.*)]/g; // @ts-ignore
-
-  return typeOfRegex.exec(rawObject)[1];
-};
-
-/**
- * 判断函数参数是否为有效数据类型
- * @param[str] any 参数
- * @param[types] [any] 支持参数类型, 默认支持 ['string', 'number']
- * */
-
-const isValidParamsTypes = (str, types) => {
-  let defaultTypes = ['string', 'number'];
-
-  if (utilTypeOf(types) !== 'array') {
-    types = defaultTypes;
-  }
-
-  return types && types.includes(utilTypeOf(str));
 };
 
 /**
@@ -1267,23 +1974,6 @@ function isIMEI(str, allow_hyphens = false) {
 }
 
 /**
- * 字符串格式判断
- * */
-const utilToString = input => {
-  if (typeof input === 'object' && input !== null) {
-    if (typeof input.toString === 'function') {
-      input = input.toString();
-    } else {
-      input = '[object Object]';
-    }
-  } else if (input === null || typeof input === 'undefined' || isNaN(input) && !input.length) {
-    input = '';
-  }
-
-  return String(input);
-};
-
-/**
  * 是否包含数据判断
  * @param[str] 要判断的数据
  * @param[options] 匹配的数据
@@ -1765,5 +2455,5 @@ function isUUID(str, version) {
   return !!pattern && pattern.test(str);
 }
 
-export { EnumRecordType, IsBankCard, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEthereumAddress, isFQDN, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isPort, isPostalCode, isRdata, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isZone, version };
+export { EnumRecordType, IsBankCard, arrayDataGrouping, dateFormatReg, debounce, deepClone, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistValue, isFQDN, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isPort, isPostalCode, isRdata, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, throttle, unescape, utilStringToArray, utilToString, utilTypeOf, utilsSubmitForm, version };
 //# sourceMappingURL=index.js.map
