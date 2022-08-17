@@ -28,7 +28,10 @@ export const enum EnumRecordType {
  * @param[str] 校验值
  * @param[type] 校验类型
  * */
-export const isRdata = (str: string, type: EnumRecordType) => {
+export const isRdata = (str: any, type: EnumRecordType.A) => {
+  if(typeof str !== "string") {
+    return false
+  }
   switch (type.toUpperCase()) {
     case EnumRecordType.A:
       return isA(str);

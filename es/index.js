@@ -9,150 +9,40 @@
 
 var version = "0.0.6";
 
-var v4Seg = '(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])';
-var v4Str = "(".concat(v4Seg, "[.]){3}").concat(v4Seg);
-var IPv4Reg = new RegExp("^".concat(v4Str, "$")); // IPv6 Segment
+const v4Seg = '(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])';
+const v4Str = `(${v4Seg}[.]){3}${v4Seg}`;
+const IPv4Reg = new RegExp(`^${v4Str}$`); // IPv6 Segment
 
-var v6Seg = '(?:[0-9a-fA-F]{1,4})';
-var IPv6Reg = new RegExp('^(' + "(?:".concat(v6Seg, ":){7}(?:").concat(v6Seg, "|:)|") + "(?:".concat(v6Seg, ":){6}(?:").concat(v4Str, "|:").concat(v6Seg, "|:)|") + "(?:".concat(v6Seg, ":){5}(?::").concat(v4Str, "|(:").concat(v6Seg, "){1,2}|:)|") + "(?:".concat(v6Seg, ":){4}(?:(:").concat(v6Seg, "){0,1}:").concat(v4Str, "|(:").concat(v6Seg, "){1,3}|:)|") + "(?:".concat(v6Seg, ":){3}(?:(:").concat(v6Seg, "){0,2}:").concat(v4Str, "|(:").concat(v6Seg, "){1,4}|:)|") + "(?:".concat(v6Seg, ":){2}(?:(:").concat(v6Seg, "){0,3}:").concat(v4Str, "|(:").concat(v6Seg, "){1,5}|:)|") + "(?:".concat(v6Seg, ":){1}(?:(:").concat(v6Seg, "){0,4}:").concat(v4Str, "|(:").concat(v6Seg, "){1,6}|:)|") + "(?::((?::".concat(v6Seg, "){0,5}:").concat(v4Str, "|(?::").concat(v6Seg, "){1,7}|:))") + ')(%[0-9a-zA-Z-.:]{1,})?$');
+const v6Seg = '(?:[0-9a-fA-F]{1,4})';
+const IPv6Reg = new RegExp('^(' + `(?:${v6Seg}:){7}(?:${v6Seg}|:)|` + `(?:${v6Seg}:){6}(?:${v4Str}|:${v6Seg}|:)|` + `(?:${v6Seg}:){5}(?::${v4Str}|(:${v6Seg}){1,2}|:)|` + `(?:${v6Seg}:){4}(?:(:${v6Seg}){0,1}:${v4Str}|(:${v6Seg}){1,3}|:)|` + `(?:${v6Seg}:){3}(?:(:${v6Seg}){0,2}:${v4Str}|(:${v6Seg}){1,4}|:)|` + `(?:${v6Seg}:){2}(?:(:${v6Seg}){0,3}:${v4Str}|(:${v6Seg}){1,5}|:)|` + `(?:${v6Seg}:){1}(?:(:${v6Seg}){0,4}:${v4Str}|(:${v6Seg}){1,6}|:)|` + `(?::((?::${v6Seg}){0,5}:${v4Str}|(?::${v6Seg}){1,7}|:))` + ')(%[0-9a-zA-Z-.:]{1,})?$');
 /**
  * IPV4验证
  * */
 
-var isIPv4 = function isIPv4(s) {
+const isIPv4 = s => {
   return IPv4Reg.test(s);
 };
 /**
  * IPV6验证
  * */
 
-var isIPv6 = function isIPv6(s) {
+const isIPv6 = s => {
   return IPv6Reg.test(s);
 };
 /**
  * IPV4 & IPV6验证
  * */
 
-var isIP = function isIP(s) {
+const isIP = s => {
   if (isIPv4(s)) return 4;
   if (isIPv6(s)) return 6;
   return 0;
 };
 
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    enumerableOnly && (symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    })), keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = null != arguments[i] ? arguments[i] : {};
-    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
-      _defineProperty(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-    });
-  }
-
-  return target;
-}
-
-function _typeof(obj) {
-  "@babel/helpers - typeof";
-
-  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  }, _typeof(obj);
-}
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-function _slicedToArray(arr, i) {
-  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
-}
-
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-
-function _iterableToArrayLimit(arr, i) {
-  var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-
-  if (_i == null) return;
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-
-  var _s, _e;
-
-  try {
-    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-
-  return _arr;
-}
-
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-}
-
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-
-  return arr2;
-}
-
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
 /**
  * 语言类型
  * */
-var EnumLanguageType;
+let EnumLanguageType;
 /**
  * 设置错误消息语言类型
  * */
@@ -162,9 +52,7 @@ var EnumLanguageType;
   EnumLanguageType["zh"] = "zh-CN";
 })(EnumLanguageType || (EnumLanguageType = {}));
 
-var setErrorCodeLang = function setErrorCodeLang() {
-  var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : EnumLanguageType.zh;
-
+const setErrorCodeLang = (lang = EnumLanguageType.zh) => {
   if (lang === EnumLanguageType.en) {
     return 'en';
   }
@@ -173,9 +61,34 @@ var setErrorCodeLang = function setErrorCodeLang() {
 };
 
 /**
+ * @names：普通文本过滤所有的空格
+ * 部分 ajax 响应数据为字符串，且包含转义字符，无法转成JSON
+ *
+ * @params[str] string
+ * @params[options] {filterAll: boolean, returnType: boolean}
+ * @return string
+ * eg: aaa  aa  => aaa aa
+ * */
+const filterStringSpace = (str, options) => {
+  if (typeof str !== 'string') {
+    // return str;
+    return '';
+  }
+
+  const reg = /\\0|\\u0000|\s+/g; // return str.replace(/\s+/g, '');
+
+  if (options?.filterAll) {
+    return str.replace(reg, '');
+  }
+
+  return str.replace(reg, ' ');
+};
+
+/**
  * 域名格式校验 - 错误提示消息.
  * */
-var errorCodes = {
+
+const errorCodes = {
   zh: {
     DOMAIN_IS_EMPTY: '校验内容为空',
     DOMAIN_FORMAT_ERROR: '域名格式错误',
@@ -214,7 +127,7 @@ var errorCodes = {
  *
  * */
 
-var default_fqdn_options = {
+const default_fqdn_options = {
   // 是否包含TLD
   require_tld: true,
   // 是否允许包含下划线
@@ -233,29 +146,32 @@ var default_fqdn_options = {
  * str: m.zdns.cn || zdns.cn. || h.m.zdns.cn.
  * */
 
-function isFQDN(str) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var lang = arguments.length > 2 ? arguments[2] : undefined;
-  var errorMessage = errorCodes[setErrorCodeLang(lang)];
+function isFQDN(str, options = {}, lang) {
+  let errorMessage = errorCodes[setErrorCodeLang(lang)];
 
-  if (typeof str !== 'string' || str.replace(' ', '') === '') {
+  if (typeof str !== 'string') {
+    return {
+      success: false,
+      message: errorMessage.DOMAIN_FORMAT_ERROR
+    };
+  }
+
+  str = filterStringSpace(str, {
+    filterAll: true
+  });
+  options = { ...default_fqdn_options,
+    ...options
+  };
+  console.log(options);
+
+  if (!str) {
     return {
       success: false,
       message: errorMessage.DOMAIN_IS_EMPTY
     };
   }
 
-  options = _objectSpread2(_objectSpread2({}, default_fqdn_options), options);
-  console.log(options);
-
-  if (!str) {
-    return {
-      success: false,
-      message: errorMessage.DOMAIN_TOO_SHORT
-    };
-  }
-
-  var len = str.length;
+  const len = str.length;
 
   if (len > 255) {
     return {
@@ -276,10 +192,10 @@ function isFQDN(str) {
     str = str.substring(2);
   }
 
-  var nodes = str.split('.');
+  const nodes = str.split('.');
   console.log(nodes);
-  var node_len = nodes.length;
-  var max_node = 127;
+  const node_len = nodes.length;
+  const max_node = 127;
 
   if (options.require_tld) {
     // disallow fqdns without tld
@@ -298,7 +214,7 @@ function isFQDN(str) {
       };
     }
 
-    var tld = nodes[node_len - 1]; // reject numeric TLDs
+    const tld = nodes[node_len - 1]; // reject numeric TLDs
 
     if (!options.allow_numeric_tld && /^\d+$/.test(tld)) {
       return {
@@ -322,8 +238,8 @@ function isFQDN(str) {
     }
   }
 
-  for (var i = 0; i < node_len; i++) {
-    var label = nodes[i];
+  for (let i = 0; i < node_len; i++) {
+    const label = nodes[i];
     console.log(label);
 
     if (label.length > 63) {
@@ -383,7 +299,7 @@ function isFQDN(str) {
  * 域名合法性校验
  * */
 
-var isDomain = function isDomain(str) {
+const isDomain = str => {
   return isFQDN(str, {
     require_tld: true,
     // 是否允许包含下划线
@@ -403,9 +319,7 @@ var isDomain = function isDomain(str) {
  * @param[number]
  * @param[allowNegative] 是否允许为负数
  */
-var isNumber = function isNumber(number) {
-  var allowNegative = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
+const isNumber = (number, allowNegative = false) => {
   /**
    * isNaN([]) || isNaN('') || isNaN(true) || isNaN(false) || isNaN(null) => false
    * */
@@ -413,7 +327,7 @@ var isNumber = function isNumber(number) {
     number = number.replace(/\s+/g, '');
   }
 
-  if (isNaN(number) || number === '' || _typeof(number) === 'object' || typeof number === 'boolean') {
+  if (isNaN(number) || number === '' || typeof number === 'object' || typeof number === 'boolean') {
     return false;
   } else {
     number = parseFloat(number);
@@ -433,12 +347,12 @@ var isNumber = function isNumber(number) {
  * @param[max] 最大值
  * */
 
-var isInRange = function isInRange(str, min, max) {
+const isInRange = (str, min, max) => {
   if (!isNumber(str)) {
     return false;
   }
 
-  var val = Number(str);
+  const val = Number(str);
   return val >= min && val <= max;
 };
 
@@ -446,7 +360,7 @@ var isInRange = function isInRange(str, min, max) {
  * 端口号校验
  * */
 
-var isPort = function isPort(str) {
+const isPort = str => {
   return isInRange(str, 1, 65535);
 };
 
@@ -461,7 +375,7 @@ var isPort = function isPort(str) {
  *
  * */
 
-var isMX = function isMX(str) {
+const isMX = str => {
   if (!str) {
     return false;
   }
@@ -482,7 +396,7 @@ var isMX = function isMX(str) {
 /**
  * TXT记录，一般指某个主机名或域名的标识和说明。如：admin IN TXT "管理员, 电话：XXXXXXXXXXX"，mail IN TXT "邮件主机，存放在xxx , 管理人：AAA"，Jim IN TXT "contact: abc@mailserver.com"，也就是说，通过设置TXT记录内容可以使别人更方便地联系到你。TXT 记录常用的方式还有做 SPF 记录（反垃圾邮件）和SSL证书的DNS验证等。
  * */
-var isTXT = function isTXT(str) {
+const isTXT = str => {
   return str.length > 255;
 };
 
@@ -496,7 +410,7 @@ var isTXT = function isTXT(str) {
  *
  * */
 
-var isNS = function isNS(str) {
+const isNS = str => {
   return isDomain(str);
 };
 
@@ -504,7 +418,7 @@ var isNS = function isNS(str) {
  * 字符串 转 数组
  * String to Array
  * */
-var utilStringToArray = function utilStringToArray(str, separator) {
+const utilStringToArray = (str, separator) => {
   if (typeof str === 'string') {
     str = str.trim();
     return str.split(separator || /\s+/);
@@ -527,10 +441,10 @@ var utilStringToArray = function utilStringToArray(str, separator) {
  */
 // （如：0 issue "symantec.com"）
 
-var isCAA = function isCAA(str) {
-  var caaValueRegex = /^"[\w-:./@]{1,255}"$/;
-  var caaTags = ['issue', 'issuewild', 'iodef'];
-  var values = utilStringToArray(str);
+const isCAA = str => {
+  const caaValueRegex = /^"[\w-:./@]{1,255}"$/;
+  const caaTags = ['issue', 'issuewild', 'iodef'];
+  const values = utilStringToArray(str);
   return values.length === 3 && isInRange(values[0], 0, 255) && caaTags.indexOf(values[1]) !== -1 && caaValueRegex.test(values[2]);
 };
 
@@ -546,8 +460,8 @@ var isCAA = function isCAA(str) {
 
  * */
 
-var isSRV = function isSRV(str) {
-  var values = utilStringToArray(str);
+const isSRV = str => {
+  const values = utilStringToArray(str);
   return values.length === 4 && isInRange(values[0], 0, 65535) && isInRange(values[1], 0, 65535) && isPort(values[2]) && isDomain(values[3]);
 };
 
@@ -561,7 +475,7 @@ var isSRV = function isSRV(str) {
  *
  * */
 
-var isA = function isA(str) {
+const isA = str => {
   return isIPv4(str);
 };
 
@@ -575,7 +489,7 @@ var isA = function isA(str) {
  *
  * */
 
-var isAAAA = function isAAAA(str) {
+const isAAAA = str => {
   return isIPv6(str);
 };
 
@@ -589,7 +503,7 @@ var isAAAA = function isAAAA(str) {
  *
  * */
 
-var isCNAME = function isCNAME(str) {
+const isCNAME = str => {
   return isDomain(str);
 };
 
@@ -597,7 +511,7 @@ var isCNAME = function isCNAME(str) {
  * 域名解析记录公共校验
  *
  * */
-var EnumRecordType;
+let EnumRecordType;
 /**
  * 域名解析记录公共校验
  * @param[str] 校验值
@@ -615,7 +529,11 @@ var EnumRecordType;
   EnumRecordType["TXT"] = "TXT";
 })(EnumRecordType || (EnumRecordType = {}));
 
-var isRdata = function isRdata(str, type) {
+const isRdata = (str, type) => {
+  if (typeof str !== "string") {
+    return false;
+  }
+
   switch (type.toUpperCase()) {
     case EnumRecordType.A:
       return isA(str);
@@ -650,8 +568,8 @@ var isRdata = function isRdata(str, type) {
  * 主机合法性校验
  * */
 
-var isHost = function isHost(str) {
-  var specialHosts = '@';
+const isHost = str => {
+  const specialHosts = '@';
   return str.indexOf(specialHosts) > -1 || isFQDN(str, {
     // 是否包含TLD
     require_tld: true,
@@ -675,21 +593,21 @@ var isHost = function isHost(str) {
  *
  *  */
 
-var isTTL = function isTTL(str, maxTTL) {
+const isTTL = (str, maxTTL) => {
   if (!isNumber(str)) {
     return false;
   }
 
   if (isNumber(str)) {
-    var ttl = Number(str);
+    let ttl = Number(str);
     return ttl > 0 && ttl <= maxTTL;
   }
 
   return false;
 };
 
-var isZone = function isZone(str) {
-  var rootZone = '.';
+const isZone = str => {
+  const rootZone = '.';
   return rootZone === str || isDomain(str);
 };
 
@@ -697,9 +615,9 @@ var isZone = function isZone(str) {
  * Better way to handle type checking
  * null, {}, array and date are objects, which confuses
  */
-var utilTypeOf = function utilTypeOf(input) {
-  var rawObject = Object.prototype.toString.call(input).toLowerCase();
-  var typeOfRegex = /\[object (.*)]/g; // @ts-ignore
+const utilTypeOf = input => {
+  const rawObject = Object.prototype.toString.call(input).toLowerCase();
+  const typeOfRegex = /\[object (.*)]/g; // @ts-ignore
 
   return typeOfRegex.exec(rawObject)[1];
 };
@@ -710,8 +628,8 @@ var utilTypeOf = function utilTypeOf(input) {
  * @param[types] [any] 支持参数类型, 默认支持 ['string', 'number']
  * */
 
-var isValidParamsTypes = function isValidParamsTypes(str, types) {
-  var defaultTypes = ['string', 'number'];
+const isValidParamsTypes = (str, types) => {
+  let defaultTypes = ['string', 'number'];
 
   if (utilTypeOf(types) !== 'array') {
     types = defaultTypes;
@@ -726,9 +644,9 @@ var isValidParamsTypes = function isValidParamsTypes(str, types) {
  * description： 15位或者16位或者19位
  * */
 
-var IsBankCard = function IsBankCard(str) {
+const IsBankCard = str => {
   // 建行16、19，农行19，工行19、交通17、民生16、兴业18、招行12、16、19
-  var reg = /^([1-9]{1})(\d{11}|\d{15}|\d{16}|\d{17}|\d{18})$/;
+  const reg = /^([1-9]{1})(\d{11}|\d{15}|\d{16}|\d{17}|\d{18})$/;
 
   if (!isValidParamsTypes(str)) {
     return false;
@@ -744,10 +662,8 @@ var IsBankCard = function IsBankCard(str) {
  * @param[trueBooleans]: 拓展布尔值
  * */
 
-var isBooleanTrue = function isBooleanTrue(str, extend) {
-  var trueBooleans = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : ['yes', 'true', '1'];
-
-  var type_str = _typeof(str);
+const isBooleanTrue = (str, extend, trueBooleans = ['yes', 'true', '1']) => {
+  const type_str = typeof str;
 
   if (type_str === 'boolean') {
     return str;
@@ -758,7 +674,7 @@ var isBooleanTrue = function isBooleanTrue(str, extend) {
   }
 
   if (extend) {
-    str = "".concat(str).toLowerCase();
+    str = `${str}`.toLowerCase();
     return trueBooleans.includes(str);
   }
 };
@@ -774,10 +690,10 @@ function isByteLength(str, options) {
   }
 
   str += '';
-  var min;
-  var max;
+  let min;
+  let max;
 
-  if (_typeof(options) === 'object') {
+  if (typeof options === 'object') {
     min = options.min || 0;
     max = options.max;
   } else {
@@ -786,7 +702,7 @@ function isByteLength(str, options) {
     max = arguments[2];
   }
 
-  var len = encodeURI(str).split(/%..|./).length - 1;
+  const len = encodeURI(str).split(/%..|./).length - 1;
   return len >= min && (typeof max === 'undefined' || len <= max);
 }
 
@@ -795,9 +711,9 @@ function isByteLength(str, options) {
  * 手机格式校验
  * @param[str]: 手机号
  * */
-var isCellPhone = function isCellPhone(str) {
+const isCellPhone = function (str) {
   try {
-    var reg = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/;
+    const reg = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/;
     return reg.test(str);
   } catch (err) {
     return false;
@@ -805,7 +721,7 @@ var isCellPhone = function isCellPhone(str) {
 };
 
 /* eslint-disable max-len */
-var creditCard = /^(?:4[0-9]{12}(?:[0-9]{3,6})?|5[1-5][0-9]{14}|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}|6(?:011|5[0-9][0-9])[0-9]{12,15}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11}|6[27][0-9]{14}|^(81[0-9]{14,17}))$/;
+const creditCard = /^(?:4[0-9]{12}(?:[0-9]{3,6})?|5[1-5][0-9]{14}|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}|6(?:011|5[0-9][0-9])[0-9]{12,15}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11}|6[27][0-9]{14}|^(81[0-9]{14,17}))$/;
 /* eslint-enable max-len */
 
 /**
@@ -819,18 +735,18 @@ function isCreditCard(str) {
   }
 
   str += str;
-  var sanitized = str.replace(/[- ]+/g, '');
+  const sanitized = str.replace(/[- ]+/g, '');
 
   if (!creditCard.test(sanitized)) {
     return false;
   }
 
-  var sum = 0;
-  var digit;
-  var tmpNum;
-  var shouldDouble;
+  let sum = 0;
+  let digit;
+  let tmpNum;
+  let shouldDouble;
 
-  for (var i = sanitized.length - 1; i >= 0; i--) {
+  for (let i = sanitized.length - 1; i >= 0; i--) {
     digit = sanitized.substring(i, i + 1);
     tmpNum = parseInt(digit, 10);
 
@@ -857,13 +773,13 @@ function isCreditCard(str) {
  * 邮箱格式正则校验
  * @param[str] 邮箱
  * */
-var isEmail = function isEmail(str) {
+const isEmail = str => {
   if (typeof str !== "string") {
     return false;
   } // 用户名@主机名”
 
 
-  var reg = /^(?!.*?[._-]{2})[a-z0-9][a-z0-9._-]{0,62}[a-z0-9]@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]{2,63}$/i;
+  const reg = /^(?!.*?[._-]{2})[a-z0-9][a-z0-9._-]{0,62}[a-z0-9]@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]{2,63}$/i;
   return reg.test(str);
 };
 
@@ -871,8 +787,8 @@ var isEmail = function isEmail(str) {
  * 以太坊地址校验
  * @param[str] 以太坊地址
  * */
-var isEthereumAddress = function isEthereumAddress(str) {
-  var ethReg = /^(0x)[0-9a-f]{40}$/i;
+const isEthereumAddress = str => {
+  const ethReg = /^(0x)[0-9a-f]{40}$/i;
 
   if (typeof str !== "string") {
     return false;
@@ -888,8 +804,8 @@ var isEthereumAddress = function isEthereumAddress(str) {
  * @param[str]: 电话
  * eg: (0827-7977654) || (7977654)
  * */
-var isFixedPhone = function isFixedPhone(str) {
-  var reg = /^(\d{3,4}-|\s)?\d{7,14}$/;
+const isFixedPhone = str => {
+  const reg = /^(\d{3,4}-|\s)?\d{7,14}$/;
   return reg.test(str);
 };
 
@@ -905,17 +821,17 @@ function isInt(str, options) {
     return false;
   }
 
-  var _int = /^(?:[-+]?(?:0|[1-9][0-9]*))$/;
-  var intLeadingZeroes = /^[-+]?[0-9]+$/;
+  const int = /^(?:[-+]?(?:0|[1-9][0-9]*))$/;
+  const intLeadingZeroes = /^[-+]?[0-9]+$/;
   options = options || {}; // Get the regex to use for testing, based on whether
   // leading zeroes are allowed or not.
 
-  var regex = options.hasOwnProperty('allow_leading_zeroes') && !options.allow_leading_zeroes ? _int : intLeadingZeroes; // Check min/max/lt/gt
+  let regex = options.hasOwnProperty('allow_leading_zeroes') && !options.allow_leading_zeroes ? int : intLeadingZeroes; // Check min/max/lt/gt
 
-  var minCheckPassed = !options.hasOwnProperty('min') || typeof options.min !== 'undefined' && str >= options.min;
-  var maxCheckPassed = !options.hasOwnProperty('max') || typeof options.max !== 'undefined' && str <= options.max;
-  var ltCheckPassed = !options.hasOwnProperty('lt') || typeof options.lt !== 'undefined' && str < options.lt;
-  var gtCheckPassed = !options.hasOwnProperty('gt') || typeof options.gt !== 'undefined' && str > options.gt;
+  let minCheckPassed = !options.hasOwnProperty('min') || typeof options.min !== 'undefined' && str >= options.min;
+  let maxCheckPassed = !options.hasOwnProperty('max') || typeof options.max !== 'undefined' && str <= options.max;
+  let ltCheckPassed = !options.hasOwnProperty('lt') || typeof options.lt !== 'undefined' && str < options.lt;
+  let gtCheckPassed = !options.hasOwnProperty('gt') || typeof options.gt !== 'undefined' && str > options.gt;
   return regex.test(str) && minCheckPassed && maxCheckPassed && ltCheckPassed && gtCheckPassed;
 }
 
@@ -924,9 +840,9 @@ function isInt(str, options) {
  *
  * */
 
-var identityCardValidators = {
-  PL: function PL(str) {
-    var weightOfDigits = {
+const identityCardValidators = {
+  PL: str => {
+    const weightOfDigits = {
       1: 1,
       2: 3,
       3: 7,
@@ -943,12 +859,10 @@ var identityCardValidators = {
     if (str != null && str.length === 11 && isInt(str, {
       allow_leading_zeroes: true
     })) {
-      var digits = str.split('').slice(0, -1);
-      var sum = digits.reduce(function (acc, digit, index) {
-        return acc + Number(digit) * weightOfDigits[index + 1];
-      }, 0);
-      var modulo = sum % 10;
-      var lastDigit = Number(str.charAt(str.length - 1));
+      const digits = str.split('').slice(0, -1);
+      const sum = digits.reduce((acc, digit, index) => acc + Number(digit) * weightOfDigits[index + 1], 0);
+      const modulo = sum % 10;
+      const lastDigit = Number(str.charAt(str.length - 1));
 
       if (modulo === 0 && lastDigit === 0 || lastDigit === 10 - modulo) {
         return true;
@@ -957,29 +871,27 @@ var identityCardValidators = {
 
     return false;
   },
-  ES: function ES(str) {
-    var DNI = /^[0-9X-Z][0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKE]$/;
-    var charsValue = {
+  ES: str => {
+    const DNI = /^[0-9X-Z][0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKE]$/;
+    const charsValue = {
       X: 0,
       Y: 1,
       Z: 2
     };
-    var controlDigits = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E']; // sanitize user input
+    const controlDigits = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E']; // sanitize user input
 
-    var sanitized = str.trim().toUpperCase(); // validate the data structure
+    const sanitized = str.trim().toUpperCase(); // validate the data structure
 
     if (!DNI.test(sanitized)) {
       return false;
     } // validate the control digit
 
 
-    var number = sanitized.slice(0, -1).replace(/[X,Y,Z]/g, function (_char) {
-      return charsValue[_char];
-    }); // @ts-ignore
+    const number = sanitized.slice(0, -1).replace(/[X,Y,Z]/g, char => charsValue[char]); // @ts-ignore
 
     return sanitized.endsWith(controlDigits[number % 23]);
   },
-  FI: function FI(str) {
+  FI: str => {
     // https://dvv.fi/en/personal-identity-code#:~:text=control%20character%20for%20a-,personal,-identity%20code%20calculated
     if (str.length !== 11) {
       return false;
@@ -989,40 +901,40 @@ var identityCardValidators = {
       return false;
     }
 
-    var checkDigits = '0123456789ABCDEFHJKLMNPRSTUVWXY';
-    var idAsNumber = parseInt(str.slice(0, 6), 10) * 1000 + parseInt(str.slice(7, 10), 10);
-    var remainder = idAsNumber % 31;
-    var checkDigit = checkDigits[remainder];
+    const checkDigits = '0123456789ABCDEFHJKLMNPRSTUVWXY';
+    const idAsNumber = parseInt(str.slice(0, 6), 10) * 1000 + parseInt(str.slice(7, 10), 10);
+    const remainder = idAsNumber % 31;
+    const checkDigit = checkDigits[remainder];
     return checkDigit === str.slice(10, 11);
   },
-  IN: function IN(str) {
-    var DNI = /^[1-9]\d{3}\s?\d{4}\s?\d{4}$/; // multiplication table
+  IN: str => {
+    const DNI = /^[1-9]\d{3}\s?\d{4}\s?\d{4}$/; // multiplication table
 
-    var d = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 2, 3, 4, 0, 6, 7, 8, 9, 5], [2, 3, 4, 0, 1, 7, 8, 9, 5, 6], [3, 4, 0, 1, 2, 8, 9, 5, 6, 7], [4, 0, 1, 2, 3, 9, 5, 6, 7, 8], [5, 9, 8, 7, 6, 0, 4, 3, 2, 1], [6, 5, 9, 8, 7, 1, 0, 4, 3, 2], [7, 6, 5, 9, 8, 2, 1, 0, 4, 3], [8, 7, 6, 5, 9, 3, 2, 1, 0, 4], [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]]; // permutation table
+    const d = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 2, 3, 4, 0, 6, 7, 8, 9, 5], [2, 3, 4, 0, 1, 7, 8, 9, 5, 6], [3, 4, 0, 1, 2, 8, 9, 5, 6, 7], [4, 0, 1, 2, 3, 9, 5, 6, 7, 8], [5, 9, 8, 7, 6, 0, 4, 3, 2, 1], [6, 5, 9, 8, 7, 1, 0, 4, 3, 2], [7, 6, 5, 9, 8, 2, 1, 0, 4, 3], [8, 7, 6, 5, 9, 3, 2, 1, 0, 4], [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]]; // permutation table
 
-    var p = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 5, 7, 6, 2, 8, 3, 0, 9, 4], [5, 8, 0, 3, 7, 9, 6, 1, 4, 2], [8, 9, 1, 6, 0, 4, 3, 5, 2, 7], [9, 4, 5, 3, 1, 2, 6, 8, 7, 0], [4, 2, 8, 6, 5, 7, 3, 9, 0, 1], [2, 7, 9, 3, 8, 0, 6, 4, 1, 5], [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]]; // sanitize user input
+    const p = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 5, 7, 6, 2, 8, 3, 0, 9, 4], [5, 8, 0, 3, 7, 9, 6, 1, 4, 2], [8, 9, 1, 6, 0, 4, 3, 5, 2, 7], [9, 4, 5, 3, 1, 2, 6, 8, 7, 0], [4, 2, 8, 6, 5, 7, 3, 9, 0, 1], [2, 7, 9, 3, 8, 0, 6, 4, 1, 5], [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]]; // sanitize user input
 
-    var sanitized = str.trim(); // validate the data structure
+    const sanitized = str.trim(); // validate the data structure
 
     if (!DNI.test(sanitized)) {
       return false;
     }
 
-    var c = 0;
-    var invertedArray = sanitized.replace(/\s/g, '').split('').map(Number).reverse();
-    invertedArray.forEach(function (val, i) {
+    let c = 0;
+    let invertedArray = sanitized.replace(/\s/g, '').split('').map(Number).reverse();
+    invertedArray.forEach((val, i) => {
       c = d[c][p[i % 8][val]];
     });
     return c === 0;
   },
-  IR: function IR(str) {
+  IR: str => {
     if (!str.match(/^\d{10}$/)) return false;
-    str = "0000".concat(str).substr(str.length - 6);
+    str = `0000${str}`.substr(str.length - 6);
     if (parseInt(str.substr(3, 6), 10) === 0) return false;
-    var lastNumber = parseInt(str.substr(9, 1), 10);
-    var sum = 0;
+    const lastNumber = parseInt(str.substr(9, 1), 10);
+    let sum = 0;
 
-    for (var i = 0; i < 9; i++) {
+    for (let i = 0; i < 9; i++) {
       sum += parseInt(str.substr(i, 1), 10) * (10 - i);
     }
 
@@ -1033,51 +945,51 @@ var identityCardValidators = {
     if (str.length !== 9) return false;
     if (str === 'CA00000AA') return false; // https://it.wikipedia.org/wiki/Carta_d%27identit%C3%A0_elettronica_italiana
 
-    return str.search(/C[A-Z]\d{5}[A-Z]{2}/i) > -1;
+    return str.search(/C[A-Z]\d{5}[A-Z]{2}/is) > -1;
   },
-  NO: function NO(str) {
-    var sanitized = str.trim();
+  NO: str => {
+    const sanitized = str.trim();
     if (isNaN(Number(sanitized))) return false;
     if (sanitized.length !== 11) return false;
     if (sanitized === '00000000000') return false; // https://no.wikipedia.org/wiki/F%C3%B8dselsnummer
 
-    var f = sanitized.split('').map(Number);
-    var k1 = (11 - (3 * f[0] + 7 * f[1] + 6 * f[2] + 1 * f[3] + 8 * f[4] + 9 * f[5] + 4 * f[6] + 5 * f[7] + 2 * f[8]) % 11) % 11;
-    var k2 = (11 - (5 * f[0] + 4 * f[1] + 3 * f[2] + 2 * f[3] + 7 * f[4] + 6 * f[5] + 5 * f[6] + 4 * f[7] + 3 * f[8] + 2 * k1) % 11) % 11;
+    const f = sanitized.split('').map(Number);
+    let k1 = (11 - (3 * f[0] + 7 * f[1] + 6 * f[2] + 1 * f[3] + 8 * f[4] + 9 * f[5] + 4 * f[6] + 5 * f[7] + 2 * f[8]) % 11) % 11;
+    let k2 = (11 - (5 * f[0] + 4 * f[1] + 3 * f[2] + 2 * f[3] + 7 * f[4] + 6 * f[5] + 5 * f[6] + 4 * f[7] + 3 * f[8] + 2 * k1) % 11) % 11;
     if (k1 !== f[9] || k2 !== f[10]) return false;
     return true;
   },
-  TH: function TH(str) {
+  TH: str => {
     if (!str.match(/^[1-8]\d{12}$/)) return false; // validate check digit
 
-    var sum = 0;
+    let sum = 0;
 
-    for (var i = 0; i < 12; i++) {
+    for (let i = 0; i < 12; i++) {
       sum += parseInt(str[i], 10) * (13 - i);
     }
 
     return str[12] === ((11 - sum % 11) % 10).toString();
   },
-  LK: function LK(str) {
-    var old_nic = /^[1-9]\d{8}[vx]$/i;
-    var new_nic = /^[1-9]\d{11}$/i;
+  LK: str => {
+    const old_nic = /^[1-9]\d{8}[vx]$/i;
+    const new_nic = /^[1-9]\d{11}$/i;
     if (str.length === 10 && old_nic.test(str)) return true;else if (str.length === 12 && new_nic.test(str)) return true;
     return false;
   },
-  'he-IL': function heIL(str) {
-    var DNI = /^\d{9}$/; // sanitize user input
+  'he-IL': str => {
+    const DNI = /^\d{9}$/; // sanitize user input
 
-    var sanitized = str.trim(); // validate the data structure
+    const sanitized = str.trim(); // validate the data structure
 
     if (!DNI.test(sanitized)) {
       return false;
     }
 
-    var id = sanitized;
-    var sum = 0,
+    const id = sanitized;
+    let sum = 0,
         incNum;
 
-    for (var i = 0; i < id.length; i++) {
+    for (let i = 0; i < id.length; i++) {
       incNum = Number(id[i]) * (i % 2 + 1); // Multiply number by 1 or 2
 
       sum += incNum > 9 ? incNum - 9 : incNum; // Sum the digits up and add to total
@@ -1085,11 +997,11 @@ var identityCardValidators = {
 
     return sum % 10 === 0;
   },
-  'ar-LY': function arLY(str) {
+  'ar-LY': str => {
     // Libya National Identity Number NIN is 12 digits, the first digit is either 1 or 2
-    var NIN = /^(1|2)\d{11}$/; // sanitize user input
+    const NIN = /^(1|2)\d{11}$/; // sanitize user input
 
-    var sanitized = str.trim(); // validate the data structure
+    const sanitized = str.trim(); // validate the data structure
 
     if (!NIN.test(sanitized)) {
       return false;
@@ -1097,10 +1009,10 @@ var identityCardValidators = {
 
     return true;
   },
-  'ar-TN': function arTN(str) {
-    var DNI = /^\d{8}$/; // sanitize user input
+  'ar-TN': str => {
+    const DNI = /^\d{8}$/; // sanitize user input
 
-    var sanitized = str.trim(); // validate the data structure
+    const sanitized = str.trim(); // validate the data structure
 
     if (!DNI.test(sanitized)) {
       return false;
@@ -1108,8 +1020,8 @@ var identityCardValidators = {
 
     return true;
   },
-  'zh-CN': function zhCN(str) {
-    var provincesAndCities = ['11', // 北京
+  'zh-CN': str => {
+    const provincesAndCities = ['11', // 北京
     '12', // 天津
     '13', // 河北
     '14', // 山西
@@ -1145,18 +1057,16 @@ var identityCardValidators = {
     '82', // 澳门
     '91' // 国外
     ];
-    var powers = ['7', '9', '10', '5', '8', '4', '2', '1', '6', '3', '7', '9', '10', '5', '8', '4', '2'];
-    var parityBit = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
+    const powers = ['7', '9', '10', '5', '8', '4', '2', '1', '6', '3', '7', '9', '10', '5', '8', '4', '2'];
+    const parityBit = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
 
-    var checkAddressCode = function checkAddressCode(addressCode) {
-      return provincesAndCities.includes(addressCode);
-    };
+    const checkAddressCode = addressCode => provincesAndCities.includes(addressCode);
 
-    var checkBirthDayCode = function checkBirthDayCode(birDayCode) {
-      var yyyy = parseInt(birDayCode.substring(0, 4), 10);
-      var mm = parseInt(birDayCode.substring(4, 6), 10);
-      var dd = parseInt(birDayCode.substring(6), 10);
-      var xdata = new Date(yyyy, mm - 1, dd);
+    const checkBirthDayCode = birDayCode => {
+      const yyyy = parseInt(birDayCode.substring(0, 4), 10);
+      const mm = parseInt(birDayCode.substring(4, 6), 10);
+      const dd = parseInt(birDayCode.substring(6), 10);
+      const xdata = new Date(yyyy, mm - 1, dd);
 
       if (xdata > new Date()) {
         return false; // eslint-disable-next-line max-len
@@ -1167,48 +1077,46 @@ var identityCardValidators = {
       return false;
     };
 
-    var getParityBit = function getParityBit(idCardNo) {
-      var id17 = idCardNo.substring(0, 17);
-      var power = 0;
+    const getParityBit = idCardNo => {
+      let id17 = idCardNo.substring(0, 17);
+      let power = 0;
 
-      for (var i = 0; i < 17; i++) {
+      for (let i = 0; i < 17; i++) {
         power += parseInt(id17.charAt(i), 10) * parseInt(powers[i], 10);
       }
 
-      var mod = power % 11;
+      let mod = power % 11;
       return parityBit[mod];
     };
 
-    var checkParityBit = function checkParityBit(idCardNo) {
-      return getParityBit(idCardNo) === idCardNo.charAt(17).toUpperCase();
-    };
+    const checkParityBit = idCardNo => getParityBit(idCardNo) === idCardNo.charAt(17).toUpperCase();
 
-    var check15IdCardNo = function check15IdCardNo(idCardNo) {
-      var check = /^[1-9]\d{7}((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))\d{3}$/.test(idCardNo);
+    const check15IdCardNo = idCardNo => {
+      let check = /^[1-9]\d{7}((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))\d{3}$/.test(idCardNo);
       if (!check) return false;
-      var addressCode = idCardNo.substring(0, 2);
+      let addressCode = idCardNo.substring(0, 2);
       check = checkAddressCode(addressCode);
       if (!check) return false;
-      var birDayCode = "19".concat(idCardNo.substring(6, 12));
+      let birDayCode = `19${idCardNo.substring(6, 12)}`;
       check = checkBirthDayCode(birDayCode);
       if (!check) return false;
       return true;
     };
 
-    var check18IdCardNo = function check18IdCardNo(idCardNo) {
-      var check = /^[1-9]\d{5}[1-9]\d{3}((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))\d{3}(\d|x|X)$/.test(idCardNo);
+    const check18IdCardNo = idCardNo => {
+      let check = /^[1-9]\d{5}[1-9]\d{3}((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))\d{3}(\d|x|X)$/.test(idCardNo);
       if (!check) return false;
-      var addressCode = idCardNo.substring(0, 2);
+      let addressCode = idCardNo.substring(0, 2);
       check = checkAddressCode(addressCode);
       if (!check) return false;
-      var birDayCode = idCardNo.substring(6, 14);
+      let birDayCode = idCardNo.substring(6, 14);
       check = checkBirthDayCode(birDayCode);
       if (!check) return false;
       return checkParityBit(idCardNo);
     };
 
-    var checkIdCardNo = function checkIdCardNo(idCardNo) {
-      var check = /^\d{15}|(\d{17}(\d|x|X))$/.test(idCardNo);
+    const checkIdCardNo = idCardNo => {
+      let check = /^\d{15}|(\d{17}(\d|x|X))$/.test(idCardNo);
       if (!check) return false;
 
       if (idCardNo.length === 15) {
@@ -1220,8 +1128,8 @@ var identityCardValidators = {
 
     return checkIdCardNo(str);
   },
-  'zh-TW': function zhTW(str) {
-    var ALPHABET_CODES = {
+  'zh-TW': str => {
+    const ALPHABET_CODES = {
       A: 10,
       B: 11,
       C: 12,
@@ -1249,12 +1157,12 @@ var identityCardValidators = {
       Y: 31,
       Z: 33
     };
-    var sanitized = str.trim().toUpperCase();
+    const sanitized = str.trim().toUpperCase();
     if (!/^[A-Z][0-9]{9}$/.test(sanitized)) return false; // @ts-ignore
 
-    return Array.from(sanitized).reduce(function (sum, number, index) {
+    return Array.from(sanitized).reduce((sum, number, index) => {
       if (index === 0) {
-        var code = ALPHABET_CODES[number];
+        const code = ALPHABET_CODES[number];
         return code % 10 * 9 + Math.floor(code / 10);
       }
 
@@ -1285,15 +1193,15 @@ function isIdentityCard(str, locale) {
     return false;
   }
 
-  str = "".concat(str);
+  str = `${str}`;
 
   if (locale in identityCardValidators) {
     return identityCardValidators[locale](str);
   } else if (locale === 'any') {
-    for (var key in identityCardValidators) {
+    for (const key in identityCardValidators) {
       // https://github.com/gotwarlost/istanbul/blob/master/ignoring-code-for-coverage.md#ignoring-code-for-coverage-purposes
       if (identityCardValidators.hasOwnProperty(key)) {
-        var validator = identityCardValidators[key];
+        const validator = identityCardValidators[key];
 
         if (validator(str)) {
           return true;
@@ -1304,7 +1212,7 @@ function isIdentityCard(str, locale) {
     return false;
   }
 
-  throw new Error("Invalid locale '".concat(locale, "'"));
+  throw new Error(`Invalid locale '${locale}'`);
 }
 
 /**
@@ -1313,18 +1221,16 @@ function isIdentityCard(str, locale) {
  * @param[allow_hyphens] boolean 允许连字符
  * */
 
-function isIMEI(str) {
-  var allow_hyphens = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
+function isIMEI(str, allow_hyphens = false) {
   if (!isValidParamsTypes(str)) {
     return false;
   }
 
-  str = "".concat(str);
-  var imeiRegexWithoutHypens = /^[0-9]{15}$/;
-  var imeiRegexWithHypens = /^\d{2}-\d{6}-\d{6}-\d{1}$/; // default regex for checking imei is the one without hyphens
+  str = `${str}`;
+  let imeiRegexWithoutHypens = /^[0-9]{15}$/;
+  let imeiRegexWithHypens = /^\d{2}-\d{6}-\d{6}-\d{1}$/; // default regex for checking imei is the one without hyphens
 
-  var imeiRegex = imeiRegexWithoutHypens;
+  let imeiRegex = imeiRegexWithoutHypens;
 
   if (allow_hyphens) {
     imeiRegex = imeiRegexWithHypens;
@@ -1335,13 +1241,13 @@ function isIMEI(str) {
   }
 
   str = str.replace(/-/g, '');
-  var sum = 0,
+  let sum = 0,
       mul = 2,
       l = 14;
 
-  for (var i = 0; i < l; i++) {
-    var digit = str.substring(l - i - 1, l - i);
-    var tp = parseInt(digit, 10) * mul;
+  for (let i = 0; i < l; i++) {
+    const digit = str.substring(l - i - 1, l - i);
+    const tp = parseInt(digit, 10) * mul;
 
     if (tp >= 10) {
       sum += tp % 10 + 1;
@@ -1356,15 +1262,15 @@ function isIMEI(str) {
     }
   }
 
-  var chk = (10 - sum % 10) % 10;
+  const chk = (10 - sum % 10) % 10;
   return chk === parseInt(str.substring(14, 15), 10);
 }
 
 /**
  * 字符串格式判断
  * */
-var utilToString = function utilToString(input) {
-  if (_typeof(input) === 'object' && input !== null) {
+const utilToString = input => {
+  if (typeof input === 'object' && input !== null) {
     if (typeof input.toString === 'function') {
       input = input.toString();
     } else {
@@ -1388,11 +1294,11 @@ function isIn(str, options) {
     return false;
   }
 
-  var i;
-  var options_type = utilTypeOf(options);
+  let i;
+  let options_type = utilTypeOf(options);
 
   if (options_type === 'array') {
-    var array = [];
+    const array = [];
 
     for (i in options) {
       // https://github.com/gotwarlost/istanbul/blob/master/ignoring-code-for-coverage.md#ignoring-code-for-coverage-purposes
@@ -1424,11 +1330,11 @@ function isPostalCode(str, locale) {
   } // common patterns
 
 
-  var threeDigit = /^\d{3}$/;
-  var fourDigit = /^\d{4}$/;
-  var fiveDigit = /^\d{5}$/;
-  var sixDigit = /^\d{6}$/;
-  var patterns = {
+  const threeDigit = /^\d{3}$/;
+  const fourDigit = /^\d{4}$/;
+  const fiveDigit = /^\d{5}$/;
+  const sixDigit = /^\d{6}$/;
+  const patterns = {
     AD: /^AD\d{3}$/,
     AT: fourDigit,
     AU: fourDigit,
@@ -1498,11 +1404,11 @@ function isPostalCode(str, locale) {
   if (locale in patterns) {
     return patterns[locale].test(str);
   } else if (locale === 'any') {
-    for (var key in patterns) {
+    for (const key in patterns) {
       // https://github.com/gotwarlost/istanbul/blob/master/ignoring-code-for-coverage.md#ignoring-code-for-coverage-purposes
       // istanbul ignore else
       if (patterns.hasOwnProperty(key)) {
-        var pattern = patterns[key];
+        const pattern = patterns[key];
 
         if (pattern.test(str)) {
           return true;
@@ -1513,14 +1419,18 @@ function isPostalCode(str, locale) {
     return false;
   }
 
-  throw new Error("Invalid locale '".concat(locale, "'"));
+  throw new Error(`Invalid locale '${locale}'`);
 }
 
-var upperCaseRegex = /^[A-Z]$/;
-var lowerCaseRegex = /^[a-z]$/;
-var numberRegex = /^[0-9]$/;
-var symbolRegex = /^[-#!$@%^&*()_+|~=`{}\[\]:";'<>?,.\/ ]$/;
-var defaultOptions = {
+/**
+ * 密码强度验证
+ *
+ * */
+const upperCaseRegex = /^[A-Z]$/;
+const lowerCaseRegex = /^[a-z]$/;
+const numberRegex = /^[0-9]$/;
+const symbolRegex = /^[-#!$@%^&*()_+|~=`{}\[\]:";'<>?,.\/ ]$/;
+const defaultOptions = {
   // 最小长度
   minLength: 8,
   // 最少小写字母个数
@@ -1545,14 +1455,14 @@ var defaultOptions = {
 */
 
 function countChars(str) {
-  var result = {};
-  Array.from(str).forEach(function (_char) {
-    var curVal = result[_char];
+  let result = {};
+  Array.from(str).forEach(char => {
+    let curVal = result[char];
 
     if (curVal) {
-      result[_char] += 1;
+      result[char] += 1;
     } else {
-      result[_char] = 1;
+      result[char] = 1;
     }
   });
   return result;
@@ -1561,8 +1471,8 @@ function countChars(str) {
 
 
 function analyzePassword(password) {
-  var charMap = countChars(password);
-  var analysis = {
+  let charMap = countChars(password);
+  let analysis = {
     length: password.length,
     uniqueChars: Object.keys(charMap).length,
     uppercaseCount: 0,
@@ -1570,23 +1480,23 @@ function analyzePassword(password) {
     numberCount: 0,
     symbolCount: 0
   };
-  Object.keys(charMap).forEach(function (_char2) {
+  Object.keys(charMap).forEach(char => {
     /* istanbul ignore else */
-    if (upperCaseRegex.test(_char2)) {
-      analysis.uppercaseCount += charMap[_char2];
-    } else if (lowerCaseRegex.test(_char2)) {
-      analysis.lowercaseCount += charMap[_char2];
-    } else if (numberRegex.test(_char2)) {
-      analysis.numberCount += charMap[_char2];
-    } else if (symbolRegex.test(_char2)) {
-      analysis.symbolCount += charMap[_char2];
+    if (upperCaseRegex.test(char)) {
+      analysis.uppercaseCount += charMap[char];
+    } else if (lowerCaseRegex.test(char)) {
+      analysis.lowercaseCount += charMap[char];
+    } else if (numberRegex.test(char)) {
+      analysis.numberCount += charMap[char];
+    } else if (symbolRegex.test(char)) {
+      analysis.symbolCount += charMap[char];
     }
   });
   return analysis;
 }
 
 function scorePassword(analysis, scoringOptions) {
-  var points = 0;
+  let points = 0;
   points += analysis.uniqueChars * scoringOptions.pointsPerUnique;
   points += (analysis.length - analysis.uniqueChars) * scoringOptions.pointsPerRepeat;
 
@@ -1621,9 +1531,10 @@ function isStrongPassword(str, options) {
     return false;
   }
 
-  var analysis = analyzePassword(str);
-
-  var new_options = _objectSpread2(_objectSpread2({}, defaultOptions), options);
+  const analysis = analyzePassword(str);
+  const new_options = { ...defaultOptions,
+    ...options
+  };
 
   if (new_options.returnScore) {
     return scorePassword(analysis, new_options);
@@ -1637,8 +1548,8 @@ function isStrongPassword(str, options) {
  * @param[str] any 识别码
  * */
 
-var isTaxpayerNo = function isTaxpayerNo(str) {
-  var reg = /^[0-9A-Z]{15,18}$/i;
+const isTaxpayerNo = str => {
+  const reg = /^[0-9A-Z]{15,18}$/i;
 
   if (!isValidParamsTypes(str)) {
     return false;
@@ -1647,6 +1558,10 @@ var isTaxpayerNo = function isTaxpayerNo(str) {
   return reg.test(str);
 };
 
+/**
+ * URL 正在校验
+ *
+ * */
 /*
 options for isURL method
 
@@ -1666,7 +1581,7 @@ validate_length - if set as false isURL will skip string length validation (IE m
  * @param[options] 校验参数
  * */
 function isURL(url, options) {
-  var default_url_options = {
+  const default_url_options = {
     protocols: ['http', 'https', 'ftp'],
     require_tld: true,
     require_protocol: false,
@@ -1680,15 +1595,15 @@ function isURL(url, options) {
     allow_query_components: true,
     validate_length: true
   };
-  var wrapped_ipv6 = /^\[([^\]]+)\](?::([0-9]+))?$/;
+  const wrapped_ipv6 = /^\[([^\]]+)\](?::([0-9]+))?$/;
 
   function isRegExp(obj) {
     return Object.prototype.toString.call(obj) === '[object RegExp]';
   }
 
   function checkHost(host, matches) {
-    for (var i = 0; i < matches.length; i++) {
-      var match = matches[i]; // @ts-ignore
+    for (let i = 0; i < matches.length; i++) {
+      let match = matches[i]; // @ts-ignore
 
       if (host === match || isRegExp(match) && match.test(host)) {
         return true;
@@ -1710,7 +1625,9 @@ function isURL(url, options) {
     return false;
   }
 
-  var new_options = _objectSpread2(_objectSpread2({}, options), default_url_options);
+  const new_options = { ...options,
+    ...default_url_options
+  };
 
   if (options.validate_length && url.length >= 2083) {
     return false;
@@ -1724,7 +1641,7 @@ function isURL(url, options) {
     return false;
   }
 
-  var protocol, auth, host, hostname, port, port_str, split, ipv6;
+  let protocol, auth, host, hostname, port, port_str, split, ipv6;
   split = url.split('#');
   url = split.shift();
   split = url.split('?');
@@ -1777,10 +1694,7 @@ function isURL(url, options) {
       return false;
     }
 
-    var _auth$split = auth.split(':'),
-        _auth$split2 = _slicedToArray(_auth$split, 2),
-        user = _auth$split2[0],
-        password = _auth$split2[1];
+    const [user, password] = auth.split(':');
 
     if (user === '' && password === '') {
       return false;
@@ -1790,7 +1704,7 @@ function isURL(url, options) {
   hostname = split.join('@');
   port_str = null;
   ipv6 = null;
-  var ipv6_match = hostname.match(wrapped_ipv6);
+  const ipv6_match = hostname.match(wrapped_ipv6);
 
   if (ipv6_match) {
     host = '';
@@ -1834,7 +1748,7 @@ function isURL(url, options) {
  * */
 
 function isUUID(str, version) {
-  var uuid = {
+  const uuid = {
     1: /^[0-9A-F]{8}-[0-9A-F]{4}-1[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$/i,
     2: /^[0-9A-F]{8}-[0-9A-F]{4}-2[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$/i,
     3: /^[0-9A-F]{8}-[0-9A-F]{4}-3[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$/i,
@@ -1847,9 +1761,9 @@ function isUUID(str, version) {
     return false;
   }
 
-  var pattern = uuid[![undefined, null].includes(version) ? version : 'all'];
+  const pattern = uuid[![undefined, null].includes(version) ? version : 'all'];
   return !!pattern && pattern.test(str);
 }
 
-export { IsBankCard, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEthereumAddress, isFQDN, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isPort, isPostalCode, isRdata, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isZone, version };
+export { EnumRecordType, IsBankCard, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEthereumAddress, isFQDN, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isPort, isPostalCode, isRdata, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isZone, version };
 //# sourceMappingURL=index.js.map

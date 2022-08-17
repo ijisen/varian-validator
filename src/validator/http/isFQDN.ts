@@ -1,6 +1,7 @@
 import setErrorCodeLang from '../../utils/setErrorCodeLang';
 
 import { IsFQDNConfig, isFQDNRes } from './typings.d';
+import filterStringSpace from "@/utils/filterStringSpace";
 
 /**
  * 域名格式校验 - 错误提示消息.
@@ -72,28 +73,30 @@ export default function isFQDN(
   lang?: string,
 ): isFQDNRes {
   let errorMessage = errorCodes[setErrorCodeLang(lang)];
-  if (typeof str !== 'string' || str.replace(' ', '') === '') {
+  if(typeof str !== 'string') {
     return {
       success: false,
-      message: errorMessage.DOMAIN_IS_EMPTY,
+      message: errorMessage.DOMAIN_FORMAT_ERROR,
     };
   }
-
+  str = filterStringSpace(str, {
+    filterAll: true
+  });
   options = {
     ...default_fqdn_options,
     ...options,
   };
   console.log(options);
 
-  if (!str) {
+  if(!str) {
     return {
       success: false,
-      message: errorMessage.DOMAIN_TOO_SHORT,
+      message: errorMessage.DOMAIN_IS_EMPTY,
     };
   }
 
   const len = str.length;
-  if (len > 255) {
+  if(len > 255) {
     return {
       success: false,
       message: errorMessage.DOMAIN_TOO_LONG,
@@ -101,12 +104,12 @@ export default function isFQDN(
   }
 
   /* Remove the optional trailing dot before checking validity */
-  if (options.allow_trailing_dot && str[len - 1] === '.') {
+  if(options.allow_trailing_dot && str[len - 1] === '.') {
     str = str.substring(0, len - 1);
   }
 
   /* Remove the optional wildcard before checking validity */
-  if (options.allow_wildcard && str.indexOf('*.') === 0) {
+  if(options.allow_wildcard && str.indexOf('*.') === 0) {
     str = str.substring(2);
   }
 
@@ -114,9 +117,9 @@ export default function isFQDN(
   console.log(nodes);
   const node_len = nodes.length;
   const max_node = 127;
-  if (options.require_tld) {
+  if(options.require_tld) {
     // disallow fqdns without tld
-    if (node_len < 2) {
+    if(node_len < 2) {
       // 域名格式错误  zdns.cn
       return {
         success: false,
@@ -124,7 +127,7 @@ export default function isFQDN(
       };
     }
 
-    if (node_len > max_node) {
+    if(node_len > max_node) {
       return {
         success: false,
         message: errorMessage.DOMAIN_FORMAT_ERROR,
@@ -133,14 +136,14 @@ export default function isFQDN(
 
     const tld = nodes[node_len - 1];
     // reject numeric TLDs
-    if (!options.allow_numeric_tld && /^\d+$/.test(tld)) {
+    if(!options.allow_numeric_tld && /^\d+$/.test(tld)) {
       return {
         success: false,
         message: errorMessage.TLD_WITH_NUMBER,
       };
     }
 
-    if (
+    if(
       !/^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{2,}|xn[a-z0-9-]{2,})$/i.test(
         tld,
       )
@@ -151,7 +154,7 @@ export default function isFQDN(
       };
     }
   } else {
-    if (node_len > max_node - 1) {
+    if(node_len > max_node - 1) {
       return {
         success: false,
         message: errorMessage.DOMAIN_FORMAT_ERROR,
@@ -161,14 +164,14 @@ export default function isFQDN(
   for (let i = 0; i < node_len; i++) {
     const label = nodes[i];
     console.log(label);
-    if (label.length > 63) {
+    if(label.length > 63) {
       return {
         success: false,
         message: errorMessage.LABEL_TOO_LONG,
       };
     }
     // \u4E00-\u9FA5 \u00a1-\uffff
-    if (!/^[a-z_\u00a1-\uffff0-9-]+$/i.test(label)) {
+    if(!/^[a-z_\u00a1-\uffff0-9-]+$/i.test(label)) {
       return {
         success: false,
         message: errorMessage.LABEL_INVALID_CHARS,
@@ -176,7 +179,7 @@ export default function isFQDN(
     }
 
     // disallow full-width chars
-    if (/[\uff01-\uff5e]/.test(label)) {
+    if(/[\uff01-\uff5e]/.test(label)) {
       return {
         success: false,
         message: errorMessage.LABEL_INVALID_CHARS,
@@ -184,14 +187,14 @@ export default function isFQDN(
     }
 
     // disallow node starting or ending with hyphen
-    if (/^-|-$/.test(label)) {
+    if(/^-|-$/.test(label)) {
       return {
         success: false,
         message: errorMessage.LABEL_WITH_HYPHEN,
       };
     }
 
-    if (!options.allow_underscores && /_/.test(label)) {
+    if(!options.allow_underscores && /_/.test(label)) {
       return {
         success: false,
         message: errorMessage.LABEL_WITH_UNDERSCORES,
@@ -199,7 +202,7 @@ export default function isFQDN(
     }
 
     // disallow node ending with _
-    if (/_$/.test(label)) {
+    if(/_$/.test(label)) {
       return {
         success: false,
         message: errorMessage.LABEL_ENDS_WITH_UNDERSCORES,

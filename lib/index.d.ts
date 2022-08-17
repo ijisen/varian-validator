@@ -74,7 +74,7 @@ declare const enum EnumRecordType {
  * @param[str] 校验值
  * @param[type] 校验类型
  * */
-declare const isRdata: (str: string, type: EnumRecordType) => boolean | isFQDNRes;
+declare const isRdata: (str: any, type: EnumRecordType.A) => boolean | isFQDNRes;
 
 /**
  * 主机合法性校验
