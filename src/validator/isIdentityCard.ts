@@ -277,6 +277,7 @@ const identityCardValidators = {
 
     const parityBit = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
 
+    // @ts-ignore
     const checkAddressCode = (addressCode: string) => provincesAndCities.includes(addressCode);
 
     const checkBirthDayCode = (birDayCode: string) => {

@@ -3,9 +3,12 @@
  * String to Array
  * */
 const utilStringToArray = (str: any, separator?: string) => {
-  if(typeof str === 'string') {
+  if (typeof str === 'string') {
     str = str.trim();
     return str.split(separator || /\s+/);
+  }
+  if (Array.isArray(str)) {
+    return str
   }
   return [];
 };
