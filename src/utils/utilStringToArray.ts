@@ -2,7 +2,7 @@
  * 字符串 转 数组
  * String to Array
  * */
-const utilStringToArray = (str: any, separator?: string) => {
+const utilStringToArray = (str: any, separator?: string): any[] => {
   if(typeof str === 'string') {
     str = str.trim();
     separator = separator || ',';

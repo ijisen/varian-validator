@@ -1,4 +1,4 @@
-var version = "0.0.9";
+var version = "0.0.10";
 
 /**
  * 金额保留两位小数
@@ -306,7 +306,7 @@ declare const utilsSubmitForm: (config: {
  * 字符串 转 数组
  * String to Array
  * */
-declare const utilStringToArray: (str: any, separator?: string) => any;
+declare const utilStringToArray: (str: any, separator?: string) => any[];
 
 /**
  * 字符串格式判断

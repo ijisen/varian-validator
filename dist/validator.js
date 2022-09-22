@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.9 
+ * varian-validator v0.0.10 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2022 ji sen  (https://github.com/ijisen) 
@@ -13,7 +13,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Validator = {}));
 })(this, (function (exports) { 'use strict';
 
-  var version = "0.0.9";
+  var version = "0.0.10";
 
   /**
    * 判断参数是否为数字
