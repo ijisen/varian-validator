@@ -1,4 +1,4 @@
-var version = "0.0.10";
+var version = "0.0.11";
 
 /**
  * 金额保留两位小数
@@ -168,7 +168,7 @@ declare const isEmptyStr: (str: any, ignoreSpace: boolean) => boolean;
  * @names：判断数组是否为空数据
  * @params[data] Array
  * */
-declare const isEmptyArray: (data?: never[]) => boolean;
+declare const isEmptyArray: (data: any) => boolean;
 
 /**
  * 判断数据是否存在
