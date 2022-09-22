@@ -815,6 +815,8 @@
       return str.split(separator || /\s+/);
     } else if (Array.isArray(str)) {
       return str;
+    } else if (typeof str === 'number' || typeof str === "boolean") {
+      return [str];
     }
 
     return [];
