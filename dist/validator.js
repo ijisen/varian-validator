@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.8 
+ * varian-validator v0.0.9 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2022 ji sen  (https://github.com/ijisen) 
@@ -13,7 +13,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Validator = {}));
 })(this, (function (exports) { 'use strict';
 
-  var version = "0.0.8";
+  var version = "0.0.9";
 
   /**
    * 判断参数是否为数字
@@ -811,7 +811,10 @@
   const utilStringToArray = (str, separator) => {
     if (typeof str === 'string') {
       str = str.trim();
+      separator = separator || ',';
       return str.split(separator || /\s+/);
+    } else if (Array.isArray(str)) {
+      return str;
     }
 
     return [];

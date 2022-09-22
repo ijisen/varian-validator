@@ -1,4 +1,4 @@
-var version = "0.0.8";
+var version = "0.0.9";
 
 /**
  * 金额保留两位小数
