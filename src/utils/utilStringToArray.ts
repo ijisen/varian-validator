@@ -6,16 +6,15 @@
  * */
 const utilStringToArray = (str: any, separator?: string) => {
   separator = separator || ','
-
-  if (Array.isArray(str)) {
-    return str
-  }
-
   if (typeof str === 'string') {
     str = str.trim();
+    separator = separator || ',';
     return str.split(separator || /\s+/);
+  } else if (Array.isArray(str)) {
+    return str
+  } else if (typeof str === 'number' || typeof str === "boolean") {
+    return [str]
   }
-
   return [];
 };
 

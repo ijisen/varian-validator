@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.8 
+ * varian-validator v0.0.11 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2022 ji sen  (https://github.com/ijisen) 
@@ -7,7 +7,7 @@
  * Licensed under the ISC license 
  */
 
-var version = "0.0.8";
+var version = "0.0.11";
 
 /**
  * 判断参数是否为数字
@@ -556,7 +556,7 @@ const isEmptyStr = (str, ignoreSpace) => {
  * @params[data] Array
  * */
 
-const isEmptyArray = (data = []) => {
+const isEmptyArray = data => {
   return !Array.isArray(data) || !data.length;
 };
 
@@ -805,7 +805,12 @@ const utilsSubmitForm = config => {
 const utilStringToArray = (str, separator) => {
   if (typeof str === 'string') {
     str = str.trim();
+    separator = separator || ',';
     return str.split(separator || /\s+/);
+  } else if (Array.isArray(str)) {
+    return str;
+  } else if (typeof str === 'number' || typeof str === "boolean") {
+    return [str];
   }
 
   return [];
