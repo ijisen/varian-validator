@@ -1,6 +1,6 @@
 {
   "name": "varian-validator",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Lightweight JavaScript form validation.",
   "homepage": "https://github.com/ijisen/varian-validator",
   "author": "ji sen  (https://github.com/ijisen)",
@@ -39,6 +39,7 @@
   "devDependencies": {
     "@babel/core": "^7.18.6",
     "@babel/preset-env": "^7.18.6",
+    "@babel/preset-flow": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^22.0.1",
