@@ -20,7 +20,7 @@ const errorCodes = {
     LABEL_WITH_UNDERSCORES: '域名标签不能包含 _ ',
     LABEL_ENDS_WITH_UNDERSCORES: '域名标签不能以 _ 结尾.',
     LABEL_INVALID_CHARS:
-      '域名标签只能包含a-z、A-Z、0-9、-、_、.、*、@、中文汉字.',
+      '域名标签只能包含a-z、A-Z、0-9、-、_、.、中文汉字.',
     TLD_WITH_NUMBER: 'TLD不能包含数字.',
     TLD_INVALID_CHARS: 'TLD格式错误.',
   },
@@ -38,7 +38,7 @@ const errorCodes = {
     LABEL_WITH_UNDERSCORES: 'Domain labels cannot contain _',
     LABEL_ENDS_WITH_UNDERSCORES: 'Domain labels can not end with _',
     LABEL_INVALID_CHARS:
-      'Domain name label can only contain a-z、A-Z、0-9、-、_、.、*、@、中文汉字.',
+      'Domain name label can only contain a-z、A-Z、0-9、-、_、.、中文汉字.',
     TLD_WITH_NUMBER: 'TLD cannot contain numbers',
     TLD_INVALID_CHARS: 'TLD format error',
   },

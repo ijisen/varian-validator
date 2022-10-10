@@ -16,7 +16,6 @@ const filterStringSpace = (str: any, options?: {
     return ''
   }
   const reg = /\\0|\\u0000|\s+/g
-  // return str.replace(/\s+/g, '');
   if(options?.filterAll) {
     return str.replace(reg, '')
   }

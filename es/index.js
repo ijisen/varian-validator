@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.11 
+ * varian-validator v0.0.12 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2022 ji sen  (https://github.com/ijisen) 
@@ -7,7 +7,7 @@
  * Licensed under the ISC license 
  */
 
-var version = "0.0.11";
+var version = "0.0.13";
 
 /**
  * 判断参数是否为数字
@@ -420,7 +420,7 @@ const filterStringSpace = (str, options) => {
     return '';
   }
 
-  const reg = /\\0|\\u0000|\s+/g; // return str.replace(/\s+/g, '');
+  const reg = /\\0|\\u0000|\s+/g;
 
   if (options?.filterAll) {
     return str.replace(reg, '');
@@ -880,7 +880,7 @@ const errorCodes = {
     LABEL_TOO_SHORT: '域名标签应至少为 1 个字符长.',
     LABEL_WITH_UNDERSCORES: '域名标签不能包含 _ ',
     LABEL_ENDS_WITH_UNDERSCORES: '域名标签不能以 _ 结尾.',
-    LABEL_INVALID_CHARS: '域名标签只能包含a-z、A-Z、0-9、-、_、.、*、@、中文汉字.',
+    LABEL_INVALID_CHARS: '域名标签只能包含a-z、A-Z、0-9、-、_、.、中文汉字.',
     TLD_WITH_NUMBER: 'TLD不能包含数字.',
     TLD_INVALID_CHARS: 'TLD格式错误.'
   },
@@ -896,7 +896,7 @@ const errorCodes = {
     LABEL_TOO_SHORT: 'Domain name label should be at least 1 character long.',
     LABEL_WITH_UNDERSCORES: 'Domain labels cannot contain _',
     LABEL_ENDS_WITH_UNDERSCORES: 'Domain labels can not end with _',
-    LABEL_INVALID_CHARS: 'Domain name label can only contain a-z、A-Z、0-9、-、_、.、*、@、中文汉字.',
+    LABEL_INVALID_CHARS: 'Domain name label can only contain a-z、A-Z、0-9、-、_、.、中文汉字.',
     TLD_WITH_NUMBER: 'TLD cannot contain numbers',
     TLD_INVALID_CHARS: 'TLD format error'
   }
