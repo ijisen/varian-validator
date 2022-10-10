@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.12 
+ * varian-validator v0.0.13 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2022 ji sen  (https://github.com/ijisen) 
@@ -457,6 +457,7 @@
     }
 
     console.log("信息长度为: " + totalLength + " 字节");
+    return totalLength;
   }
 
   /**
@@ -807,8 +808,12 @@
   /**
    * 字符串 转 数组
    * String to Array
+   * @param[str] 需要拆分的数据
+   * @param[separator] 拆分标识符，默认 ,
    * */
   const utilStringToArray = (str, separator) => {
+    separator = separator || ',';
+
     if (typeof str === 'string') {
       str = str.trim();
       separator = separator || ',';
@@ -1776,7 +1781,7 @@
       '91' // 国外
       ];
       const powers = ['7', '9', '10', '5', '8', '4', '2', '1', '6', '3', '7', '9', '10', '5', '8', '4', '2'];
-      const parityBit = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
+      const parityBit = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2']; // @ts-ignore
 
       const checkAddressCode = addressCode => provincesAndCities.includes(addressCode);
 
@@ -2460,7 +2465,8 @@
 
     if (!isValidParamsTypes(str)) {
       return false;
-    }
+    } // @ts-ignore
+
 
     const pattern = uuid[![undefined, null].includes(version) ? version : 'all'];
     return !!pattern && pattern.test(str);

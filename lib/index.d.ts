@@ -141,7 +141,7 @@ declare const filterStringSpace: (str: any, options?: {
  *
  * @param[str] 字符串
  */
-declare function getStrByteLength(str: string): void;
+declare function getStrByteLength(str: string): number;
 
 /**
  * 获取url中的参数
@@ -305,8 +305,10 @@ declare const utilsSubmitForm: (config: {
 /**
  * 字符串 转 数组
  * String to Array
+ * @param[str] 需要拆分的数据
+ * @param[separator] 拆分标识符，默认 ,
  * */
-declare const utilStringToArray: (str: any, separator?: string) => any[];
+declare const utilStringToArray: (str: any, separator?: string) => any;
 
 /**
  * 字符串格式判断
