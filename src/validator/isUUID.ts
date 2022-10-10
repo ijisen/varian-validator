@@ -18,6 +18,7 @@ export default function isUUID(str: any, version: any) {
   if(!isValidParamsTypes(str)) {
     return false
   }
+  // @ts-ignore
   const pattern = uuid[![undefined, null].includes(version) ? version : 'all'];
   return !!pattern && pattern.test(str);
 }
