@@ -19,5 +19,5 @@ export const inputTextareaFormat = (str: any) => {
   str = specialSymbolToComma(str);
   // 去重
   str = [...new Set(str.split(','))];
-  return str
+  return str.filter((item:string) => item === '');
 };
