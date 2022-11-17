@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.13 
+ * varian-validator v0.0.15 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2022 ji sen  (https://github.com/ijisen) 
@@ -13,21 +13,18 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Validator = {}));
 })(this, (function (exports) { 'use strict';
 
-  var version = "0.0.13";
+  var version = "0.0.15";
 
   function ownKeys(object, enumerableOnly) {
     var keys = Object.keys(object);
-
     if (Object.getOwnPropertySymbols) {
       var symbols = Object.getOwnPropertySymbols(object);
       enumerableOnly && (symbols = symbols.filter(function (sym) {
         return Object.getOwnPropertyDescriptor(object, sym).enumerable;
       })), keys.push.apply(keys, symbols);
     }
-
     return keys;
   }
-
   function _objectSpread2(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = null != arguments[i] ? arguments[i] : {};
@@ -37,10 +34,8 @@
         Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
       });
     }
-
     return target;
   }
-
   function _typeof(obj) {
     "@babel/helpers - typeof";
 
@@ -50,7 +45,6 @@
       return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
     }, _typeof(obj);
   }
-
   function _defineProperty(obj, key, value) {
     if (key in obj) {
       Object.defineProperty(obj, key, {
@@ -62,44 +56,33 @@
     } else {
       obj[key] = value;
     }
-
     return obj;
   }
-
   function _slicedToArray(arr, i) {
     return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
   }
-
   function _toConsumableArray(arr) {
     return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
   }
-
   function _arrayWithoutHoles(arr) {
     if (Array.isArray(arr)) return _arrayLikeToArray(arr);
   }
-
   function _arrayWithHoles(arr) {
     if (Array.isArray(arr)) return arr;
   }
-
   function _iterableToArray(iter) {
     if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
   }
-
   function _iterableToArrayLimit(arr, i) {
     var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-
     if (_i == null) return;
     var _arr = [];
     var _n = true;
     var _d = false;
-
     var _s, _e;
-
     try {
       for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
         _arr.push(_s.value);
-
         if (i && _arr.length === i) break;
       }
     } catch (err) {
@@ -112,10 +95,8 @@
         if (_d) throw _e;
       }
     }
-
     return _arr;
   }
-
   function _unsupportedIterableToArray(o, minLen) {
     if (!o) return;
     if (typeof o === "string") return _arrayLikeToArray(o, minLen);
@@ -124,19 +105,14 @@
     if (n === "Map" || n === "Set") return Array.from(o);
     if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
   }
-
   function _arrayLikeToArray(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
-
     for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-
     return arr2;
   }
-
   function _nonIterableSpread() {
     throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
-
   function _nonIterableRest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
@@ -149,19 +125,16 @@
    */
   var isNumber = function isNumber(number) {
     var allowNegative = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
     /**
      * isNaN([]) || isNaN('') || isNaN(true) || isNaN(false) || isNaN(null) => false
      * */
     if (typeof number === 'string') {
       number = number.replace(/\s+/g, '');
     }
-
     if (isNaN(number) || number === '' || _typeof(number) === 'object' || typeof number === 'boolean') {
       return false;
     } else {
       number = parseFloat(number);
-
       if (number < 0) {
         return allowNegative;
       } else {
@@ -176,6 +149,7 @@
    * @time：  2022-07-04
    * @description：
    * ======================================================== */
+
   /**
    * 金额保留两位小数
    * @param[num]
@@ -183,40 +157,33 @@
    * ceil === true, 向上取整; eg: 5.051 = 5.06
    * ceil === false, 四舍五入; eg: 5.051 = 5.05
    */
-
   function numberToDecimal2(num, ceil) {
     if (!isNumber(num)) {
       return num;
     }
-
-    var f = parseFloat(num); // Math.ceil(19.01*100) => 1902 js BUG
-
+    var f = parseFloat(num);
+    // Math.ceil(19.01*100) => 1902 js BUG
     f = numberMultiply(f, 100);
-
     if (ceil) {
       f = Math.ceil(f) / 100;
     } else {
       f = Math.round(f) / 100;
     }
-
     var s = f.toString();
     var rs = s.indexOf('.');
-
     if (rs < 0) {
       rs = s.length;
       s += '.';
     }
-
     while (s.length <= rs + 2) {
       s += '0';
     }
-
     return s;
   }
+
   /**
    * 计算值格式化
    * */
-
   var numberFormat = function numberFormat(num) {
     try {
       return num.toString().split(".")[1].length;
@@ -224,27 +191,26 @@
       return 0;
     }
   };
+
   /**
    * 加法运算，避免数据相加小数点后产生多位数和计算精度损失。
    *
    * @param num1 加数1
    * @param num2 加数2
    */
-
-
   function numberAdd(num1, num2) {
     var baseNum1 = numberFormat(num1);
     var baseNum2 = numberFormat(num2);
     var baseNum = Math.pow(10, Math.max(baseNum1, baseNum2));
     return (numberMultiply(num1, baseNum) + numberMultiply(num2, baseNum)) / baseNum;
   }
+
   /**
    * 减法运算，避免数据相减小数点后产生多位数和计算精度损失。
    *
    * @param num1 被减数
    * @param num2 减数
    */
-
   function numberSubtract(num1, num2) {
     // 精度
     var precision;
@@ -254,26 +220,26 @@
     precision = baseNum1 >= baseNum2 ? baseNum1 : baseNum2;
     return ((num1 * baseNum - num2 * baseNum) / baseNum).toFixed(precision);
   }
+
   /**
    * 乘法运算，避免数据相乘小数点后产生多位数和计算精度损失。
    *
    * @param num1 被乘数
    * @param num2 乘数
    */
-
   function numberMultiply(num1, num2) {
     var baseNum = 0;
     baseNum += numberFormat(num1);
     baseNum += numberFormat(num2);
     return Number(num1.toString().replace(".", "")) * Number(num2.toString().replace(".", "")) / Math.pow(10, baseNum);
   }
+
   /**
    * 除法运算，避免数据相除小数点后产生多位数和计算精度损失。
    *
    * @param num1 被除数
    * @param num2 除数
    */
-
   function numberDivide(num1, num2) {
     var baseNum1 = numberFormat(num1);
     var baseNum2 = numberFormat(num2);
@@ -290,27 +256,21 @@
   var arrayDataGrouping = function arrayDataGrouping() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var groupLen = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-
     if (!Array.isArray(data) || !data.length) {
       return undefined;
-    } // 数据长度
-
-
+    }
+    // 数据长度
     var dataLen = data.length;
-
     if (dataLen <= groupLen) {
       return [data];
     }
-
-    data = JSON.parse(JSON.stringify(data)); // 当前数据可分组数
-
+    data = JSON.parse(JSON.stringify(data));
+    // 当前数据可分组数
     var group = Math.ceil(dataLen / groupLen);
     var groupData = [];
-
     for (var i = 1; i < group; i++) {
       groupData.push(data.splice(0, groupLen));
     }
-
     groupData.push(data);
     return groupData;
   };
@@ -326,48 +286,40 @@
     if (!name || !data) {
       return false;
     }
-
     if (_typeof(data) === "object") {
       data = JSON.stringify(data);
-    } // 编码
-
-
-    var str = name + "=" + encodeURI(data); // 为0时不设定过期时间，浏览器关闭时cookie自动消失
-
+    }
+    // 编码
+    var str = name + "=" + encodeURI(data);
+    // 为0时不设定过期时间，浏览器关闭时cookie自动消失
     if (objHours > 0) {
       var date = new Date();
       var ms = objHours * 3600 * 1000;
       date.setTime(date.getTime() + ms);
       str += "; expires=" + date.toUTCString();
     }
-
     document.cookie = str;
     return true;
   };
+
   /**
    * 获取 cookie 值
    * @param[name] cookie 关键字
    * @return any  获取到的值
    */
-
   var getCookieValue = function getCookieValue(name) {
     if (!name) return false;
     var prefix = name + "=";
     var start = document.cookie.indexOf(prefix);
-
     if (start === -1) {
       return null;
     }
-
     var end = document.cookie.indexOf(";", start + prefix.length);
-
     if (end === -1) {
       end = document.cookie.length;
     }
-
     var value = document.cookie.substring(start + prefix.length, end);
     value = decodeURI(value);
-
     try {
       return JSON.parse(value);
     } catch (e) {
@@ -386,29 +338,25 @@
     if (typeof date === 'string') {
       date = date.replace(/-/g, '/');
     }
-
     return date;
   }
+
   /**
    * 日期格式化.
    * @param[date]
    * @param[format] 格式
    */
-
   function formatDate(date) {
     var format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'YYYY-MM-DD';
-
     if (!date) {
       return '';
     }
-
-    var reg = /cst/ig; // 如果时间格式为 CST格式，则需要-14小时
-
+    var reg = /cst/ig;
+    // 如果时间格式为 CST格式，则需要-14小时
     if (typeof date === 'string' && reg.test(date)) {
       date = new Date(date);
       date.setHours(date.getHours() - 14);
     }
-
     date = dateFormatReg(date);
     date = new Date(date);
     var o = {
@@ -427,19 +375,16 @@
       'q+': Math.floor((date.getMonth() + 3) / 3),
       //quarter
       'S': date.getMilliseconds() //millisecond
-
     };
 
     if (/(Y+)/i.test(format)) {
       format = format.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
     }
-
     for (var k in o) {
       if (new RegExp('(' + k + ')').test(format)) {
         format = format.replace(RegExp.$1, RegExp.$1.length === 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length));
       }
     }
-
     return format;
   }
 
@@ -457,8 +402,8 @@
       // 再次触发时，立即重新执行
       // if (timer) {
       clearTimeout(timer);
-      timer = null; // }
-
+      timer = null;
+      // }
       timer = setTimeout(fn, delay);
     };
   };
@@ -470,7 +415,6 @@
    */
   function deepClone(obj) {
     var newObj = Array.isArray(obj) ? [] : {};
-
     if (obj && _typeof(obj) === "object") {
       for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
@@ -478,7 +422,6 @@
         }
       }
     }
-
     return newObj;
   }
 
@@ -488,7 +431,6 @@
    * @time：  2022-07-04
    * @description：域名相关公共方法
    * ======================================================== */
-
   /**
    *  获取【域名】的TLD
    *  abc.com => com
@@ -499,35 +441,29 @@
     if (typeof domain !== 'string') {
       return '';
     }
-
     var index = domain.indexOf('.');
-
     if (index > -1) {
       return domain.slice(index + 1);
     }
-
     return '';
   }
+
   /**
    * 域名可注册年限判断
    * .co 为五年
    * 其它十年
    * @params[tld] 顶级域 com|co|net
    * */
-
   function getDomainPeriod(tld) {
     if (typeof tld !== 'string') {
       return 10;
-    } // 注册时间为5年的顶级域
-
-
+    }
+    // 注册时间为5年的顶级域
     var tld_arr = ['co'];
     var _period = 10;
-
     if (tld_arr.indexOf(tld) > -1) {
       _period = 5;
     }
-
     return _period;
   }
 
@@ -542,7 +478,6 @@
     if (typeof str !== "string") {
       return false;
     }
-
     return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\//g, '&#x2F;').replace(/\\/g, '&#x5C;').replace(/`/g, '&#96;');
   };
 
@@ -560,13 +495,10 @@
       // return str;
       return '';
     }
-
     var reg = /\\0|\\u0000|\s+/g;
-
     if (options !== null && options !== void 0 && options.filterAll) {
       return str.replace(reg, '');
     }
-
     return str.replace(reg, ' ');
   };
 
@@ -578,10 +510,8 @@
    */
   function getStrByteLength(str) {
     var totalLength = 0;
-
     for (var i = 0, len = str.length; i < len; i++) {
       var charCode = str.charCodeAt(i);
-
       if (charCode < 0x007f) {
         totalLength += 1;
       } else if (0x0080 <= charCode && charCode <= 0x07ff) {
@@ -590,7 +520,6 @@
         totalLength += 3;
       }
     }
-
     console.log("信息长度为: " + totalLength + " 字节");
     return totalLength;
   }
@@ -603,13 +532,11 @@
    */
   function getUrlParam(name, param) {
     //构造一个含有目标参数的正则表达式对象
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //匹配目标参数
-
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    //匹配目标参数
     var _params = param || window.location.search.substring(1);
-
-    var r = _params.match(reg); //返回参数值
-
-
+    var r = _params.match(reg);
+    //返回参数值
     if (r !== null) return decodeURIComponent(r[2]);
     return null;
   }
@@ -623,7 +550,6 @@
     if (typeof str === "string") {
       return str.replace(/\r|\s|\n|，/g, ',');
     }
-
     return "";
   };
 
@@ -632,29 +558,34 @@
    * @params[str] string
    * @return [] Array
    * */
-
   var inputTextareaFormat = function inputTextareaFormat(str) {
+    if (typeof str !== "string") {
+      return [];
+    }
     // 去除首尾空格
-    str = str.trim(); // 大写转小写
-
-    str = str.toLowerCase(); // 去除多余的空格
-
-    str = str.replace(/\s+|\n+/g, ' '); // 特殊符号转 ,
-
-    str = specialSymbolToComma(str); // 去重
-
+    str = str.trim();
+    // 大写转小写
+    str = str.toLowerCase();
+    // 去除多余的空格
+    str = str.replace(/\s+|\n+/g, ' ');
+    // 特殊符号转 ,
+    str = specialSymbolToComma(str);
+    // 去重
     str = _toConsumableArray(new Set(str.split(',')));
-    return str;
+    return str.filter(function (item) {
+      return item !== '';
+    });
   };
 
   /**
    * Better way to handle type checking
    * null, {}, array and date are objects, which confuses
    */
+
   var utilTypeOf = function utilTypeOf(input) {
     var rawObject = Object.prototype.toString.call(input).toLowerCase();
-    var typeOfRegex = /\[object (.*)]/g; // @ts-ignore
-
+    var typeOfRegex = /\[object (.*)]/g;
+    // @ts-ignore
     return typeOfRegex.exec(rawObject)[1];
   };
 
@@ -663,14 +594,11 @@
    * @param[str] any 参数
    * @param[types] [any] 支持参数类型, 默认支持 ['string', 'number']
    * */
-
   var isValidParamsTypes = function isValidParamsTypes(str, types) {
     var defaultTypes = ['string', 'number'];
-
     if (utilTypeOf(types) !== 'array') {
       types = defaultTypes;
     }
-
     return types && types.includes(utilTypeOf(str));
   };
 
@@ -679,25 +607,21 @@
    * @param[str] 需要判断的值
    * @param[ignoreSpace] boolean 是否忽略空格
    * */
-
   var isEmptyStr = function isEmptyStr(str, ignoreSpace) {
     if (!isValidParamsTypes(str)) {
       return false;
     }
-
     str = "".concat(str);
-
     if (!ignoreSpace) {
       str = filterStringSpace(str);
     }
-
     return !(str.length === 0);
   };
+
   /**
    * @names：判断数组是否为空数据
    * @params[data] Array
    * */
-
   var isEmptyArray = function isEmptyArray(data) {
     return !Array.isArray(data) || !data.length;
   };
@@ -711,15 +635,13 @@
   var isExistValue = function isExistValue(value) {
     var returnType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'boolean';
     var _value = '';
-
     if (value === 0 || value === false || value) {
       _value = value;
     } else {
       // null undefined ''
       _value = '-';
-    } // console.log(_value);
-
-
+    }
+    // console.log(_value);
     return returnType === 'boolean' ? _value !== '-' : _value;
   };
 
@@ -731,36 +653,33 @@
    */
   var setLocalStorage = function setLocalStorage(name, data) {
     if (!name) return false;
-
     if (typeof data !== 'string') {
       data = JSON.stringify(data);
     }
-
     window.localStorage.setItem(name, data);
     return true;
   };
+
   /**
    * 获取localStorage
    * @param[name] storage 关键字
    * @return any  获取到的值
    */
-
   var getLocalStorage = function getLocalStorage(name) {
     if (!name) return false;
     var value = window.localStorage.getItem(name);
-
     try {
       return JSON.parse(value);
     } catch (e) {
       return value;
     }
   };
+
   /**
    * 删除localStorage
    * @param[name] storage 关键字
    * @return boolean 删除成功与否
    */
-
   var removeLocalStorage = function removeLocalStorage(name) {
     if (!name) return false;
     window.localStorage.removeItem(name);
@@ -775,37 +694,34 @@
    */
   var setSessionStorage = function setSessionStorage(name, data) {
     if (!name) return false;
-
     if (typeof data !== 'string') {
       data = JSON.stringify(data);
     }
-
     window.sessionStorage.setItem(name, data);
     return true;
   };
+
   /**
    * 获取 sessionStorage
    * @param[name] session关键字
    * @return any  获取到的值
    */
-
   var getSessionStorage = function getSessionStorage(name) {
     if (!name) return false;
     var value = window.sessionStorage.getItem(name);
-
     try {
       return JSON.parse(value);
     } catch (e) {
       return value;
-    } // return value ? JSON.parse(value) : value
-
+    }
+    // return value ? JSON.parse(value) : value
   };
+
   /**
    * 删除 sessionStorage
    * @param[name] session关键字
    * @return boolean 删除成功与否
    */
-
   var removeSessionStorage = function removeSessionStorage(name) {
     if (!name) return false;
     window.sessionStorage.removeItem(name);
@@ -816,22 +732,19 @@
    * 语言类型
    * */
   var EnumLanguageType;
+
   /**
    * 设置错误消息语言类型
    * */
-
   (function (EnumLanguageType) {
     EnumLanguageType["en"] = "en-US";
     EnumLanguageType["zh"] = "zh-CN";
   })(EnumLanguageType || (EnumLanguageType = {}));
-
   var setErrorCodeLang = function setErrorCodeLang() {
     var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : EnumLanguageType.zh;
-
     if (lang === EnumLanguageType.en) {
       return 'en';
     }
-
     return 'zh';
   };
 
@@ -849,22 +762,18 @@
    *
    * @param[data] 参数
    */
-
   function setUrlParam(data) {
     if (Object.prototype.toString.call(data) !== '[object Object]') {
       return undefined;
     }
-
     var keys = Object.keys(data);
     var str = '';
     keys.forEach(function (key) {
       var value = data[key];
-
       if (isExistValue(value)) {
         if (str) {
           str += '&';
         }
-
         str += "".concat(key, "=").concat(value);
       }
     });
@@ -901,8 +810,8 @@
     if (typeof str !== "string") {
       return false;
     }
-
-    return str.replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#x2F;/g, '/').replace(/&#x5C;/g, '\\').replace(/&#96;/g, '`').replace(/&amp;/g, '&'); // &amp; replacement has to be the last one to prevent
+    return str.replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#x2F;/g, '/').replace(/&#x5C;/g, '\\').replace(/&#96;/g, '`').replace(/&amp;/g, '&');
+    // &amp; replacement has to be the last one to prevent
     // bugs with intermediate strings containing escape sequences
     // See: https://github.com/validatorjs/validator.js/issues/1827
   }
@@ -919,13 +828,13 @@
     var form = document.createElement('form');
     form.style.display = 'none';
     form.method = method;
-    form.action = action; // form.target = '_blank';
+    form.action = action;
+    // form.target = '_blank';
 
     for (var _i = 0, _Object$entries = Object.entries(params); _i < _Object$entries.length; _i++) {
       var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-          key = _Object$entries$_i[0],
-          value = _Object$entries$_i[1];
-
+        key = _Object$entries$_i[0],
+        value = _Object$entries$_i[1];
       var input = document.createElement('input');
       input.type = 'hidden';
       input.name = key;
@@ -942,8 +851,6 @@
       input.value = value;
       form.appendChild(input);
     }*/
-
-
     document.body.appendChild(form);
     form.submit();
     document.body.removeChild(form);
@@ -957,7 +864,6 @@
    * */
   var utilStringToArray = function utilStringToArray(str, separator) {
     separator = separator || ',';
-
     if (typeof str === 'string') {
       str = str.trim();
       separator = separator || ',';
@@ -967,7 +873,6 @@
     } else if (typeof str === 'number' || typeof str === "boolean") {
       return [str];
     }
-
     return [];
   };
 
@@ -984,34 +889,34 @@
     } else if (input === null || typeof input === 'undefined' || isNaN(input) && !input.length) {
       input = '';
     }
-
     return String(input);
   };
 
+  // IPv4 Segment
   var v4Seg = '(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])';
   var v4Str = "(".concat(v4Seg, "[.]){3}").concat(v4Seg);
-  var IPv4Reg = new RegExp("^".concat(v4Str, "$")); // IPv6 Segment
+  var IPv4Reg = new RegExp("^".concat(v4Str, "$"));
 
+  // IPv6 Segment
   var v6Seg = '(?:[0-9a-fA-F]{1,4})';
   var IPv6Reg = new RegExp('^(' + "(?:".concat(v6Seg, ":){7}(?:").concat(v6Seg, "|:)|") + "(?:".concat(v6Seg, ":){6}(?:").concat(v4Str, "|:").concat(v6Seg, "|:)|") + "(?:".concat(v6Seg, ":){5}(?::").concat(v4Str, "|(:").concat(v6Seg, "){1,2}|:)|") + "(?:".concat(v6Seg, ":){4}(?:(:").concat(v6Seg, "){0,1}:").concat(v4Str, "|(:").concat(v6Seg, "){1,3}|:)|") + "(?:".concat(v6Seg, ":){3}(?:(:").concat(v6Seg, "){0,2}:").concat(v4Str, "|(:").concat(v6Seg, "){1,4}|:)|") + "(?:".concat(v6Seg, ":){2}(?:(:").concat(v6Seg, "){0,3}:").concat(v4Str, "|(:").concat(v6Seg, "){1,5}|:)|") + "(?:".concat(v6Seg, ":){1}(?:(:").concat(v6Seg, "){0,4}:").concat(v4Str, "|(:").concat(v6Seg, "){1,6}|:)|") + "(?::((?::".concat(v6Seg, "){0,5}:").concat(v4Str, "|(?::").concat(v6Seg, "){1,7}|:))") + ')(%[0-9a-zA-Z-.:]{1,})?$');
+
   /**
    * IPV4验证
    * */
-
   var isIPv4 = function isIPv4(s) {
     return IPv4Reg.test(s);
   };
+
   /**
    * IPV6验证
    * */
-
   var isIPv6 = function isIPv6(s) {
     return IPv6Reg.test(s);
   };
   /**
    * IPV4 & IPV6验证
    * */
-
   var isIP = function isIP(s) {
     if (isIPv4(s)) return 4;
     if (isIPv6(s)) return 6;
@@ -1021,7 +926,6 @@
   /**
    * 域名格式校验 - 错误提示消息.
    * */
-
   var errorCodes = {
     zh: {
       DOMAIN_IS_EMPTY: '校验内容为空',
@@ -1056,11 +960,11 @@
       TLD_INVALID_CHARS: 'TLD format error'
     }
   };
+
   /**
    * 域名格式校验 - 默认配置参数
    *
    * */
-
   var default_fqdn_options = {
     // 是否包含TLD
     require_tld: true,
@@ -1073,64 +977,55 @@
     // 是否允许配符 *
     allow_wildcard: false
   };
+
   /**
    * 域名格式校验
    * FQDN：(Fully Qualified Domain Name)全限定域名：同时带有主机名和域名的名称。（通过符号“.”）
    * 例如：主机名是bigserver,域名是mycompany.com,那么FQDN就是bigserver.mycompany.com。 [1]
    * str: m.zdns.cn || zdns.cn. || h.m.zdns.cn.
    * */
-
   function isFQDN(str) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var lang = arguments.length > 2 ? arguments[2] : undefined;
     var errorMessage = errorCodes[setErrorCodeLang(lang)];
-
     if (typeof str !== 'string') {
       return {
         success: false,
         message: errorMessage.DOMAIN_FORMAT_ERROR
       };
     }
-
     str = filterStringSpace(str, {
       filterAll: true
     });
     options = _objectSpread2(_objectSpread2({}, default_fqdn_options), options);
     console.log(options);
-
     if (!str) {
       return {
         success: false,
         message: errorMessage.DOMAIN_IS_EMPTY
       };
     }
-
     var len = str.length;
-
     if (len > 255) {
       return {
         success: false,
         message: errorMessage.DOMAIN_TOO_LONG
       };
     }
+
     /* Remove the optional trailing dot before checking validity */
-
-
     if (options.allow_trailing_dot && str[len - 1] === '.') {
       str = str.substring(0, len - 1);
     }
+
     /* Remove the optional wildcard before checking validity */
-
-
     if (options.allow_wildcard && str.indexOf('*.') === 0) {
       str = str.substring(2);
     }
-
     var nodes = str.split('.');
     console.log(nodes);
     var node_len = nodes.length;
     var max_node = 127;
-
     if (options.require_tld) {
       // disallow fqdns without tld
       if (node_len < 2) {
@@ -1140,23 +1035,20 @@
           message: errorMessage.DOMAIN_FORMAT_ERROR
         };
       }
-
       if (node_len > max_node) {
         return {
           success: false,
           message: errorMessage.DOMAIN_FORMAT_ERROR
         };
       }
-
-      var tld = nodes[node_len - 1]; // reject numeric TLDs
-
+      var tld = nodes[node_len - 1];
+      // reject numeric TLDs
       if (!options.allow_numeric_tld && /^\d+$/.test(tld)) {
         return {
           success: false,
           message: errorMessage.TLD_WITH_NUMBER
         };
       }
-
       if (!/^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{2,}|xn[a-z0-9-]{2,})$/i.test(tld)) {
         return {
           success: false,
@@ -1171,50 +1063,46 @@
         };
       }
     }
-
     for (var i = 0; i < node_len; i++) {
       var label = nodes[i];
       console.log(label);
-
       if (label.length > 63) {
         return {
           success: false,
           message: errorMessage.LABEL_TOO_LONG
         };
-      } // \u4E00-\u9FA5 \u00a1-\uffff
-
-
+      }
+      // \u4E00-\u9FA5 \u00a1-\uffff
       if (!/^[a-z_\u00a1-\uffff0-9-]+$/i.test(label)) {
         return {
           success: false,
           message: errorMessage.LABEL_INVALID_CHARS
         };
-      } // disallow full-width chars
+      }
 
-
+      // disallow full-width chars
       if (/[\uff01-\uff5e]/.test(label)) {
         return {
           success: false,
           message: errorMessage.LABEL_INVALID_CHARS
         };
-      } // disallow node starting or ending with hyphen
+      }
 
-
+      // disallow node starting or ending with hyphen
       if (/^-|-$/.test(label)) {
         return {
           success: false,
           message: errorMessage.LABEL_WITH_HYPHEN
         };
       }
-
       if (!options.allow_underscores && /_/.test(label)) {
         return {
           success: false,
           message: errorMessage.LABEL_WITH_UNDERSCORES
         };
-      } // disallow node ending with _
+      }
 
-
+      // disallow node ending with _
       if (/_$/.test(label)) {
         return {
           success: false,
@@ -1222,7 +1110,6 @@
         };
       }
     }
-
     return {
       success: true,
       message: ''
@@ -1232,7 +1119,6 @@
   /**
    * 域名合法性校验
    * */
-
   var isDomain = function isDomain(str) {
     return isFQDN(str, {
       require_tld: true,
@@ -1253,12 +1139,10 @@
    * @param[min] 最小值
    * @param[max] 最大值
    * */
-
   var isInRange = function isInRange(str, min, max) {
     if (!isNumber(str)) {
       return false;
     }
-
     var val = Number(str);
     return val >= min && val <= max;
   };
@@ -1266,7 +1150,6 @@
   /**
    * 端口号校验
    * */
-
   var isPort = function isPort(str) {
     return isInRange(str, 1, 65535);
   };
@@ -1281,12 +1164,10 @@
    *  TTL：为缓存时间，数值越小，修改记录各地生效时间越快，默认为10分钟。
    *
    * */
-
   var isMX = function isMX(str) {
     if (!str) {
       return false;
     }
-
     return isDomain(str);
   };
 
@@ -1303,6 +1184,7 @@
   /**
    * TXT记录，一般指某个主机名或域名的标识和说明。如：admin IN TXT "管理员, 电话：XXXXXXXXXXX"，mail IN TXT "邮件主机，存放在xxx , 管理人：AAA"，Jim IN TXT "contact: abc@mailserver.com"，也就是说，通过设置TXT记录内容可以使别人更方便地联系到你。TXT 记录常用的方式还有做 SPF 记录（反垃圾邮件）和SSL证书的DNS验证等。
    * */
+
   var isTXT = function isTXT(str) {
     return str.length > 255;
   };
@@ -1316,7 +1198,6 @@
    *  TTL：为缓存时间，数值越小，修改记录各地生效时间越快，默认为10分钟。
    *
    * */
-
   var isNS = function isNS(str) {
     return isDomain(str);
   };
@@ -1333,8 +1214,9 @@
    * --------> iodef：CA可以将违规的颁发记录URL发送给某个电子邮箱。
    * ------> [value]： CA的域名或用于违规通知的电子邮箱。
    */
-  // （如：0 issue "symantec.com"）
 
+  // （如：0 iodef "mailto:admin@dns-example.com"）
+  // （如：0 issue "symantec.com"）
   var isCAA = function isCAA(str) {
     var caaValueRegex = /^"[\w-:./@]{1,255}"$/;
     var caaTags = ['issue', 'issuewild', 'iodef'];
@@ -1353,7 +1235,6 @@
    *  TTL：为缓存时间，数值越小，修改记录各地生效时间越快，默认为10分钟。
 
    * */
-
   var isSRV = function isSRV(str) {
     var values = utilStringToArray(str);
     return values.length === 4 && isInRange(values[0], 0, 65535) && isInRange(values[1], 0, 65535) && isPort(values[2]) && isDomain(values[3]);
@@ -1368,7 +1249,6 @@
    *  TTL：为缓存时间，数值越小，修改记录各地生效时间越快，默认为10分钟。
    *
    * */
-
   var isA = function isA(str) {
     return isIPv4(str);
   };
@@ -1382,7 +1262,6 @@
    * TTL：为缓存时间，数值越小，修改记录各地生效时间越快，默认为10分钟。
    *
    * */
-
   var isAAAA = function isAAAA(str) {
     return isIPv6(str);
   };
@@ -1406,12 +1285,12 @@
    *
    * */
   exports.EnumRecordType = void 0;
+
   /**
    * 域名解析记录公共校验
    * @param[str] 校验值
    * @param[type] 校验类型
    * */
-
   (function (EnumRecordType) {
     EnumRecordType["A"] = "A";
     EnumRecordType["AAAA"] = "AAAA";
@@ -1422,37 +1301,27 @@
     EnumRecordType["SRV"] = "SRV";
     EnumRecordType["TXT"] = "TXT";
   })(exports.EnumRecordType || (exports.EnumRecordType = {}));
-
   var isRdata = function isRdata(str, type) {
     if (typeof str !== "string") {
       return false;
     }
-
     switch (type.toUpperCase()) {
       case exports.EnumRecordType.A:
         return isA(str);
-
       case exports.EnumRecordType.AAAA:
         return isAAAA(str);
-
       case exports.EnumRecordType.CAA:
         return isCAA(str);
-
       case exports.EnumRecordType.CNAME:
         return isCNAME(str);
-
       case exports.EnumRecordType.MX:
         return isMX(str);
-
       case exports.EnumRecordType.NS:
         return isNS(str);
-
       case exports.EnumRecordType.SRV:
         return isSRV(str);
-
       case exports.EnumRecordType.TXT:
         return isTXT(str);
-
       default:
         return false;
     }
@@ -1461,7 +1330,6 @@
   /**
    * 主机合法性校验
    * */
-
   var isHost = function isHost(str) {
     var specialHosts = '@';
     return str.indexOf(specialHosts) > -1 || isFQDN(str, {
@@ -1486,20 +1354,18 @@
    *  3 . 当localdns本地缓存的时间到期后，就会清除该解析记录的缓存结果，清除后，如果各地localdns再接收到此域名的解析请求查询，则会重新向权威DNS（例如云解析DNS）发起解析请求查询，获取最新的解析结果。
    *
    *  */
-
   var isTTL = function isTTL(str, maxTTL) {
     if (!isNumber(str)) {
       return false;
     }
-
     if (isNumber(str)) {
       var ttl = Number(str);
       return ttl > 0 && ttl <= maxTTL;
     }
-
     return false;
   };
 
+  // is zone
   var isZone = function isZone(str) {
     var rootZone = '.';
     return rootZone === str || isDomain(str);
@@ -1510,15 +1376,12 @@
    * @param[str] any 银行卡
    * description： 15位或者16位或者19位
    * */
-
   var IsBankCard = function IsBankCard(str) {
     // 建行16、19，农行19，工行19、交通17、民生16、兴业18、招行12、16、19
     var reg = /^([1-9]{1})(\d{11}|\d{15}|\d{16}|\d{17}|\d{18})$/;
-
     if (!isValidParamsTypes(str)) {
       return false;
     }
-
     return reg.test(str);
   };
 
@@ -1528,20 +1391,15 @@
    * @param[extend]: 是否支持拓展
    * @param[trueBooleans]: 拓展布尔值
    * */
-
   var isBooleanTrue = function isBooleanTrue(str, extend) {
     var trueBooleans = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : ['yes', 'true', '1'];
-
     var type_str = _typeof(str);
-
     if (type_str === 'boolean') {
       return str;
     }
-
     if (!isValidParamsTypes(str)) {
       return false;
     }
-
     if (extend) {
       str = "".concat(str).toLowerCase();
       return trueBooleans.includes(str);
@@ -1553,15 +1411,14 @@
    *@param[str] any 字符串
    *@param[option] 参数 {min: number, max:number}
    * */
+
   function isByteLength(str, options) {
     if (typeof str !== "string") {
       return false;
     }
-
     str += '';
     var min;
     var max;
-
     if (_typeof(options) === 'object') {
       min = options.min || 0;
       max = options.max;
@@ -1570,7 +1427,6 @@
       min = arguments[1];
       max = arguments[2];
     }
-
     var len = encodeURI(str).split(/%..|./).length - 1;
     return len >= min && (typeof max === 'undefined' || len <= max);
   }
@@ -1597,31 +1453,24 @@
    * 信用卡格式验证
    * @param[str] 校验字符串
    * */
-
   function isCreditCard(str) {
     if (typeof str !== "string") {
       return false;
     }
-
     str += str;
     var sanitized = str.replace(/[- ]+/g, '');
-
     if (!creditCard.test(sanitized)) {
       return false;
     }
-
     var sum = 0;
     var digit;
     var tmpNum;
     var shouldDouble;
-
     for (var i = sanitized.length - 1; i >= 0; i--) {
       digit = sanitized.substring(i, i + 1);
       tmpNum = parseInt(digit, 10);
-
       if (shouldDouble) {
         tmpNum *= 2;
-
         if (tmpNum >= 10) {
           sum += tmpNum % 10 + 1;
         } else {
@@ -1630,10 +1479,8 @@
       } else {
         sum += tmpNum;
       }
-
       shouldDouble = !shouldDouble;
     }
-
     return !!(sum % 10 === 0 ? sanitized : false);
   }
 
@@ -1645,9 +1492,8 @@
   var isEmail = function isEmail(str) {
     if (typeof str !== "string") {
       return false;
-    } // 用户名@主机名”
-
-
+    }
+    // 用户名@主机名”
     var reg = /^(?!.*?[._-]{2})[a-z0-9][a-z0-9._-]{0,62}[a-z0-9]@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]{2,63}$/i;
     return reg.test(str);
   };
@@ -1658,11 +1504,9 @@
    * */
   var isEthereumAddress = function isEthereumAddress(str) {
     var ethReg = /^(0x)[0-9a-f]{40}$/i;
-
     if (typeof str !== "string") {
       return false;
     }
-
     str += '';
     return ethReg.test(str);
   };
@@ -1684,19 +1528,19 @@
    * @param[options] 参数
    *
    * */
-
   function isInt(str, options) {
     if (!isValidParamsTypes(str)) {
       return false;
     }
-
     var int = /^(?:[-+]?(?:0|[1-9][0-9]*))$/;
     var intLeadingZeroes = /^[-+]?[0-9]+$/;
-    options = options || {}; // Get the regex to use for testing, based on whether
+    options = options || {};
+
+    // Get the regex to use for testing, based on whether
     // leading zeroes are allowed or not.
+    var regex = options.hasOwnProperty('allow_leading_zeroes') && !options.allow_leading_zeroes ? int : intLeadingZeroes;
 
-    var regex = options.hasOwnProperty('allow_leading_zeroes') && !options.allow_leading_zeroes ? int : intLeadingZeroes; // Check min/max/lt/gt
-
+    // Check min/max/lt/gt
     var minCheckPassed = !options.hasOwnProperty('min') || typeof options.min !== 'undefined' && str >= options.min;
     var maxCheckPassed = !options.hasOwnProperty('max') || typeof options.max !== 'undefined' && str <= options.max;
     var ltCheckPassed = !options.hasOwnProperty('lt') || typeof options.lt !== 'undefined' && str < options.lt;
@@ -1724,7 +1568,6 @@
         10: 3,
         11: 0
       };
-
       if (str != null && str.length === 11 && isInt(str, {
         allow_leading_zeroes: true
       })) {
@@ -1734,12 +1577,10 @@
         }, 0);
         var modulo = sum % 10;
         var lastDigit = Number(str.charAt(str.length - 1));
-
         if (modulo === 0 && lastDigit === 0 || lastDigit === 10 - modulo) {
           return true;
         }
       }
-
       return false;
     },
     ES: function ES(str) {
@@ -1749,19 +1590,22 @@
         Y: 1,
         Z: 2
       };
-      var controlDigits = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E']; // sanitize user input
+      var controlDigits = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E'];
 
-      var sanitized = str.trim().toUpperCase(); // validate the data structure
+      // sanitize user input
+      var sanitized = str.trim().toUpperCase();
 
+      // validate the data structure
       if (!DNI.test(sanitized)) {
         return false;
-      } // validate the control digit
+      }
 
-
+      // validate the control digit
       var number = sanitized.slice(0, -1).replace(/[X,Y,Z]/g, function (char) {
         return charsValue[char];
-      }); // @ts-ignore
+      });
 
+      // @ts-ignore
       return sanitized.endsWith(controlDigits[number % 23]);
     },
     FI: function FI(str) {
@@ -1769,11 +1613,9 @@
       if (str.length !== 11) {
         return false;
       }
-
       if (!str.match(/^\d{6}[\-A\+]\d{3}[0-9ABCDEFHJKLMNPRSTUVWXY]{1}$/)) {
         return false;
       }
-
       var checkDigits = '0123456789ABCDEFHJKLMNPRSTUVWXY';
       var idAsNumber = parseInt(str.slice(0, 6), 10) * 1000 + parseInt(str.slice(7, 10), 10);
       var remainder = idAsNumber % 31;
@@ -1781,18 +1623,21 @@
       return checkDigit === str.slice(10, 11);
     },
     IN: function IN(str) {
-      var DNI = /^[1-9]\d{3}\s?\d{4}\s?\d{4}$/; // multiplication table
+      var DNI = /^[1-9]\d{3}\s?\d{4}\s?\d{4}$/;
 
-      var d = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 2, 3, 4, 0, 6, 7, 8, 9, 5], [2, 3, 4, 0, 1, 7, 8, 9, 5, 6], [3, 4, 0, 1, 2, 8, 9, 5, 6, 7], [4, 0, 1, 2, 3, 9, 5, 6, 7, 8], [5, 9, 8, 7, 6, 0, 4, 3, 2, 1], [6, 5, 9, 8, 7, 1, 0, 4, 3, 2], [7, 6, 5, 9, 8, 2, 1, 0, 4, 3], [8, 7, 6, 5, 9, 3, 2, 1, 0, 4], [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]]; // permutation table
+      // multiplication table
+      var d = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 2, 3, 4, 0, 6, 7, 8, 9, 5], [2, 3, 4, 0, 1, 7, 8, 9, 5, 6], [3, 4, 0, 1, 2, 8, 9, 5, 6, 7], [4, 0, 1, 2, 3, 9, 5, 6, 7, 8], [5, 9, 8, 7, 6, 0, 4, 3, 2, 1], [6, 5, 9, 8, 7, 1, 0, 4, 3, 2], [7, 6, 5, 9, 8, 2, 1, 0, 4, 3], [8, 7, 6, 5, 9, 3, 2, 1, 0, 4], [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]];
 
-      var p = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 5, 7, 6, 2, 8, 3, 0, 9, 4], [5, 8, 0, 3, 7, 9, 6, 1, 4, 2], [8, 9, 1, 6, 0, 4, 3, 5, 2, 7], [9, 4, 5, 3, 1, 2, 6, 8, 7, 0], [4, 2, 8, 6, 5, 7, 3, 9, 0, 1], [2, 7, 9, 3, 8, 0, 6, 4, 1, 5], [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]]; // sanitize user input
+      // permutation table
+      var p = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 5, 7, 6, 2, 8, 3, 0, 9, 4], [5, 8, 0, 3, 7, 9, 6, 1, 4, 2], [8, 9, 1, 6, 0, 4, 3, 5, 2, 7], [9, 4, 5, 3, 1, 2, 6, 8, 7, 0], [4, 2, 8, 6, 5, 7, 3, 9, 0, 1], [2, 7, 9, 3, 8, 0, 6, 4, 1, 5], [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]];
 
-      var sanitized = str.trim(); // validate the data structure
+      // sanitize user input
+      var sanitized = str.trim();
 
+      // validate the data structure
       if (!DNI.test(sanitized)) {
         return false;
       }
-
       var c = 0;
       var invertedArray = sanitized.replace(/\s/g, '').split('').map(Number).reverse();
       invertedArray.forEach(function (val, i) {
@@ -1806,26 +1651,24 @@
       if (parseInt(str.substr(3, 6), 10) === 0) return false;
       var lastNumber = parseInt(str.substr(9, 1), 10);
       var sum = 0;
-
       for (var i = 0; i < 9; i++) {
         sum += parseInt(str.substr(i, 1), 10) * (10 - i);
       }
-
       sum %= 11;
       return sum < 2 && lastNumber === sum || sum >= 2 && lastNumber === 11 - sum;
     },
     IT: function IT(str) {
       if (str.length !== 9) return false;
       if (str === 'CA00000AA') return false; // https://it.wikipedia.org/wiki/Carta_d%27identit%C3%A0_elettronica_italiana
-
       return str.search(/C[A-Z]\d{5}[A-Z]{2}/i) > -1;
     },
     NO: function NO(str) {
       var sanitized = str.trim();
       if (isNaN(Number(sanitized))) return false;
       if (sanitized.length !== 11) return false;
-      if (sanitized === '00000000000') return false; // https://no.wikipedia.org/wiki/F%C3%B8dselsnummer
+      if (sanitized === '00000000000') return false;
 
+      // https://no.wikipedia.org/wiki/F%C3%B8dselsnummer
       var f = sanitized.split('').map(Number);
       var k1 = (11 - (3 * f[0] + 7 * f[1] + 6 * f[2] + 1 * f[3] + 8 * f[4] + 9 * f[5] + 4 * f[6] + 5 * f[7] + 2 * f[8]) % 11) % 11;
       var k2 = (11 - (5 * f[0] + 4 * f[1] + 3 * f[2] + 2 * f[3] + 7 * f[4] + 6 * f[5] + 5 * f[6] + 4 * f[7] + 3 * f[8] + 2 * k1) % 11) % 11;
@@ -1833,14 +1676,13 @@
       return true;
     },
     TH: function TH(str) {
-      if (!str.match(/^[1-8]\d{12}$/)) return false; // validate check digit
+      if (!str.match(/^[1-8]\d{12}$/)) return false;
 
+      // validate check digit
       var sum = 0;
-
       for (var i = 0; i < 12; i++) {
         sum += parseInt(str[i], 10) * (13 - i);
       }
-
       return str[12] === ((11 - sum % 11) % 10).toString();
     },
     LK: function LK(str) {
@@ -1850,21 +1692,20 @@
       return false;
     },
     'he-IL': function heIL(str) {
-      var DNI = /^\d{9}$/; // sanitize user input
+      var DNI = /^\d{9}$/;
 
-      var sanitized = str.trim(); // validate the data structure
+      // sanitize user input
+      var sanitized = str.trim();
 
+      // validate the data structure
       if (!DNI.test(sanitized)) {
         return false;
       }
-
       var id = sanitized;
       var sum = 0,
-          incNum;
-
+        incNum;
       for (var i = 0; i < id.length; i++) {
         incNum = Number(id[i]) * (i % 2 + 1); // Multiply number by 1 or 2
-
         sum += incNum > 9 ? incNum - 9 : incNum; // Sum the digits up and add to total
       }
 
@@ -1872,102 +1713,133 @@
     },
     'ar-LY': function arLY(str) {
       // Libya National Identity Number NIN is 12 digits, the first digit is either 1 or 2
-      var NIN = /^(1|2)\d{11}$/; // sanitize user input
+      var NIN = /^(1|2)\d{11}$/;
 
-      var sanitized = str.trim(); // validate the data structure
+      // sanitize user input
+      var sanitized = str.trim();
 
+      // validate the data structure
       if (!NIN.test(sanitized)) {
         return false;
       }
-
       return true;
     },
     'ar-TN': function arTN(str) {
-      var DNI = /^\d{8}$/; // sanitize user input
+      var DNI = /^\d{8}$/;
 
-      var sanitized = str.trim(); // validate the data structure
+      // sanitize user input
+      var sanitized = str.trim();
 
+      // validate the data structure
       if (!DNI.test(sanitized)) {
         return false;
       }
-
       return true;
     },
     'zh-CN': function zhCN(str) {
-      var provincesAndCities = ['11', // 北京
-      '12', // 天津
-      '13', // 河北
-      '14', // 山西
-      '15', // 内蒙古
-      '21', // 辽宁
-      '22', // 吉林
-      '23', // 黑龙江
-      '31', // 上海
-      '32', // 江苏
-      '33', // 浙江
-      '34', // 安徽
-      '35', // 福建
-      '36', // 江西
-      '37', // 山东
-      '41', // 河南
-      '42', // 湖北
-      '43', // 湖南
-      '44', // 广东
-      '45', // 广西
-      '46', // 海南
-      '50', // 重庆
-      '51', // 四川
-      '52', // 贵州
-      '53', // 云南
-      '54', // 西藏
-      '61', // 陕西
-      '62', // 甘肃
-      '63', // 青海
-      '64', // 宁夏
-      '65', // 新疆
-      '71', // 台湾
-      '81', // 香港
-      '82', // 澳门
+      var provincesAndCities = ['11',
+      // 北京
+      '12',
+      // 天津
+      '13',
+      // 河北
+      '14',
+      // 山西
+      '15',
+      // 内蒙古
+      '21',
+      // 辽宁
+      '22',
+      // 吉林
+      '23',
+      // 黑龙江
+      '31',
+      // 上海
+      '32',
+      // 江苏
+      '33',
+      // 浙江
+      '34',
+      // 安徽
+      '35',
+      // 福建
+      '36',
+      // 江西
+      '37',
+      // 山东
+      '41',
+      // 河南
+      '42',
+      // 湖北
+      '43',
+      // 湖南
+      '44',
+      // 广东
+      '45',
+      // 广西
+      '46',
+      // 海南
+      '50',
+      // 重庆
+      '51',
+      // 四川
+      '52',
+      // 贵州
+      '53',
+      // 云南
+      '54',
+      // 西藏
+      '61',
+      // 陕西
+      '62',
+      // 甘肃
+      '63',
+      // 青海
+      '64',
+      // 宁夏
+      '65',
+      // 新疆
+      '71',
+      // 台湾
+      '81',
+      // 香港
+      '82',
+      // 澳门
       '91' // 国外
       ];
-      var powers = ['7', '9', '10', '5', '8', '4', '2', '1', '6', '3', '7', '9', '10', '5', '8', '4', '2'];
-      var parityBit = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2']; // @ts-ignore
 
+      var powers = ['7', '9', '10', '5', '8', '4', '2', '1', '6', '3', '7', '9', '10', '5', '8', '4', '2'];
+      var parityBit = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
+
+      // @ts-ignore
       var checkAddressCode = function checkAddressCode(addressCode) {
         return provincesAndCities.includes(addressCode);
       };
-
       var checkBirthDayCode = function checkBirthDayCode(birDayCode) {
         var yyyy = parseInt(birDayCode.substring(0, 4), 10);
         var mm = parseInt(birDayCode.substring(4, 6), 10);
         var dd = parseInt(birDayCode.substring(6), 10);
         var xdata = new Date(yyyy, mm - 1, dd);
-
         if (xdata > new Date()) {
-          return false; // eslint-disable-next-line max-len
+          return false;
+          // eslint-disable-next-line max-len
         } else if (xdata.getFullYear() === yyyy && xdata.getMonth() === mm - 1 && xdata.getDate() === dd) {
           return true;
         }
-
         return false;
       };
-
       var getParityBit = function getParityBit(idCardNo) {
         var id17 = idCardNo.substring(0, 17);
         var power = 0;
-
         for (var i = 0; i < 17; i++) {
           power += parseInt(id17.charAt(i), 10) * parseInt(powers[i], 10);
         }
-
         var mod = power % 11;
         return parityBit[mod];
       };
-
       var checkParityBit = function checkParityBit(idCardNo) {
         return getParityBit(idCardNo) === idCardNo.charAt(17).toUpperCase();
       };
-
       var check15IdCardNo = function check15IdCardNo(idCardNo) {
         var check = /^[1-9]\d{7}((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))\d{3}$/.test(idCardNo);
         if (!check) return false;
@@ -1979,7 +1851,6 @@
         if (!check) return false;
         return true;
       };
-
       var check18IdCardNo = function check18IdCardNo(idCardNo) {
         var check = /^[1-9]\d{5}[1-9]\d{3}((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))\d{3}(\d|x|X)$/.test(idCardNo);
         if (!check) return false;
@@ -1991,18 +1862,14 @@
         if (!check) return false;
         return checkParityBit(idCardNo);
       };
-
       var checkIdCardNo = function checkIdCardNo(idCardNo) {
         var check = /^\d{15}|(\d{17}(\d|x|X))$/.test(idCardNo);
         if (!check) return false;
-
         if (idCardNo.length === 15) {
           return check15IdCardNo(idCardNo);
         }
-
         return check18IdCardNo(idCardNo);
       };
-
       return checkIdCardNo(str);
     },
     'zh-TW': function zhTW(str) {
@@ -2035,22 +1902,22 @@
         Z: 33
       };
       var sanitized = str.trim().toUpperCase();
-      if (!/^[A-Z][0-9]{9}$/.test(sanitized)) return false; // @ts-ignore
+      if (!/^[A-Z][0-9]{9}$/.test(sanitized)) return false;
 
+      // @ts-ignore
       return Array.from(sanitized).reduce(function (sum, number, index) {
         if (index === 0) {
           var code = ALPHABET_CODES[number];
           return code % 10 * 9 + Math.floor(code / 10);
         }
-
         if (index === 9) {
           return (10 - sum % 10 - Number(number)) % 10 === 0;
         }
-
         return sum + Number(number) * (9 - index);
       }, 0);
     }
   };
+
   /*
   // 身份证
   export function validateIDCard(str) {
@@ -2064,14 +1931,11 @@
    * @param[str] any 证件号码
    * @param[locale] string 证件类型
    * */
-
   function isIdentityCard(str, locale) {
     if (!isValidParamsTypes(str)) {
       return false;
     }
-
     str = "".concat(str);
-
     if (locale in identityCardValidators) {
       return identityCardValidators[locale](str);
     } else if (locale === 'any') {
@@ -2079,16 +1943,13 @@
         // https://github.com/gotwarlost/istanbul/blob/master/ignoring-code-for-coverage.md#ignoring-code-for-coverage-purposes
         if (identityCardValidators.hasOwnProperty(key)) {
           var validator = identityCardValidators[key];
-
           if (validator(str)) {
             return true;
           }
         }
       }
-
       return false;
     }
-
     throw new Error("Invalid locale '".concat(locale, "'"));
   }
 
@@ -2097,50 +1958,41 @@
    * @param[str] imei
    * @param[allow_hyphens] boolean 允许连字符
    * */
-
   function isIMEI(str) {
     var allow_hyphens = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
     if (!isValidParamsTypes(str)) {
       return false;
     }
-
     str = "".concat(str);
     var imeiRegexWithoutHypens = /^[0-9]{15}$/;
-    var imeiRegexWithHypens = /^\d{2}-\d{6}-\d{6}-\d{1}$/; // default regex for checking imei is the one without hyphens
+    var imeiRegexWithHypens = /^\d{2}-\d{6}-\d{6}-\d{1}$/;
+    // default regex for checking imei is the one without hyphens
 
     var imeiRegex = imeiRegexWithoutHypens;
-
     if (allow_hyphens) {
       imeiRegex = imeiRegexWithHypens;
     }
-
     if (!imeiRegex.test(str)) {
       return false;
     }
-
     str = str.replace(/-/g, '');
     var sum = 0,
-        mul = 2,
-        l = 14;
-
+      mul = 2,
+      l = 14;
     for (var i = 0; i < l; i++) {
       var digit = str.substring(l - i - 1, l - i);
       var tp = parseInt(digit, 10) * mul;
-
       if (tp >= 10) {
         sum += tp % 10 + 1;
       } else {
         sum += tp;
       }
-
       if (mul === 1) {
         mul += 1;
       } else {
         mul -= 1;
       }
     }
-
     var chk = (10 - sum % 10) % 10;
     return chk === parseInt(str.substring(14, 15), 10);
   }
@@ -2150,18 +2002,14 @@
    * @param[str] 要判断的数据
    * @param[options] 匹配的数据
    * */
-
   function isIn(str, options) {
     if (!isValidParamsTypes(str)) {
       return false;
     }
-
     var i;
     var options_type = utilTypeOf(options);
-
     if (options_type === 'array') {
       var array = [];
-
       for (i in options) {
         // https://github.com/gotwarlost/istanbul/blob/master/ignoring-code-for-coverage.md#ignoring-code-for-coverage-purposes
         // istanbul ignore else
@@ -2169,14 +2017,12 @@
           array[i] = utilToString(options[i]);
         }
       }
-
       return array.indexOf(str) >= 0;
     } else if (options_type === 'object') {
       return options.hasOwnProperty(str);
     } else if (options_type === 'function') {
       return options.indexOf(str) >= 0;
     }
-
     return false;
   }
 
@@ -2185,13 +2031,12 @@
    * @param[str] 邮编
    * @param[locale] 邮编所属地
    * */
-
   function isPostalCode(str, locale) {
     if (!isValidParamsTypes(str)) {
       return false;
-    } // common patterns
+    }
 
-
+    // common patterns
     var threeDigit = /^\d{3}$/;
     var fourDigit = /^\d{4}$/;
     var fiveDigit = /^\d{5}$/;
@@ -2262,7 +2107,6 @@
       ZA: fourDigit,
       ZM: fiveDigit
     };
-
     if (locale in patterns) {
       return patterns[locale].test(str);
     } else if (locale === 'any') {
@@ -2271,16 +2115,13 @@
         // istanbul ignore else
         if (patterns.hasOwnProperty(key)) {
           var pattern = patterns[key];
-
           if (pattern.test(str)) {
             return true;
           }
         }
       }
-
       return false;
     }
-
     throw new Error("Invalid locale '".concat(locale, "'"));
   }
 
@@ -2308,15 +2149,14 @@
     pointsForContainingNumber: 10,
     pointsForContainingSymbol: 10
   };
+
   /* Counts number of occurrences of each char in a string
    * could be moved to util/ ?
   */
-
   function countChars(str) {
     var result = {};
     Array.from(str).forEach(function (char) {
       var curVal = result[char];
-
       if (curVal) {
         result[char] += 1;
       } else {
@@ -2325,8 +2165,8 @@
     });
     return result;
   }
-  /* Return information about a password */
 
+  /* Return information about a password */
 
   function analyzePassword(password) {
     var charMap = countChars(password);
@@ -2352,51 +2192,40 @@
     });
     return analysis;
   }
-
   function scorePassword(analysis, scoringOptions) {
     var points = 0;
     points += analysis.uniqueChars * scoringOptions.pointsPerUnique;
     points += (analysis.length - analysis.uniqueChars) * scoringOptions.pointsPerRepeat;
-
     if (analysis.lowercaseCount > 0) {
       points += scoringOptions.pointsForContainingLower;
     }
-
     if (analysis.uppercaseCount > 0) {
       points += scoringOptions.pointsForContainingUpper;
     }
-
     if (analysis.numberCount > 0) {
       points += scoringOptions.pointsForContainingNumber;
     }
-
     if (analysis.symbolCount > 0) {
       points += scoringOptions.pointsForContainingSymbol;
     }
-
     return points;
   }
+
   /**
    * 密码强度验证
    *
    * @param[str]  密码
    * @param[options]  验证参数
    * */
-
-
   function isStrongPassword(str, options) {
     if (!isValidParamsTypes(str)) {
       return false;
     }
-
     var analysis = analyzePassword(str);
-
     var new_options = _objectSpread2(_objectSpread2({}, defaultOptions), options);
-
     if (new_options.returnScore) {
       return scorePassword(analysis, new_options);
     }
-
     return analysis.length >= new_options.minLength && analysis.lowercaseCount >= new_options.minLowercase && analysis.uppercaseCount >= new_options.minUppercase && analysis.numberCount >= new_options.minNumbers && analysis.symbolCount >= new_options.minSymbols;
   }
 
@@ -2404,14 +2233,11 @@
    * 纳税人识别码 合法性验证
    * @param[str] any 识别码
    * */
-
   var isTaxpayerNo = function isTaxpayerNo(str) {
     var reg = /^[0-9A-Z]{15,18}$/i;
-
     if (!isValidParamsTypes(str)) {
       return false;
     }
-
     return reg.test(str);
   };
 
@@ -2449,59 +2275,46 @@
       validate_length: true
     };
     var wrapped_ipv6 = /^\[([^\]]+)\](?::([0-9]+))?$/;
-
     function isRegExp(obj) {
       return Object.prototype.toString.call(obj) === '[object RegExp]';
     }
-
     function checkHost(host, matches) {
       for (var i = 0; i < matches.length; i++) {
-        var match = matches[i]; // @ts-ignore
-
+        var match = matches[i];
+        // @ts-ignore
         if (host === match || isRegExp(match) && match.test(host)) {
           return true;
         }
       }
-
       return false;
     }
-
     if (typeof url !== "string") {
       return false;
     }
-
     if (!url || /[\s<>]/.test(url)) {
       return false;
     }
-
     if (url.indexOf('mailto:') === 0) {
       return false;
     }
-
     var new_options = _objectSpread2(_objectSpread2({}, options), default_url_options);
-
     if (options.validate_length && url.length >= 2083) {
       return false;
     }
-
     if (!options.allow_fragments && url.includes('#')) {
       return false;
     }
-
     if (!options.allow_query_components && (url.includes('?') || url.includes('&'))) {
       return false;
     }
-
     var protocol, auth, host, hostname, port, port_str, split, ipv6;
     split = url.split('#');
     url = split.shift();
     split = url.split('?');
     url = split.shift();
     split = url.split('://');
-
     if (split.length > 1) {
       protocol = split.shift().toLowerCase();
-
       if (new_options.require_valid_protocol && new_options.protocols.indexOf(protocol) === -1) {
         return false;
       }
@@ -2511,55 +2324,41 @@
       if (!new_options.allow_protocol_relative_urls) {
         return false;
       }
-
       split[0] = url.substr(2);
     }
-
     url = split.join('://');
-
     if (url === '') {
       return false;
     }
-
     split = url.split('/');
     url = split.shift();
-
     if (url === '' && !new_options.require_host) {
       return true;
     }
-
     split = url.split('@');
-
     if (split.length > 1) {
       if (new_options.disallow_auth) {
         return false;
       }
-
       if (split[0] === '') {
         return false;
       }
-
       auth = split.shift();
-
       if (auth.indexOf(':') >= 0 && auth.split(':').length > 2) {
         return false;
       }
-
       var _auth$split = auth.split(':'),
-          _auth$split2 = _slicedToArray(_auth$split, 2),
-          user = _auth$split2[0],
-          password = _auth$split2[1];
-
+        _auth$split2 = _slicedToArray(_auth$split, 2),
+        user = _auth$split2[0],
+        password = _auth$split2[1];
       if (user === '' && password === '') {
         return false;
       }
     }
-
     hostname = split.join('@');
     port_str = null;
     ipv6 = null;
     var ipv6_match = hostname.match(wrapped_ipv6);
-
     if (ipv6_match) {
       host = '';
       ipv6 = ipv6_match[1];
@@ -2567,30 +2366,24 @@
     } else {
       split = hostname.split(':');
       host = split.shift();
-
       if (split.length) {
         port_str = split.join(':');
       }
     }
-
     if (port_str !== null && port_str.length > 0) {
       port = parseInt(port_str, 10);
-
       if (!/^[0-9]+$/.test(port_str) || port <= 0 || port > 65535) {
         return false;
       }
     } else if (new_options.require_port) {
       return false;
     }
-
     if (new_options.host_whitelist) {
       return checkHost(host, new_options.host_whitelist);
     }
-
     if (!isIP(host) && !isFQDN(host, new_options) && (!ipv6 || !isIPv6(ipv6))) {
       return false;
     }
-
     host = host || ipv6;
     return !(new_options.host_blacklist && checkHost(host, new_options.host_blacklist));
   }
@@ -2600,7 +2393,6 @@
    * @param[str]  url
    * @param[version] uuid版本
    * */
-
   function isUUID(str, version) {
     var uuid = {
       1: /^[0-9A-F]{8}-[0-9A-F]{4}-1[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$/i,
@@ -2610,12 +2402,10 @@
       5: /^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
       all: /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i
     };
-
     if (!isValidParamsTypes(str)) {
       return false;
-    } // @ts-ignore
-
-
+    }
+    // @ts-ignore
     var pattern = uuid[![undefined, null].includes(version) ? version : 'all'];
     return !!pattern && pattern.test(str);
   }
