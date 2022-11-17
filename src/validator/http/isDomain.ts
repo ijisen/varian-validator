@@ -1,9 +1,10 @@
 import isFQDN from './isFQDN'
+import { isFQDNRes } from "./typings.d";
 
 /**
  * 域名合法性校验
  * */
-const isDomain = (str: string) => {
+const isDomain = (str: string): isFQDNRes => {
   return isFQDN(str, {
     require_tld: true,
     // 是否允许包含下划线
