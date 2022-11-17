@@ -6,6 +6,9 @@ import { specialSymbolToComma } from "./specialSymbolToComma";
  * @return [] Array
  * */
 export const inputTextareaFormat = (str: any) => {
+  if(typeof str !== "string") {
+    return []
+  }
   // 去除首尾空格
   str = str.trim();
   // 大写转小写
