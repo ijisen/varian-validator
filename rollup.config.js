@@ -42,7 +42,14 @@ export default [
         sourcemap: true
       }
     ],
-    plugins: plugins.js
+    plugins: [
+      ...plugins.js,
+      production && terser({
+        compress: {
+          drop_console: true
+        }
+      })
+    ]
   },
   {
     input: 'src/index.ts',
