@@ -1,4 +1,4 @@
-var version = "0.0.16";
+var version = "0.0.17";
 
 /**
  * 金额保留两位小数
@@ -190,7 +190,7 @@ declare const isNumber: (number: any, allowNegative?: boolean) => boolean;
  * Better way to handle type checking
  * null, {}, array and date are objects, which confuses
  */
-declare type EnumUtilTypeOf = 'undefined' | 'object' | 'array' | 'boolean' | 'number' | 'string' | 'function' | 'symbol' | 'bigint';
+type EnumUtilTypeOf = 'undefined' | 'object' | 'array' | 'boolean' | 'number' | 'string' | 'function' | 'symbol' | 'bigint';
 declare const utilTypeOf: (input: any) => EnumUtilTypeOf;
 
 /**
@@ -199,7 +199,7 @@ declare const utilTypeOf: (input: any) => EnumUtilTypeOf;
  * @param[types] [any] 支持参数类型, 默认支持 ['string', 'number']
  * */
 
-declare type ValidParamsDefaultTypes = Array<EnumUtilTypeOf>;
+type ValidParamsDefaultTypes = Array<EnumUtilTypeOf>;
 declare const isValidParamsTypes: (str: any, types?: ValidParamsDefaultTypes) => boolean | undefined;
 
 /**
@@ -554,8 +554,8 @@ declare function isStrongPassword(str: any, options?: Partial<IsStrongPasswordOp
  * */
 declare const isTaxpayerNo: (str: any) => boolean;
 
-declare type TProtocols = Array<'http' | 'https' | 'ftp'>;
-declare type TCheckHostMatches = Array<string | RegExp>;
+type TProtocols = Array<'http' | 'https' | 'ftp'>;
+type TCheckHostMatches = Array<string | RegExp>;
 interface IIsURLDefaultUrlOptions {
     protocols: TProtocols;
     require_tld: boolean;
