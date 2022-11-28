@@ -19,7 +19,7 @@ export const setLocalStorage = (name: string, data: any) => {
  * @return any  获取到的值
  */
 export const getLocalStorage = (name: string) => {
-  if(!name) return false;
+  if(!name) return undefined;
   const value = window.localStorage.getItem(name);
   try {
     return JSON.parse(<string>value)

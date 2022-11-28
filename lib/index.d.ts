@@ -1,4 +1,4 @@
-var version = "0.0.17";
+var version = "0.0.18";
 
 /**
  * 金额保留两位小数
@@ -228,7 +228,7 @@ declare const removeLocalStorage: (name: string) => boolean;
  * @param[data] session值
  * @return boolean  储存成功与否
  */
-declare const setSessionStorage: (name: string, data: any) => boolean;
+declare const setSessionStorage: (name: string, data: any) => true | undefined;
 /**
  * 获取 sessionStorage
  * @param[name] session关键字

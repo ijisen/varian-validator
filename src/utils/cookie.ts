@@ -33,7 +33,7 @@ export const setCookie = (name:string, data: any, objHours: number) => {
  * @return any  获取到的值
  */
 export const getCookieValue = (name: string)=> {
-  if(!name) return false;
+  if(!name) return undefined;
   let prefix = name + "=";
   let start = document.cookie.indexOf(prefix);
 

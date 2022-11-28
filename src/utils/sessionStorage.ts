@@ -5,7 +5,7 @@
  * @return boolean  储存成功与否
  */
 export const setSessionStorage = (name: string, data: any) => {
-  if(!name) return false;
+  if(!name) return undefined;
   if(typeof data !== 'string') {
     data = JSON.stringify(data)
   }
