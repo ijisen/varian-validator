@@ -404,7 +404,7 @@ declare const isHost: (str: string) => true | isFQDNRes;
  *  3 . 当localdns本地缓存的时间到期后，就会清除该解析记录的缓存结果，清除后，如果各地localdns再接收到此域名的解析请求查询，则会重新向权威DNS（例如云解析DNS）发起解析请求查询，获取最新的解析结果。
  *
  *  */
-declare const isTTL: (str: string | number, maxTTL: 65535) => boolean;
+declare const isTTL: (str: string | number, min?: number, max?: number) => boolean;
 
 declare const isZone: (str: string) => true | isFQDNRes;
 

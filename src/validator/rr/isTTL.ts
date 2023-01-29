@@ -8,16 +8,20 @@ import { isNumber } from "@/utils/isNumber";
  *  3 . 当localdns本地缓存的时间到期后，就会清除该解析记录的缓存结果，清除后，如果各地localdns再接收到此域名的解析请求查询，则会重新向权威DNS（例如云解析DNS）发起解析请求查询，获取最新的解析结果。
  *
  *  */
-const isTTL = (str: string | number, maxTTL: 65535) => {
+const isTTL = (str: string | number, min = 0, max = 65535) => {
   if(!isNumber(str)) {
     return false;
   }
 
-  if(isNumber(str)) {
-    let ttl = Number(str);
-    return ttl > 0 && ttl <= maxTTL;
+  const ttl = Number(str);
+  const minTTL = 0;
+  const maxTTL = 65535;
+
+  if(ttl < minTTL || ttl > maxTTL) {
+    return false
   }
-  return false;
+
+  return ttl >= min && ttl <= max;
 };
 
 export default isTTL
