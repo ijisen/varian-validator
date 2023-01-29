@@ -363,7 +363,7 @@ declare function isFQDN(str: any, options?: Partial<IsFQDNConfig>, lang?: string
 /**
  * 域名合法性校验
  * */
-declare const isDomain: (str: string) => isFQDNRes;
+declare const isDomain: (str: string, lang?: string) => isFQDNRes;
 
 /**
  * 端口号校验
