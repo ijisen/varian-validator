@@ -8,14 +8,35 @@
  *  TTL：为缓存时间，数值越小，修改记录各地生效时间越快，默认为10分钟。
  *
  * */
-import isDomain from '../http/isDomain'
 
-const isMX = (str: string) => {
-  if(!str) {
-    return false
-  }
+import isDomain from '../http/isDomain';
+import filterStringSpace from "@/utils/filterStringSpace";
+import setErrorCodeLang from "@/utils/setErrorCodeLang";
+import { isFQDNRes } from "@/validator/http/typings.d";
 
-  return isDomain(str)
-
+/**
+ * Error codes and messages.
+ * */
+const errorCodes = {
+  zh: {
+    FORMAT_ERROR: 'MX记录的记录值为域名形式（如: abc.example.com）',
+  },
+  en: {
+    FORMAT_ERROR:
+      'The MX record value is in the domain name format (eg: abc.example.com).',
+  },
 };
+
+const isMX = (str: string, lang?: string): isFQDNRes => {
+  // 过滤全部空格
+  let regValue = filterStringSpace(str, true);
+  const error_code = errorCodes[setErrorCodeLang(lang)];
+  const { success } = isDomain(regValue, lang);
+  return {
+    success: success,
+    message: success ? '' : error_code.FORMAT_ERROR,
+    regValue,
+  };
+};
+
 export default isMX;

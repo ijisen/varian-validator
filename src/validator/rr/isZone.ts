@@ -1,9 +1,13 @@
 import isDomain from "../http/isDomain";
 
 // is zone
-const isZone = (str: string) => {
+const isZone = (str: string, lang?: string) => {
   const rootZone = '.';
-  return rootZone === str || isDomain(str);
+  if(rootZone === str) {
+    return true;
+  }
+  const { success } = isDomain(str, lang);
+  return success;
 };
 
 export default isZone

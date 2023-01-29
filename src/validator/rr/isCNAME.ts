@@ -1,5 +1,3 @@
-import isDomain from "../http/isDomain";
-
 /**
  * CNAME【别名解析 - Canonical Name】  => 将域名指向另外一个域名
  *  使用场景: 当需要将域名指向另一个域名，再由另一个域名提供 IP 地址，就需要添加 CNAME 记录，最常用到 CNAME 的场景包括做 CDN、企业邮箱、全局流量管理等。
@@ -10,8 +8,34 @@ import isDomain from "../http/isDomain";
  *
  * */
 
-const isCNAME = (str: string) => {
-  return isDomain(str)
-}
+import isDomain from '../http/isDomain';
+import filterStringSpace from "@/utils/filterStringSpace";
+import setErrorCodeLang from "@/utils/setErrorCodeLang";
+import { isFQDNRes } from "@/validator/http/typings.d";
+
+/**
+ * Error codes and messages.
+ * */
+const errorCodes = {
+  zh: {
+    FORMAT_ERROR: 'CNAME记录的记录值为域名形式（如: abc.example.com）',
+  },
+  en: {
+    FORMAT_ERROR:
+      'The Canonical Name value is in the domain name format (eg: abc.example.com).',
+  },
+};
+
+const isCNAME = (str: string, lang?: string): isFQDNRes => {
+  // 过滤全部空格
+  let regValue = filterStringSpace(str, true);
+  const { success } = isDomain(regValue, lang);
+  const error_code = errorCodes[setErrorCodeLang(lang)];
+  return {
+    success: success,
+    message: success ? '' : error_code.FORMAT_ERROR,
+    regValue,
+  };
+};
 
 export default isCNAME;

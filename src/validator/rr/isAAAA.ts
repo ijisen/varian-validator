@@ -7,10 +7,34 @@
  * TTL：为缓存时间，数值越小，修改记录各地生效时间越快，默认为10分钟。
  *
  * */
-import { isIPv6 } from "../http/IP";
+import filterStringSpace from "@/utils/filterStringSpace";
+import setErrorCodeLang from "@/utils/setErrorCodeLang";
+import { isIPv6 } from '../http/IP';
+import { isFQDNRes } from "@/validator/http/typings.d";
 
-const isAAAA = (str: string) => {
-  return isIPv6(str);
-
+/**
+ * Error codes and messages.
+ * */
+const errorCodes = {
+  zh: {
+    FORMAT_ERROR: 'AAAA记录的记录值为IPv6形式（如: ff03:0:0:0:0:0:0:c1）',
+  },
+  en: {
+    FORMAT_ERROR:
+      'The AAAA record value is in the IPv6 format (eg: ff03:0:0:0:0:0:0:c1).',
+  },
 };
-export default isAAAA
+
+const isAAAA = (str: string, lang?: string):isFQDNRes => {
+  // 过滤全部空格
+  let regValue = filterStringSpace(str);
+  const error_code = errorCodes[setErrorCodeLang(lang)];
+  const success = !!regValue && isIPv6(regValue);
+  return {
+    success,
+    message: success ? '' : error_code.FORMAT_ERROR,
+    regValue,
+  };
+};
+
+export default isAAAA;

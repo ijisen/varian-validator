@@ -10,20 +10,46 @@
  * --------> iodef：CA可以将违规的颁发记录URL发送给某个电子邮箱。
  * ------> [value]： CA的域名或用于违规通知的电子邮箱。
  */
-import isInRange from "../isInRange";
-import utilStringToArray from "../../utils/utilStringToArray";
+
+import filterStringSpace from "@/utils/filterStringSpace";
+import utilStringToArray from "@/utils/utilStringToArray";
+import setErrorCodeLang from "@/utils/setErrorCodeLang";
+import isInRange from "@/validator/isInRange";
+import { isFQDNRes } from "@/validator/http/typings.d";
+
+/**
+ * Error codes and messages.
+ * */
+const errorCodes = {
+  zh: {
+    FORMAT_ERROR: 'CAA记录的记录值为字符串形式, 如：0 issue "ca.example.com"',
+  },
+  en: {
+    FORMAT_ERROR:
+      'Specify your CAA Record value as a string, (eg: 0 issue "ca.example.com" ).',
+  },
+};
 
 // （如：0 iodef "mailto:admin@dns-example.com"）
 // （如：0 issue "symantec.com"）
-const isCAA = (str: any) => {
+const isCAA = (str: any, lang?: string):isFQDNRes => {
   const caaValueRegex = /^"[\w-:./@]{1,255}"$/;
   const caaTags = ['issue', 'issuewild', 'iodef'];
-  const values = utilStringToArray(str);
-  return (
+  // 过滤多余的空格文本
+  const regValue = filterStringSpace(str, true);
+  const values = utilStringToArray(regValue);
+  console.log(values);
+  const success =
     values.length === 3 &&
-    isInRange(values[0], 0, 255) &&
+    isInRange(values[0], 0, 128) &&
     caaTags.indexOf(values[1]) !== -1 &&
-    caaValueRegex.test(values[2])
-  );
+    caaValueRegex.test(values[2]);
+  const error_code = errorCodes[setErrorCodeLang(lang)];
+  return {
+    success,
+    message: success ? '' : error_code.FORMAT_ERROR,
+    regValue,
+  };
 };
-export default isCAA
+
+export default isCAA;

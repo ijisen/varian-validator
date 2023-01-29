@@ -11,6 +11,7 @@ import isSRV from "./isSRV";
 import isA from "@/validator/rr/isA";
 import isAAAA from "@/validator/rr/isAAAA";
 import isCNAME from "@/validator/rr/isCNAME";
+import { isFQDNRes } from "@/validator/http/typings";
 
 export const enum EnumRecordType {
   A = "A",
@@ -28,28 +29,27 @@ export const enum EnumRecordType {
  * @param[str] 校验值
  * @param[type] 校验类型
  * */
-export const isRdata = (str: any, type: EnumRecordType.A) => {
-  if(typeof str !== "string") {
-    return false
-  }
+export const isRdata = (str: any,
+                        type: EnumRecordType,
+                        lang?: string): isFQDNRes => {
   switch (type.toUpperCase()) {
     case EnumRecordType.A:
-      return isA(str);
+      return isA(str, lang);
     case EnumRecordType.AAAA:
-      return isAAAA(str);
+      return isAAAA(str, lang);
     case EnumRecordType.CAA:
-      return isCAA(str);
+      return isCAA(str, lang);
     case EnumRecordType.CNAME:
-      return isCNAME(str);
+      return isCNAME(str, lang);
     case EnumRecordType.MX:
-      return isMX(str);
+      return isMX(str, lang);
     case EnumRecordType.NS:
-      return isNS(str);
+      return isNS(str, lang);
     case EnumRecordType.SRV:
-      return isSRV(str);
+      return isSRV(str, lang);
     case EnumRecordType.TXT:
-      return isTXT(str);
+      return isTXT(str, {lang});
     default:
-      return false;
+      return { success: false, message: '未知记录类型！', regValue: str };
   }
 };

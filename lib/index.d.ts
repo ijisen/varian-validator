@@ -126,14 +126,11 @@ declare const escape: (str: any) => string | false;
  * 部分 ajax 响应数据为字符串，且包含转义字符，无法转成JSON
  *
  * @params[str] string
- * @params[options] {filterAll: boolean, returnType: boolean}
+ * @params[filterAllSpace] boolean
  * @return string
  * eg: aaa  aa  => aaa aa
  * */
-declare const filterStringSpace: (str: any, options?: {
-    filterAll?: boolean;
-    returnType?: boolean;
-}) => string;
+declare const filterStringSpace: (str: any, filterAllSpace?: boolean) => string;
 
 /**
  *  计算字符串长度
@@ -384,12 +381,17 @@ declare const enum EnumRecordType {
     SRV = "SRV",
     TXT = "TXT"
 }
+type IsRdataResTypeData = {
+    success: boolean;
+    message: string;
+    regValue?: any;
+};
 /**
  * 域名解析记录公共校验
  * @param[str] 校验值
  * @param[type] 校验类型
  * */
-declare const isRdata: (str: any, type: EnumRecordType.A) => boolean | isFQDNRes;
+declare const isRdata: (str: any, type: EnumRecordType, lang?: string) => IsRdataResTypeData;
 
 /**
  * 主机合法性校验
@@ -406,7 +408,7 @@ declare const isHost: (str: string) => true | isFQDNRes;
  *  */
 declare const isTTL: (str: any, min?: number, max?: number) => boolean;
 
-declare const isZone: (str: string) => true | isFQDNRes;
+declare const isZone: (str: string, lang?: string) => boolean;
 
 /**
  * 银行卡号合法性验证
@@ -587,4 +589,4 @@ declare function isURL(url: any, options: Partial<IIsURLDefaultUrlOptions>): boo
  * */
 declare function isUUID(str: any, version: any): any;
 
-export { EnumLanguageType, EnumRecordType, IAnalysisType, IIsURLDefaultUrlOptions, IsBankCard, IsByteLengthOptions, IsFQDNConfig, IsStrongPasswordOptions, arrayDataGrouping, dateFormatReg, debounce, deepClone, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistValue, isFQDN, isFQDNRes, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isPort, isPostalCode, isRdata, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, throttle, unescape, utilStringToArray, utilToString, utilTypeOf, utilsSubmitForm, version };
+export { EnumLanguageType, EnumRecordType, IAnalysisType, IIsURLDefaultUrlOptions, IsBankCard, IsByteLengthOptions, IsFQDNConfig, IsRdataResTypeData, IsStrongPasswordOptions, arrayDataGrouping, dateFormatReg, debounce, deepClone, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistValue, isFQDN, isFQDNRes, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isPort, isPostalCode, isRdata, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, throttle, unescape, utilStringToArray, utilToString, utilTypeOf, utilsSubmitForm, version };

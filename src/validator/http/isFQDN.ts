@@ -79,9 +79,7 @@ export default function isFQDN(
       message: errorMessage.DOMAIN_FORMAT_ERROR,
     };
   }
-  str = filterStringSpace(str, {
-    filterAll: true
-  });
+  str = filterStringSpace(str, true);
   options = {
     ...default_fqdn_options,
     ...options,

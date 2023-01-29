@@ -7,13 +7,41 @@
  *  TTL：为缓存时间，数值越小，修改记录各地生效时间越快，默认为10分钟。
  *
  * */
+import setErrorCodeLang from "@/utils/setErrorCodeLang";
+import { isFQDNRes } from "@/validator/http/typings.d";
 
 /**
- * TXT记录，一般指某个主机名或域名的标识和说明。如：admin IN TXT "管理员, 电话：XXXXXXXXXXX"，mail IN TXT "邮件主机，存放在xxx , 管理人：AAA"，Jim IN TXT "contact: abc@mailserver.com"，也就是说，通过设置TXT记录内容可以使别人更方便地联系到你。TXT 记录常用的方式还有做 SPF 记录（反垃圾邮件）和SSL证书的DNS验证等。
+ * TXT记录，一般指某个主机名或域名的标识和说明。
+ * 如：admin IN TXT "管理员, 电话：XXXXXXXXXXX"，mail IN TXT "邮件主机，存放在xxx , 管理人：AAA"，Jim IN TXT "contact: abc@mailserver.com"，也就是说，通过设置TXT记录内容可以使别人更方便地联系到你。TXT 记录常用的方式还有做 SPF 记录（反垃圾邮件）和SSL证书的DNS验证等。
  * */
 
-const isTXT = (str: string) => {
-  return str.length > 255;
+interface Default_Option {
+  min: number;
+  max: number;
+  lang: string;
 }
 
-export default isTXT
+/**
+ * Error codes and messages.
+ * */
+const errorCodes = {
+  zh: {
+    TOO_LONG: 'TXT记录值长度限制 255 个字符.',
+  },
+  en: {
+    TOO_LONG: 'The TXT record value must be 1 to 255 characters in length.',
+  },
+};
+
+const isTXT = (str: string, option: Partial<Default_Option> = {}): isFQDNRes => {
+  const min = option.min || 1;
+  const max = option.min || 255;
+  const error_code = errorCodes[setErrorCodeLang(option.lang)];
+  const success = !(str.length > max || str.length < min);
+  return {
+    success,
+    message: success ? '' : error_code.TOO_LONG,
+    regValue: str,
+  };
+};
+export default isTXT;

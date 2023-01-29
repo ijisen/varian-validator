@@ -2,6 +2,9 @@ import isDomain from "../http/isDomain";
 import isPort from "../http/isPort"
 import utilStringToArray from "../../utils/utilStringToArray";
 import isInRange from "../isInRange";
+import setErrorCodeLang from "@/utils/setErrorCodeLang";
+import filterStringSpace from "@/utils/filterStringSpace";
+import { isFQDNRes } from "@/validator/http/typings.d";
 
 
 /**
@@ -15,15 +18,54 @@ import isInRange from "../isInRange";
  *  TTL：为缓存时间，数值越小，修改记录各地生效时间越快，默认为10分钟。
 
  * */
-const isSRV = (str: string) => {
-  const values = utilStringToArray(str);
-  return (
-    values.length === 4 &&
-    isInRange(values[0], 0, 65535) &&
-    isInRange(values[1], 0, 65535) &&
-    isPort(values[2]) &&
-    isDomain(values[3])
-  );
+/**
+ * Error codes and messages.
+ * */
+
+const errorCodes = {
+  zh: {
+    FORMAT_ERROR:
+      'SRV记录格式为： 优先级 权重 端口 目标地址 ，每项中间需以空格分隔。例如 “0 5 5060 sipserver.example.com”。',
+  },
+  en: {
+    FORMAT_ERROR:
+      'The format of an SRV record is: [Priority] [Weight] [Port number] [Target address]. Separate the priority, weight, port number, and target address with spaces. Example: 0 5 5060 sipserver.example.com',
+  },
+};
+
+
+const isSRV = (str: string, lang?: string): isFQDNRes => {
+  // 过滤多余的空格文本
+  const regValue = filterStringSpace(str);
+  const values = utilStringToArray(regValue);
+  console.log(values);
+  const error_code = errorCodes[setErrorCodeLang(lang)];
+  if(values.length === 4) {
+    const priority = values[0];
+    const weight = values[1];
+    const port = values[2];
+    const domain = values[3];
+    console.log(`priority: ${priority}, weight: ${weight}, port: ${port}, domain: ${domain}`);
+    const { success } = isDomain(domain, lang);
+    // console.log(isInRange(priority, 0, 65535));
+    // console.log(isInRange(values[1], 0, 65535));
+    // console.log(isPort(values[2]));
+    const _success =
+      isInRange(priority, 0, 65535) &&
+      isInRange(weight, 0, 65535) &&
+      isPort(port) &&
+      success;
+    return {
+      success: _success,
+      message: _success ? '' : error_code.FORMAT_ERROR,
+      regValue,
+    };
+  }
+  return {
+    success: false,
+    message: error_code.FORMAT_ERROR,
+    regValue,
+  };
 };
 
 export default isSRV

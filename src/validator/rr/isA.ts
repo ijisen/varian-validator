@@ -7,10 +7,33 @@
  *  TTL：为缓存时间，数值越小，修改记录各地生效时间越快，默认为10分钟。
  *
  * */
-import { isIPv4 } from "../http/IP";
+import filterStringSpace from "@/utils/filterStringSpace";
+import setErrorCodeLang from "@/utils/setErrorCodeLang";
+import { isIPv4 } from '../http/IP';
+import { isFQDNRes } from "@/validator/http/typings.d";
 
-const isA = (str: string) => {
-  return isIPv4(str);
-
+/**
+ * Error codes and messages.
+ * */
+const errorCodes = {
+  zh: {
+    FORMAT_ERROR: 'A记录的记录值为IPv4形式（如: 10.10.10.10）',
+  },
+  en: {
+    FORMAT_ERROR: 'The A record value is in the IPv4 format (eg: 10.10.10.10).',
+  },
 };
-export default isA
+
+const isA = (str: string, lang?: string): isFQDNRes => {
+  // 过滤全部空格
+  let regValue = filterStringSpace(str);
+  let error_code = errorCodes[setErrorCodeLang(lang)];
+  const success = !!regValue && isIPv4(regValue);
+  return {
+    success,
+    message: success ? '' : error_code.FORMAT_ERROR,
+    regValue,
+  };
+};
+
+export default isA;
