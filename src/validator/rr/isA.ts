@@ -10,7 +10,7 @@
 import filterStringSpace from "@/utils/filterStringSpace";
 import setErrorCodeLang from "@/utils/setErrorCodeLang";
 import { isIPv4 } from '../http/IP';
-import { isFQDNRes } from "@/validator/http/typings.d";
+import { isFQDNRes } from "../http/typings.d";
 
 /**
  * Error codes and messages.

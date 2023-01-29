@@ -33,7 +33,7 @@ export { default as isPort } from './http/isPort';
  *
  * */
 // export type { EnumRecordType } from './rr/isRdata';
-export type { EnumRecordType, IsRdataResTypeData } from './rr/isRdata';
+export type { EnumRecordType } from './rr/isRdata';
 export { isRdata } from './rr/isRdata';
 export { default as isHost } from './rr/isHost';
 export { default as isTTL } from './rr/isTTL';

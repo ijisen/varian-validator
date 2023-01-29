@@ -1,4 +1,4 @@
-var version = "0.0.21";
+var version = "0.0.22";
 
 /**
  * 金额保留两位小数
@@ -346,7 +346,8 @@ interface IsFQDNConfig {
  *  */
 interface isFQDNRes {
   success: boolean;
-  message: string;
+  message?: string;
+  regValue?: any;
 }
 
 /**
@@ -371,6 +372,7 @@ declare const isPort: (str: any) => boolean;
  * 域名解析记录公共校验
  *
  * */
+
 declare const enum EnumRecordType {
     A = "A",
     AAAA = "AAAA",
@@ -381,22 +383,17 @@ declare const enum EnumRecordType {
     SRV = "SRV",
     TXT = "TXT"
 }
-type IsRdataResTypeData = {
-    success: boolean;
-    message: string;
-    regValue?: any;
-};
 /**
  * 域名解析记录公共校验
  * @param[str] 校验值
  * @param[type] 校验类型
  * */
-declare const isRdata: (str: any, type: EnumRecordType, lang?: string) => IsRdataResTypeData;
+declare const isRdata: (str: any, type: EnumRecordType, lang?: string) => isFQDNRes;
 
 /**
  * 主机合法性校验
  * */
-declare const isHost: (str: string) => true | isFQDNRes;
+declare const isHost: (str: string) => boolean;
 
 /**
  * TTL【Time-To-Live】 => 为缓存时间，数值越小，修改记录各地生效时间越快，默认为10分钟。
@@ -589,4 +586,4 @@ declare function isURL(url: any, options: Partial<IIsURLDefaultUrlOptions>): boo
  * */
 declare function isUUID(str: any, version: any): any;
 
-export { EnumLanguageType, EnumRecordType, IAnalysisType, IIsURLDefaultUrlOptions, IsBankCard, IsByteLengthOptions, IsFQDNConfig, IsRdataResTypeData, IsStrongPasswordOptions, arrayDataGrouping, dateFormatReg, debounce, deepClone, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistValue, isFQDN, isFQDNRes, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isPort, isPostalCode, isRdata, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, throttle, unescape, utilStringToArray, utilToString, utilTypeOf, utilsSubmitForm, version };
+export { EnumLanguageType, EnumRecordType, IAnalysisType, IIsURLDefaultUrlOptions, IsBankCard, IsByteLengthOptions, IsFQDNConfig, IsStrongPasswordOptions, arrayDataGrouping, dateFormatReg, debounce, deepClone, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistValue, isFQDN, isFQDNRes, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isPort, isPostalCode, isRdata, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, throttle, unescape, utilStringToArray, utilToString, utilTypeOf, utilsSubmitForm, version };

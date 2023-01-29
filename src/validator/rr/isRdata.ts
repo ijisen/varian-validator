@@ -11,7 +11,7 @@ import isSRV from "./isSRV";
 import isA from "@/validator/rr/isA";
 import isAAAA from "@/validator/rr/isAAAA";
 import isCNAME from "@/validator/rr/isCNAME";
-import { isFQDNRes } from "@/validator/http/typings";
+import { isFQDNRes } from "../http/typings.d";
 
 export const enum EnumRecordType {
   A = "A",
@@ -48,7 +48,7 @@ export const isRdata = (str: any,
     case EnumRecordType.SRV:
       return isSRV(str, lang);
     case EnumRecordType.TXT:
-      return isTXT(str, {lang});
+      return isTXT(str, { lang });
     default:
       return { success: false, message: '未知记录类型！', regValue: str };
   }
