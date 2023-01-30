@@ -1,4 +1,4 @@
-var version = "0.0.26";
+var version = "0.0.28";
 
 /**
  * 金额保留两位小数
@@ -378,7 +378,7 @@ declare const isPort: (str: any) => boolean;
  *
  * */
 
-declare enum EnumRecordType {
+declare const enum EnumRecordType {
     A = "A",
     AAAA = "AAAA",
     NS = "NS",
