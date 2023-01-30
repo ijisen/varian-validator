@@ -11,7 +11,7 @@ import del from "rollup-plugin-delete";
 export default {
   js: [
     del({
-      targets: ['dist/*', 'es/!*', 'lib/!*'],
+      targets: ['dist/*', 'es/*', 'lib/*'],
       verbose: true,
       runOnce: true
     }),
