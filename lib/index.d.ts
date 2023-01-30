@@ -1,4 +1,4 @@
-var version = "0.0.22";
+var version = "0.0.23";
 
 /**
  * 金额保留两位小数
@@ -361,7 +361,12 @@ declare function isFQDN(str: any, options?: Partial<IsFQDNConfig>, lang?: string
 /**
  * 域名合法性校验
  * */
-declare const isDomain: (str: string, lang?: string) => isFQDNRes;
+interface IsDomainConfig {
+    str: string;
+    lang?: string;
+    config?: Partial<IsFQDNConfig>;
+}
+declare const isDomain: ({ str, lang, config }?: IsDomainConfig) => isFQDNRes;
 
 /**
  * 端口号校验

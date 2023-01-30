@@ -29,7 +29,13 @@ const errorCodes = {
 const isCNAME = (str: string, lang?: string): isFQDNRes => {
   // 过滤全部空格
   let regValue = filterStringSpace(str, true);
-  const { success } = isDomain(regValue, lang);
+  const { success } = isDomain({
+    str: regValue,
+    lang,
+    config: {
+      allow_trailing_dot: true
+    }
+  });
   const error_code = errorCodes[setErrorCodeLang(lang)];
   return {
     success: success,

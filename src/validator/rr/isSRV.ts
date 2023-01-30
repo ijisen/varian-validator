@@ -46,7 +46,13 @@ const isSRV = (str: string, lang?: string): isFQDNRes => {
     const port = values[2];
     const domain = values[3];
     console.log(`priority: ${priority}, weight: ${weight}, port: ${port}, domain: ${domain}`);
-    const { success } = isDomain(domain, lang);
+    const { success } = isDomain({
+      str: regValue,
+      lang,
+      config: {
+        allow_trailing_dot: true
+      }
+    });
     // console.log(isInRange(priority, 0, 65535));
     // console.log(isInRange(values[1], 0, 65535));
     // console.log(isPort(values[2]));

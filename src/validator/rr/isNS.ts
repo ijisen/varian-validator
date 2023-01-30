@@ -29,7 +29,13 @@ const isNS = (str: string, lang?: string): isFQDNRes => {
   // 过滤全部空格
   let regValue = filterStringSpace(str, true);
   const error_code = errorCodes[setErrorCodeLang(lang)];
-  const { success } = isDomain(regValue, lang);
+  const { success } = isDomain({
+    str: regValue,
+    lang,
+    config: {
+      allow_trailing_dot: true
+    }
+  });
   return {
     success: success,
     message: success ? '' : error_code.FORMAT_ERROR,

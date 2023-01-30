@@ -6,7 +6,13 @@ const isZone = (str: string, lang?: string) => {
   if(rootZone === str) {
     return true;
   }
-  const { success } = isDomain(str, lang);
+  const { success } = isDomain({
+    str,
+    lang,
+    config: {
+      allow_trailing_dot: true
+    }
+  });
   return success;
 };
 
