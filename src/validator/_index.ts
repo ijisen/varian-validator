@@ -32,8 +32,8 @@ export { default as isPort } from './http/isPort';
  * path: src/validator/rr
  *
  * */
-// export type { EnumRecordType } from './rr/isRdata';
-export { isRdata, EnumRecordType } from './rr/isRdata';
+export type { EnumRecordType } from './rr/isRdata';
+export { isRdata } from './rr/isRdata';
 export { default as isHost } from './rr/isHost';
 export { default as isTTL } from './rr/isTTL';
 export { default as isZone } from './rr/isZone';

@@ -13,6 +13,8 @@
     },
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
+    // 保留 const和 enum声明
+    "preserveConstEnums": true,
     "declaration": true,
     "outDir": "dist",
     "declarationDir": ".",

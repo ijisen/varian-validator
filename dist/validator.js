@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.27 
+ * varian-validator v0.0.28 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2023 ji sen  (https://github.com/ijisen) 
@@ -1480,7 +1480,7 @@
    * 域名解析记录公共校验
    *
    * */
-  exports.EnumRecordType = void 0;
+  var EnumRecordType;
 
   /**
    * 域名解析记录公共校验
@@ -1496,24 +1496,24 @@
     EnumRecordType["CAA"] = "CAA";
     EnumRecordType["SRV"] = "SRV";
     EnumRecordType["TXT"] = "TXT";
-  })(exports.EnumRecordType || (exports.EnumRecordType = {}));
+  })(EnumRecordType || (EnumRecordType = {}));
   var isRdata = function isRdata(str, type, lang) {
     switch (type.toUpperCase()) {
-      case exports.EnumRecordType.A:
+      case EnumRecordType.A:
         return isA(str, lang);
-      case exports.EnumRecordType.AAAA:
+      case EnumRecordType.AAAA:
         return isAAAA(str, lang);
-      case exports.EnumRecordType.CAA:
+      case EnumRecordType.CAA:
         return isCAA(str, lang);
-      case exports.EnumRecordType.CNAME:
+      case EnumRecordType.CNAME:
         return isCNAME(str, lang);
-      case exports.EnumRecordType.MX:
+      case EnumRecordType.MX:
         return isMX(str, lang);
-      case exports.EnumRecordType.NS:
+      case EnumRecordType.NS:
         return isNS(str, lang);
-      case exports.EnumRecordType.SRV:
+      case EnumRecordType.SRV:
         return isSRV(str, lang);
-      case exports.EnumRecordType.TXT:
+      case EnumRecordType.TXT:
         return isTXT(str, {
           lang: lang
         });
