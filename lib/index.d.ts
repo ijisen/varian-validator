@@ -1,4 +1,4 @@
-var version = "0.0.23";
+var version = "0.0.24";
 
 /**
  * 金额保留两位小数
@@ -346,7 +346,7 @@ interface IsFQDNConfig {
  *  */
 interface isFQDNRes {
   success: boolean;
-  message?: string;
+  message: string;
   regValue?: any;
 }
 
@@ -378,7 +378,7 @@ declare const isPort: (str: any) => boolean;
  *
  * */
 
-declare const enum EnumRecordType {
+declare enum EnumRecordType {
     A = "A",
     AAAA = "AAAA",
     NS = "NS",

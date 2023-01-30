@@ -20,7 +20,7 @@ export interface IsFQDNConfig {
  *  */
 export interface isFQDNRes {
   success: boolean;
-  message?: string;
+  message: string;
   regValue?: any;
 }
 

@@ -13,7 +13,7 @@ import isAAAA from "@/validator/rr/isAAAA";
 import isCNAME from "@/validator/rr/isCNAME";
 import { isFQDNRes } from "../http/typings.d";
 
-export const enum EnumRecordType {
+export enum EnumRecordType {
   A = "A",
   AAAA = "AAAA",
   NS = "NS",
