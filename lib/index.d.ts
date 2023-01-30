@@ -1,4 +1,4 @@
-var version = "0.0.24";
+var version = "0.0.26";
 
 /**
  * 金额保留两位小数
@@ -242,7 +242,7 @@ declare const removeSessionStorage: (name: string) => boolean;
 /**
  * 语言类型
  * */
-declare const enum EnumLanguageType {
+declare enum EnumLanguageType {
     en = "en-US",
     zh = "zh-CN"
 }

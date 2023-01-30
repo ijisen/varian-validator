@@ -1,7 +1,7 @@
 /**
  * 语言类型
  * */
-export const enum EnumLanguageType {
+export enum EnumLanguageType {
   en = 'en-US',
   zh = 'zh-CN',
 }
