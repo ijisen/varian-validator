@@ -1,5 +1,4 @@
-import isValidParamsTypes from "./isValidParamsTypes";
-import filterStringSpace from "./filterStringSpace";
+import { filterStringSpace, isValidParamsTypes } from "@/utils/_index";
 
 
 /**
@@ -19,13 +18,3 @@ export const isEmptyStr = (str: any, ignoreSpace: boolean): boolean => {
   }
   return !(str.length === 0);
 }
-
-
-/**
- * @names：判断数组是否为空数据
- * @params[data] Array
- * */
-export const isEmptyArray = (data: any): boolean => {
-  return !Array.isArray(data) || !data.length
-};
-

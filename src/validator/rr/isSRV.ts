@@ -1,11 +1,11 @@
-import isDomain from "../http/isDomain";
-import isPort from "../http/isPort"
-import utilStringToArray from "../../utils/utilStringToArray";
-import isInRange from "../isInRange";
-import setErrorCodeLang from "@/utils/setErrorCodeLang";
 import filterStringSpace from "@/utils/filterStringSpace";
-import { isFQDNRes } from "@/validator/http/typings.d";
+import stringToArray from "@/utils/stringToArray";
+import setErrorCodeLang from "@/utils/setErrorCodeLang";
+import isInRange from "@/validator/isInRange";
+import isPort from "@/validator/http/isPort";
+import isDomain from "@/validator/http/isDomain";
 
+import { isFQDNRes } from "@/validator/http/typings.d";
 
 /**
  * SRV【服务定位（SRV）资源记录】  => 记录提供特定的服务的服务器
@@ -37,7 +37,7 @@ const errorCodes = {
 const isSRV = (str: string, lang?: string): isFQDNRes => {
   // 过滤多余的空格文本
   const regValue = filterStringSpace(str);
-  const values = utilStringToArray(regValue);
+  const values = stringToArray(regValue);
   console.log(values);
   const error_code = errorCodes[setErrorCodeLang(lang)];
   if(values.length === 4) {

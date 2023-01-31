@@ -1,4 +1,4 @@
-var version = "0.0.30";
+var version = "0.0.31";
 
 /**
  * 金额保留两位小数
@@ -156,18 +156,6 @@ declare function getUrlParam(name: string, param: string): string | null;
 declare const inputTextareaFormat: (str: any) => any;
 
 /**
- * 判断字符串是否为空值
- * @param[str] 需要判断的值
- * @param[ignoreSpace] boolean 是否忽略空格
- * */
-declare const isEmptyStr: (str: any, ignoreSpace: boolean) => boolean;
-/**
- * @names：判断数组是否为空数据
- * @params[data] Array
- * */
-declare const isEmptyArray: (data: any) => boolean;
-
-/**
  * 判断数据是否存在
  * @param[value] 需要判断的数据
  * @param[returnType] 返回类型，默认返回 boolean
@@ -273,6 +261,12 @@ declare function setUrlParam(data: string): string | undefined;
 declare const specialSymbolToComma: (str: any) => string;
 
 /**
+ * 字符串 大小写转换
+ * String to Case
+ * */
+declare const stringToLowerOrUpperCase: (str: any, toUpper?: boolean) => any;
+
+/**
  * name：函数节流
  * description：函数触发后,如果函数还在执行中，就不再执行，
  * @params[fn]  回调函数
@@ -305,25 +299,12 @@ declare const utilsSubmitForm: (config: {
  * @param[str] 需要拆分的数据
  * @param[separator] 拆分标识符，默认 ,
  * */
-declare const utilStringToArray: (str: any, separator?: string) => any;
+declare const stringToArray: (str: any, separator?: string) => any;
 
 /**
  * 字符串格式判断
  * */
 declare const utilToString: (input: any) => string;
-
-/**
- * IPV4验证
- * */
-declare const isIPv4: (s: string) => boolean;
-/**
- * IPV6验证
- * */
-declare const isIPv6: (s: string) => boolean;
-/**
- * IPV4 & IPV6验证
- * */
-declare const isIP: (s: string) => number;
 
 /**
  *  域名格式校验 - 传参数格式
@@ -349,6 +330,14 @@ interface isFQDNRes {
   message: string;
   regValue?: any;
 }
+
+declare const isIPv4: (s: string) => boolean;
+declare const isIPv6: (s: string) => boolean;
+declare const isIP: (s: string) => 0 | 4 | 6;
+/**
+ * IPV4 是否为同一网段判定
+ * */
+declare const isSameIPV4Segment: (startIP: string, endIP: string, lang?: any) => isFQDNRes;
 
 /**
  * 域名格式校验
@@ -459,10 +448,25 @@ declare function isCreditCard(str: any): boolean;
 declare const isEmail: (str: any) => boolean;
 
 /**
+ * @names：判断数组是否为空数据
+ * @params[data] Array
+ * */
+declare const isEmptyArray: (data: any) => boolean;
+
+/**
+ * 判断字符串是否为空值
+ * @param[str] 需要判断的值
+ * @param[ignoreSpace] boolean 是否忽略空格
+ * */
+declare const isEmptyStr: (str: any, ignoreSpace: boolean) => boolean;
+
+/**
  * 以太坊地址校验
  * @param[str] 以太坊地址
  * */
 declare const isEthereumAddress: (str: any) => boolean;
+
+declare const isExistString: (str: any) => undefined | string;
 
 /**
  *
@@ -514,6 +518,12 @@ declare function isInt(str: any, options?: {
     lt?: number;
     gt?: number;
 }): boolean;
+
+/**
+ * 判断数据是否为 object
+ * @param[data]
+ * */
+declare const isObject: (data: any) => boolean;
 
 /**
  * 邮编格式验证
@@ -591,4 +601,4 @@ declare function isURL(url: any, options: Partial<IIsURLDefaultUrlOptions>): boo
  * */
 declare function isUUID(str: any, version: any): any;
 
-export { EnumLanguageType, EnumRecordType, IAnalysisType, IIsURLDefaultUrlOptions, IsBankCard, IsByteLengthOptions, IsFQDNConfig, IsStrongPasswordOptions, arrayDataGrouping, dateFormatReg, debounce, deepClone, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistValue, isFQDN, isFQDNRes, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isPort, isPostalCode, isRdata, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, throttle, unescape, utilStringToArray, utilToString, utilTypeOf, utilsSubmitForm, version };
+export { EnumLanguageType, EnumRecordType, IAnalysisType, IIsURLDefaultUrlOptions, IsBankCard, IsByteLengthOptions, IsFQDNConfig, IsStrongPasswordOptions, arrayDataGrouping, dateFormatReg, debounce, deepClone, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistString, isExistValue, isFQDN, isFQDNRes, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isObject, isPort, isPostalCode, isRdata, isSameIPV4Segment, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, stringToArray, stringToLowerOrUpperCase, throttle, unescape, utilToString, utilTypeOf, utilsSubmitForm, version };

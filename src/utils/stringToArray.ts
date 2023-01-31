@@ -4,7 +4,7 @@
  * @param[str] 需要拆分的数据
  * @param[separator] 拆分标识符，默认 ,
  * */
-const utilStringToArray = (str: any, separator?: string) => {
+const stringToArray = (str: any, separator?: string) => {
   separator = separator || ','
   if (typeof str === 'string') {
     str = str.trim();
@@ -18,4 +18,4 @@ const utilStringToArray = (str: any, separator?: string) => {
   return [];
 };
 
-export default utilStringToArray;
+export default stringToArray;

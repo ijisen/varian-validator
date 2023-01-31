@@ -1,7 +1,7 @@
-import setErrorCodeLang from '../../utils/setErrorCodeLang';
+import setErrorCodeLang from '@/utils/setErrorCodeLang';
+import filterStringSpace from '@/utils/filterStringSpace';
 
 import { IsFQDNConfig, isFQDNRes } from './typings.d';
-import filterStringSpace from "@/utils/filterStringSpace";
 
 /**
  * 域名格式校验 - 错误提示消息.
@@ -46,6 +46,9 @@ const errorCodes = {
 
 /**
  * 域名格式校验 - 默认配置参数
+ * FQDN：(Fully Qualified Domain Name)全限定域名：同时带有主机名和域名的名称。（通过符号“.”）
+ * 例如：主机名是bigserver,域名是mycompany.com,那么FQDN就是bigserver.mycompany.com。 [1]
+ * str: m.zdns.cn || zdns.cn. || h.m.zdns.cn.
  *
  * */
 const default_fqdn_options = {

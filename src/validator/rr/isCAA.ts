@@ -12,9 +12,10 @@
  */
 
 import filterStringSpace from "@/utils/filterStringSpace";
-import utilStringToArray from "@/utils/utilStringToArray";
+import stringToArray from "@/utils/stringToArray";
 import setErrorCodeLang from "@/utils/setErrorCodeLang";
 import isInRange from "@/validator/isInRange";
+
 import { isFQDNRes } from "@/validator/http/typings.d";
 
 /**
@@ -32,12 +33,12 @@ const errorCodes = {
 
 // （如：0 iodef "mailto:admin@dns-example.com"）
 // （如：0 issue "symantec.com"）
-const isCAA = (str: any, lang?: string):isFQDNRes => {
+const isCAA = (str: any, lang?: string): isFQDNRes => {
   const caaValueRegex = /^"[\w-:./@]{1,255}"$/;
   const caaTags = ['issue', 'issuewild', 'iodef'];
   // 过滤多余的空格文本
   const regValue = filterStringSpace(str, true);
-  const values = utilStringToArray(regValue);
+  const values = stringToArray(regValue);
   console.log(values);
   const success =
     values.length === 3 &&

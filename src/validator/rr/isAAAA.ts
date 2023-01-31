@@ -9,7 +9,8 @@
  * */
 import filterStringSpace from "@/utils/filterStringSpace";
 import setErrorCodeLang from "@/utils/setErrorCodeLang";
-import { isIPv6 } from '../http/IP';
+import { isIPv6 } from '@/validator/http/IP';
+
 import { isFQDNRes } from "@/validator/http/typings.d";
 
 /**
@@ -25,7 +26,7 @@ const errorCodes = {
   },
 };
 
-const isAAAA = (str: string, lang?: string):isFQDNRes => {
+const isAAAA = (str: string, lang?: string): isFQDNRes => {
   // 过滤全部空格
   let regValue = filterStringSpace(str);
   const error_code = errorCodes[setErrorCodeLang(lang)];

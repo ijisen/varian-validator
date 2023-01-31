@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.30 
+ * varian-validator v0.0.31 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2023 ji sen  (https://github.com/ijisen) 
@@ -7,7 +7,7 @@
  * Licensed under the ISC license 
  */
 
-var version = "0.0.30";
+var version = "0.0.31";
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
@@ -575,6 +575,25 @@ var inputTextareaFormat = function inputTextareaFormat(str) {
 };
 
 /**
+ * 判断数据是否存在
+ * @param[value] 需要判断的数据
+ * @param[returnType] 返回类型，默认返回 boolean
+ * @return boolean || string
+ */
+var isExistValue = function isExistValue(value) {
+  var returnType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'boolean';
+  var _value = '';
+  if (value === 0 || value === false || value) {
+    _value = value;
+  } else {
+    // null undefined ''
+    _value = '-';
+  }
+  // console.log(_value);
+  return returnType === 'boolean' ? _value !== '-' : _value;
+};
+
+/**
  * Better way to handle type checking
  * null, {}, array and date are objects, which confuses
  */
@@ -597,49 +616,6 @@ var isValidParamsTypes = function isValidParamsTypes(str, types) {
     types = defaultTypes;
   }
   return types && types.includes(utilTypeOf(str));
-};
-
-/**
- * 判断字符串是否为空值
- * @param[str] 需要判断的值
- * @param[ignoreSpace] boolean 是否忽略空格
- * */
-var isEmptyStr = function isEmptyStr(str, ignoreSpace) {
-  if (!isValidParamsTypes(str)) {
-    return false;
-  }
-  str = "".concat(str);
-  if (!ignoreSpace) {
-    str = filterStringSpace(str);
-  }
-  return !(str.length === 0);
-};
-
-/**
- * @names：判断数组是否为空数据
- * @params[data] Array
- * */
-var isEmptyArray = function isEmptyArray(data) {
-  return !Array.isArray(data) || !data.length;
-};
-
-/**
- * 判断数据是否存在
- * @param[value] 需要判断的数据
- * @param[returnType] 返回类型，默认返回 boolean
- * @return boolean || string
- */
-var isExistValue = function isExistValue(value) {
-  var returnType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'boolean';
-  var _value = '';
-  if (value === 0 || value === false || value) {
-    _value = value;
-  } else {
-    // null undefined ''
-    _value = '-';
-  }
-  // console.log(_value);
-  return returnType === 'boolean' ? _value !== '-' : _value;
 };
 
 /**
@@ -778,6 +754,17 @@ function setUrlParam(data) {
 }
 
 /**
+ * 字符串 大小写转换
+ * String to Case
+ * */
+var stringToLowerOrUpperCase = function stringToLowerOrUpperCase(str, toUpper) {
+  if (str && typeof str === 'string') {
+    return toUpper ? str.toUpperCase() : str.toLowerCase();
+  }
+  return str;
+};
+
+/**
  * name：函数节流
  * description：函数触发后,如果函数还在执行中，就不再执行，
  * @params[fn]  回调函数
@@ -859,7 +846,7 @@ var utilsSubmitForm = function utilsSubmitForm(config) {
  * @param[str] 需要拆分的数据
  * @param[separator] 拆分标识符，默认 ,
  * */
-var utilStringToArray = function utilStringToArray(str, separator) {
+var stringToArray = function stringToArray(str, separator) {
   separator = separator || ',';
   if (typeof str === 'string') {
     str = str.trim();
@@ -889,6 +876,28 @@ var utilToString = function utilToString(input) {
   return String(input);
 };
 
+/**
+ * Error codes and messages.
+ * */
+var errorCodes$9 = {
+  zh: {
+    IP_SEGMENT_ERR_FORMAT: 'IP 格式错误',
+    IP_SEGMENT_NOT_SUPPORT_V6: '不支持IPV6网段',
+    IP_SEGMENT_ERR_TYPE: 'IP类型不一致',
+    IP_SEGMENT_ERR_SEGMENT: 'IP 不在同一网段',
+    IP_SEGMENT_ERR_RANGE: '结束IP不能小于起始IP',
+    IP_SEGMENT_SUCCESS: '校验成功'
+  },
+  en: {
+    IP_SEGMENT_ERR_FORMAT: 'Incorrect IP format',
+    IP_SEGMENT_NOT_SUPPORT_V6: 'Does not support IPV6',
+    IP_SEGMENT_ERR_TYPE: 'IP types are inconsistent',
+    IP_SEGMENT_ERR_SEGMENT: 'IP is not in the same network segment',
+    IP_SEGMENT_ERR_RANGE: 'The ending IP cannot be smaller than the starting IP',
+    IP_SEGMENT_SUCCESS: 'Verification succeeded'
+  }
+};
+
 // IPv4 Segment
 var v4Seg = '(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])';
 var v4Str = "(".concat(v4Seg, "[.]){3}").concat(v4Seg);
@@ -897,27 +906,62 @@ var IPv4Reg = new RegExp("^".concat(v4Str, "$"));
 // IPv6 Segment
 var v6Seg = '(?:[0-9a-fA-F]{1,4})';
 var IPv6Reg = new RegExp('^(' + "(?:".concat(v6Seg, ":){7}(?:").concat(v6Seg, "|:)|") + "(?:".concat(v6Seg, ":){6}(?:").concat(v4Str, "|:").concat(v6Seg, "|:)|") + "(?:".concat(v6Seg, ":){5}(?::").concat(v4Str, "|(:").concat(v6Seg, "){1,2}|:)|") + "(?:".concat(v6Seg, ":){4}(?:(:").concat(v6Seg, "){0,1}:").concat(v4Str, "|(:").concat(v6Seg, "){1,3}|:)|") + "(?:".concat(v6Seg, ":){3}(?:(:").concat(v6Seg, "){0,2}:").concat(v4Str, "|(:").concat(v6Seg, "){1,4}|:)|") + "(?:".concat(v6Seg, ":){2}(?:(:").concat(v6Seg, "){0,3}:").concat(v4Str, "|(:").concat(v6Seg, "){1,5}|:)|") + "(?:".concat(v6Seg, ":){1}(?:(:").concat(v6Seg, "){0,4}:").concat(v4Str, "|(:").concat(v6Seg, "){1,6}|:)|") + "(?::((?::".concat(v6Seg, "){0,5}:").concat(v4Str, "|(?::").concat(v6Seg, "){1,7}|:))") + ')(%[0-9a-zA-Z-.:]{1,})?$');
-
-/**
- * IPV4验证
- * */
 var isIPv4 = function isIPv4(s) {
   return IPv4Reg.test(s);
 };
-
-/**
- * IPV6验证
- * */
 var isIPv6 = function isIPv6(s) {
   return IPv6Reg.test(s);
 };
-/**
- * IPV4 & IPV6验证
- * */
 var isIP = function isIP(s) {
   if (isIPv4(s)) return 4;
   if (isIPv6(s)) return 6;
   return 0;
+};
+
+/**
+ * IPV4 是否为同一网段判定
+ * */
+var isSameIPV4Segment = function isSameIPV4Segment(startIP, endIP, lang) {
+  var errorMessage = errorCodes$9[setErrorCodeLang(lang)];
+  if (!isIPv4(startIP) || !isIPv4(endIP)) {
+    /** IP 格式错误 */
+    return {
+      success: false,
+      message: errorMessage.IP_SEGMENT_ERR_FORMAT
+    };
+  }
+
+  /** IPV4 拆分 */
+  var ipV4Split = function ipV4Split(ip) {
+    // ip = 255.255.255.1
+    var slice_index = ip.lastIndexOf('.');
+    return {
+      // 255.255.255
+      ip_prefix: ip.slice(0, slice_index),
+      // 1
+      ip_suffix: ip.slice(slice_index + 1)
+    };
+  };
+  var start_ip = ipV4Split(startIP);
+  var end_ip = ipV4Split(endIP);
+  var msg_tips = {
+    success: false,
+    // IP 不在同一网段
+    message: errorMessage.IP_SEGMENT_ERR_SEGMENT
+  };
+  if (start_ip.ip_prefix === end_ip.ip_prefix) {
+    if (start_ip.ip_suffix > end_ip.ip_suffix) {
+      // 起始IP不能大于结束IP
+      msg_tips.message = errorMessage.IP_SEGMENT_ERR_RANGE;
+    } else {
+      msg_tips = {
+        success: true,
+        // 校验成功,
+        message: errorMessage.IP_SEGMENT_SUCCESS
+      };
+    }
+  }
+  return msg_tips;
 };
 
 /**
@@ -960,6 +1004,9 @@ var errorCodes$8 = {
 
 /**
  * 域名格式校验 - 默认配置参数
+ * FQDN：(Fully Qualified Domain Name)全限定域名：同时带有主机名和域名的名称。（通过符号“.”）
+ * 例如：主机名是bigserver,域名是mycompany.com,那么FQDN就是bigserver.mycompany.com。 [1]
+ * str: m.zdns.cn || zdns.cn. || h.m.zdns.cn.
  *
  * */
 var default_fqdn_options = {
@@ -1296,7 +1343,7 @@ var isCAA = function isCAA(str, lang) {
   var caaTags = ['issue', 'issuewild', 'iodef'];
   // 过滤多余的空格文本
   var regValue = filterStringSpace(str, true);
-  var values = utilStringToArray(regValue);
+  var values = stringToArray(regValue);
   console.log(values);
   var success = values.length === 3 && isInRange(values[0], 0, 128) && caaTags.indexOf(values[1]) !== -1 && caaValueRegex.test(values[2]);
   var error_code = errorCodes$4[setErrorCodeLang(lang)];
@@ -1333,7 +1380,7 @@ var errorCodes$3 = {
 var isSRV = function isSRV(str, lang) {
   // 过滤多余的空格文本
   var regValue = filterStringSpace(str);
-  var values = utilStringToArray(regValue);
+  var values = stringToArray(regValue);
   console.log(values);
   var error_code = errorCodes$3[setErrorCodeLang(lang)];
   if (values.length === 4) {
@@ -1712,6 +1759,30 @@ var isEmail = function isEmail(str) {
 };
 
 /**
+ * @names：判断数组是否为空数据
+ * @params[data] Array
+ * */
+var isEmptyArray = function isEmptyArray(data) {
+  return !Array.isArray(data) || !data.length;
+};
+
+/**
+ * 判断字符串是否为空值
+ * @param[str] 需要判断的值
+ * @param[ignoreSpace] boolean 是否忽略空格
+ * */
+var isEmptyStr = function isEmptyStr(str, ignoreSpace) {
+  if (!isValidParamsTypes(str)) {
+    return false;
+  }
+  str = "".concat(str);
+  if (!ignoreSpace) {
+    str = filterStringSpace(str);
+  }
+  return !(str.length === 0);
+};
+
+/**
  * 以太坊地址校验
  * @param[str] 以太坊地址
  * */
@@ -1722,6 +1793,18 @@ var isEthereumAddress = function isEthereumAddress(str) {
   }
   str += '';
   return ethReg.test(str);
+};
+
+/**
+ * @names：文本是否存在
+ * @params[str] string
+ * @return string
+ * */
+var isExistString = function isExistString(str) {
+  if (typeof str === 'string') {
+    return filterStringSpace(str);
+  }
+  return undefined;
 };
 
 /**
@@ -2240,6 +2323,14 @@ function isIn(str, options) {
 }
 
 /**
+ * 判断数据是否为 object
+ * @param[data]
+ * */
+var isObject = function isObject(data) {
+  return Object.prototype.toString.call(data) === '[object Object]';
+};
+
+/**
  * 邮编格式验证
  * @param[str] 邮编
  * @param[locale] 邮编所属地
@@ -2623,5 +2714,5 @@ function isUUID(str, version) {
   return !!pattern && pattern.test(str);
 }
 
-export { IsBankCard, arrayDataGrouping, dateFormatReg, debounce, deepClone, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistValue, isFQDN, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isPort, isPostalCode, isRdata, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, throttle, unescape, utilStringToArray, utilToString, utilTypeOf, utilsSubmitForm, version };
+export { IsBankCard, arrayDataGrouping, dateFormatReg, debounce, deepClone, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistString, isExistValue, isFQDN, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isObject, isPort, isPostalCode, isRdata, isSameIPV4Segment, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, stringToArray, stringToLowerOrUpperCase, throttle, unescape, utilToString, utilTypeOf, utilsSubmitForm, version };
 //# sourceMappingURL=index.js.map
