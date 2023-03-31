@@ -55,6 +55,7 @@ const numberFormat = (num: any) => {
  *
  * @param num1 加数1
  * @param num2 加数2
+ * 1.111 + 2 = 3.1109999999999998
  */
 export function numberAdd(num1: any, num2: any) {
   const baseNum1 = numberFormat(num1);

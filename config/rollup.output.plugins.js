@@ -33,6 +33,8 @@ export default {
     nodeResolve({
       extensions: ['.mjs', '.js', '.json', '.node', '.ts']
     }),
-    dts()
+    dts({
+      tsconfig: './tsconfig.json'
+    })
   ]
 }

@@ -191,6 +191,7 @@ var numberFormat = function numberFormat(num) {
  *
  * @param num1 加数1
  * @param num2 加数2
+ * 1.111 + 2 = 3.1109999999999998
  */
 function numberAdd(num1, num2) {
   var baseNum1 = numberFormat(num1);
