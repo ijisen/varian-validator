@@ -60,6 +60,8 @@ const default_fqdn_options = {
   allow_trailing_dot: false,
   // 是否允许纯数字TLD
   allow_numeric_tld: false,
+  // 是否允许TLD包含 -
+  allow_hyphen_tld: false,
   // 是否允许配符 *
   allow_wildcard: false,
 };
@@ -144,11 +146,12 @@ export default function isFQDN(
       };
     }
 
-    if(
-      !/^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{2,}|xn[a-z0-9-]{2,})$/i.test(
-        tld,
-      )
-    ) {
+    let tldReg = /^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{2,}|xn[a-z0-9-]{2,})$/i;
+    if(options.allow_hyphen_tld) {
+      tldReg = /^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF-]{2,})$/i;
+    }
+
+    if(!tldReg.test(tld)) {
       return {
         success: false,
         message: errorMessage.TLD_INVALID_CHARS,

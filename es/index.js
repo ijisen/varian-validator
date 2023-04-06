@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.31 
+ * varian-validator v0.0.32 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2023 ji sen  (https://github.com/ijisen) 
@@ -7,7 +7,7 @@
  * Licensed under the ISC license 
  */
 
-var version = "0.0.31";
+var version = "0.0.32";
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
@@ -1019,6 +1019,8 @@ var default_fqdn_options = {
   allow_trailing_dot: false,
   // 是否允许纯数字TLD
   allow_numeric_tld: false,
+  // 是否允许TLD包含 -
+  allow_hyphen_tld: false,
   // 是否允许配符 *
   allow_wildcard: false
 };
@@ -1092,7 +1094,11 @@ function isFQDN(str) {
         message: errorMessage.TLD_WITH_NUMBER
       };
     }
-    if (!/^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{2,}|xn[a-z0-9-]{2,})$/i.test(tld)) {
+    var tldReg = /^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{2,}|xn[a-z0-9-]{2,})$/i;
+    if (options.allow_hyphen_tld) {
+      tldReg = /^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF-]{2,})$/i;
+    }
+    if (!tldReg.test(tld)) {
       return {
         success: false,
         message: errorMessage.TLD_INVALID_CHARS
