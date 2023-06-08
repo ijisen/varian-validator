@@ -106,3 +106,54 @@ export function numberDivide(num1: number, num2: number) {
   const baseNum4 = Number(num2.toString().replace(".", ""));
   return (baseNum3 / baseNum4) * Math.pow(10, baseNum2 - baseNum1);
 }
+
+/**
+ * 数字格数转换缩写
+ *
+ * @param val 原始数字
+ * @param isEn 是否为英文
+ */
+export const numberSimplifyCutting  = (val: any, isEn?: boolean) => {
+  // 10000 => 10K
+  // 1000000 => 1M
+  // 百亿 10 billion(美国、法国)
+  if(!isNumber(val)) {
+    return val;
+  }
+
+  const valFormat = (val: number, max?: number) => {
+    if(max) {
+      val = numberDivide(val, max);
+    }
+
+    val = numberToDecimal2(val);
+
+    return Number(`${val}`.replace('.00', ''))
+  }
+
+  val = numberToDecimal2(val);
+
+  let max = 100000000;
+  if(val >= max) {
+    let unit = isEn ? 'B' : '亿';
+    return `${valFormat(val, max)}${unit}`;
+  }
+
+  max = 10000;
+  // 9.999901
+  if(val >= max) {
+    // 10000 => 10K
+    val = valFormat(val, max);
+    if(val >= max) {
+      let unit = isEn ? 'B' : '亿';
+      return `${valFormat(val, max)}${unit}`;
+    }
+    if(isEn) {
+      val = val * 10;
+      return `${valFormat(val)}K`;
+    }
+    return `${val}万`;
+  }
+
+  return valFormat(val);
+};
