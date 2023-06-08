@@ -3,7 +3,14 @@
  * */
 // export type { ValidParamsDefaultTypes } from './arithmetic.ts'
 
-export { numberToDecimal2, numberAdd, numberSubtract, numberMultiply, numberDivide } from './arithmetic'
+export {
+  numberToDecimal2,
+  numberAdd,
+  numberSubtract,
+  numberMultiply,
+  numberDivide,
+  numberSimplifyCutting
+} from './arithmetic'
 export { arrayDataGrouping } from './arrayDataGrouping'
 export { setCookie, getCookieValue } from './cookie'
 export { dateFormatReg, formatDate } from './dateFormatReg'

@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.32 
+ * varian-validator v0.0.34 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2023 ji sen  (https://github.com/ijisen) 
@@ -7,7 +7,7 @@
  * Licensed under the ISC license 
  */
 
-var version = "0.0.32";
+var version = "0.0.35";
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
@@ -242,6 +242,50 @@ function numberDivide(num1, num2) {
   var baseNum4 = Number(num2.toString().replace(".", ""));
   return baseNum3 / baseNum4 * Math.pow(10, baseNum2 - baseNum1);
 }
+
+/**
+ * 数字格数转换缩写
+ *
+ * @param val 原始数字
+ * @param isEn 是否为英文
+ */
+var numberSimplifyCutting = function numberSimplifyCutting(val, isEn) {
+  // 10000 => 10K
+  // 1000000 => 1M
+  // 百亿 10 billion(美国、法国)
+  if (!isNumber(val)) {
+    return val;
+  }
+  var valFormat = function valFormat(val, max) {
+    if (max) {
+      val = numberDivide(val, max);
+    }
+    val = numberToDecimal2(val);
+    return Number("".concat(val).replace('.00', ''));
+  };
+  val = numberToDecimal2(val);
+  var max = 100000000;
+  if (val >= max) {
+    var unit = isEn ? 'B' : '亿';
+    return "".concat(valFormat(val, max)).concat(unit);
+  }
+  max = 10000;
+  // 9.999901
+  if (val >= max) {
+    // 10000 => 10K
+    val = valFormat(val, max);
+    if (val >= max) {
+      var _unit = isEn ? 'B' : '亿';
+      return "".concat(valFormat(val, max)).concat(_unit);
+    }
+    if (isEn) {
+      val = val * 10;
+      return "".concat(valFormat(val), "K");
+    }
+    return "".concat(val, "\u4E07");
+  }
+  return valFormat(val);
+};
 
 /**
  * @names：数组分组提交数据
@@ -2721,5 +2765,5 @@ function isUUID(str, version) {
   return !!pattern && pattern.test(str);
 }
 
-export { IsBankCard, arrayDataGrouping, dateFormatReg, debounce, deepClone, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistString, isExistValue, isFQDN, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isObject, isPort, isPostalCode, isRdata, isSameIPV4Segment, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, stringToArray, stringToLowerOrUpperCase, throttle, unescape, utilToString, utilTypeOf, utilsSubmitForm, version };
+export { IsBankCard, arrayDataGrouping, dateFormatReg, debounce, deepClone, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistString, isExistValue, isFQDN, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isObject, isPort, isPostalCode, isRdata, isSameIPV4Segment, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSimplifyCutting, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, stringToArray, stringToLowerOrUpperCase, throttle, unescape, utilToString, utilTypeOf, utilsSubmitForm, version };
 //# sourceMappingURL=index.js.map

@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.32 
+ * varian-validator v0.0.34 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2023 ji sen  (https://github.com/ijisen) 
@@ -13,7 +13,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Validator = {}));
 })(this, (function (exports) { 'use strict';
 
-  var version = "0.0.32";
+  var version = "0.0.35";
 
   function ownKeys(object, enumerableOnly) {
     var keys = Object.keys(object);
@@ -248,6 +248,50 @@
     var baseNum4 = Number(num2.toString().replace(".", ""));
     return baseNum3 / baseNum4 * Math.pow(10, baseNum2 - baseNum1);
   }
+
+  /**
+   * 数字格数转换缩写
+   *
+   * @param val 原始数字
+   * @param isEn 是否为英文
+   */
+  var numberSimplifyCutting = function numberSimplifyCutting(val, isEn) {
+    // 10000 => 10K
+    // 1000000 => 1M
+    // 百亿 10 billion(美国、法国)
+    if (!isNumber(val)) {
+      return val;
+    }
+    var valFormat = function valFormat(val, max) {
+      if (max) {
+        val = numberDivide(val, max);
+      }
+      val = numberToDecimal2(val);
+      return Number("".concat(val).replace('.00', ''));
+    };
+    val = numberToDecimal2(val);
+    var max = 100000000;
+    if (val >= max) {
+      var unit = isEn ? 'B' : '亿';
+      return "".concat(valFormat(val, max)).concat(unit);
+    }
+    max = 10000;
+    // 9.999901
+    if (val >= max) {
+      // 10000 => 10K
+      val = valFormat(val, max);
+      if (val >= max) {
+        var _unit = isEn ? 'B' : '亿';
+        return "".concat(valFormat(val, max)).concat(_unit);
+      }
+      if (isEn) {
+        val = val * 10;
+        return "".concat(valFormat(val), "K");
+      }
+      return "".concat(val, "\u4E07");
+    }
+    return valFormat(val);
+  };
 
   /**
    * @names：数组分组提交数据
@@ -2781,6 +2825,7 @@
   exports.numberAdd = numberAdd;
   exports.numberDivide = numberDivide;
   exports.numberMultiply = numberMultiply;
+  exports.numberSimplifyCutting = numberSimplifyCutting;
   exports.numberSubtract = numberSubtract;
   exports.numberToDecimal2 = numberToDecimal2;
   exports.removeLocalStorage = removeLocalStorage;
