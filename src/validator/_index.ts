@@ -21,7 +21,9 @@
  *
  * */
 export * from './http/IP';
-export type { IsFQDNConfig, isFQDNRes } from './http/typings';
+export type { ILabelRegConfig, ITldRegConfig, IsFQDNConfig, isFQDNRes } from './http/typings';
+export { default as domainLabelValidator } from './http/isFQDN/domainLabelValidator';
+export { default as tldValidator } from './http/isFQDN/tldValidator';
 export { default as isFQDN } from './http/isFQDN';
 export { default as isDomain } from './http/isDomain';
 export { default as isPort } from './http/isPort';

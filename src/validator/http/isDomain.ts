@@ -12,6 +12,7 @@ interface IsDomainConfig {
 
 const isDomain = ({ str, lang, config = {} }: IsDomainConfig = { str: '' }): isFQDNRes => {
   return isFQDN(str, {
+    // 是否包含TLD
     require_tld: true,
     // 是否允许包含下划线
     allow_underscores: true,

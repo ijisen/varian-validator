@@ -244,6 +244,7 @@ declare enum EnumLanguageType {
 }
 /**
  * 设置错误消息语言类型
+ * 默认中文
  * */
 declare const setErrorCodeLang: (lang?: any) => "en" | "zh";
 
@@ -315,19 +316,35 @@ declare const stringToArray: (str: any, separator?: string) => any;
 declare const utilToString: (input: any) => string;
 
 /**
- *  域名格式校验 - 传参数格式
+ *  TLD格式校验 - 传参数格式
  *  */
-interface IsFQDNConfig {
-  // 是否包含TLD
-  require_tld: boolean;
-  // 是否允许包含下划线
-  allow_underscores: boolean;
-  // 是否允许 . 号结尾
-  allow_trailing_dot: boolean;
+interface ITldRegConfig {
   // 是否允许数字TLD号结尾
   allow_numeric_tld: boolean;
   // 是否允许TLD包含 -
   allow_hyphen_tld: boolean;
+}
+
+/**
+ *  域名关键词格式校验 - 传参数格式
+ *  */
+interface ILabelRegConfig {
+  // 是否允许包含下划线
+  allow_underscores: boolean;
+}
+
+
+/**
+ *  域名格式校验 - 传参数格式
+ *  */
+interface IsFQDNConfig extends ITldRegConfig {
+  // 是否包含TLD
+  require_tld: boolean;
+  max_node: number,
+  // 是否允许包含下划线
+  allow_underscores: boolean;
+  // 是否允许 . 号结尾
+  allow_trailing_dot: boolean;
   // 是否允许配符 *
   allow_wildcard: boolean;
 }
@@ -350,12 +367,38 @@ declare const isIP: (s: string) => 0 | 4 | 6;
 declare const isSameIPV4Segment: (startIP: string, endIP: string, lang?: any) => isFQDNRes;
 
 /**
+ * 域名关键词验证
+ *
+ * */
+declare const domainLabelValidator: ({ label, options, lang }: {
+    label: any;
+    options?: Partial<ILabelRegConfig> | undefined;
+    lang?: string | undefined;
+}) => {
+    success: boolean;
+    message: string;
+};
+
+/**
+ * TLD格式校验
+ *
+ * */
+declare const tldValidator: ({ tld, options, lang }: {
+    tld: any;
+    options?: Partial<ITldRegConfig> | undefined;
+    lang?: string | undefined;
+}) => {
+    success: boolean;
+    message: string;
+};
+
+/**
  * 域名格式校验
  * FQDN：(Fully Qualified Domain Name)全限定域名：同时带有主机名和域名的名称。（通过符号“.”）
  * 例如：主机名是bigserver,域名是mycompany.com,那么FQDN就是bigserver.mycompany.com。 [1]
  * str: m.zdns.cn || zdns.cn. || h.m.zdns.cn.
  * */
-declare function isFQDN(str: any, options?: Partial<IsFQDNConfig>, lang?: string): isFQDNRes;
+declare const isFQDN: (str: any, options?: Partial<IsFQDNConfig>, lang?: string) => isFQDNRes;
 
 /**
  * 域名合法性校验
@@ -611,4 +654,4 @@ declare function isURL(url: any, options: Partial<IIsURLDefaultUrlOptions>): boo
  * */
 declare function isUUID(str: any, version: any): any;
 
-export { EnumLanguageType, EnumRecordType, IAnalysisType, IIsURLDefaultUrlOptions, IsBankCard, IsByteLengthOptions, IsFQDNConfig, IsStrongPasswordOptions, arrayDataGrouping, dateFormatReg, debounce, deepClone, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistString, isExistValue, isFQDN, isFQDNRes, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isObject, isPort, isPostalCode, isRdata, isSameIPV4Segment, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSimplifyCutting, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, stringToArray, stringToLowerOrUpperCase, throttle, unescape, utilToString, utilTypeOf, utilsSubmitForm, version };
+export { EnumLanguageType, EnumRecordType, IAnalysisType, IIsURLDefaultUrlOptions, ILabelRegConfig, ITldRegConfig, IsBankCard, IsByteLengthOptions, IsFQDNConfig, IsStrongPasswordOptions, arrayDataGrouping, dateFormatReg, debounce, deepClone, domainLabelValidator, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistString, isExistValue, isFQDN, isFQDNRes, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isObject, isPort, isPostalCode, isRdata, isSameIPV4Segment, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSimplifyCutting, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, stringToArray, stringToLowerOrUpperCase, throttle, tldValidator, unescape, utilToString, utilTypeOf, utilsSubmitForm, version };

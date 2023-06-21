@@ -8,6 +8,7 @@ export enum EnumLanguageType {
 
 /**
  * 设置错误消息语言类型
+ * 默认中文
  * */
 const setErrorCodeLang = (lang: any = EnumLanguageType.zh) => {
   if (lang === EnumLanguageType.en) {
