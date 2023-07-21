@@ -438,20 +438,46 @@
    * description：函数触发后，如果函数还没执行完成，则打断执行，重新执行
    * @params[fn]  回调函数
    * @params[delay]  定时器延时
+   * @params[immediate]  表示第一次是否立即执行
    */
-  var debounce = function debounce() {
-    var fn = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
-    var delay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 200;
+  var debounce = function debounce(fn) {
+    var delay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
+    var immediate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
     var timer = null;
     return function () {
-      // 再次触发时，立即重新执行
-      // if (timer) {
-      clearTimeout(timer);
-      timer = null;
-      // }
-      timer = setTimeout(fn, delay);
+      var _this = this;
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+      if (timer) clearTimeout(timer);
+
+      // ------ 新增部分 start ------
+      // immediate 为 true 表示第一次触发后执行
+      // timer 为空表示首次触发
+      if (immediate && !timer) {
+        fn.apply(this, args);
+      }
+      // ------ 新增部分 end ------
+
+      timer = setTimeout(function () {
+        fn.apply(_this, args);
+      }, delay);
     };
   };
+
+  // DEMO
+  // 执行 debounce 函数返回新函数
+  /*
+  const betterFn = debounce((data:any) => {
+    console.log(data);
+    console.log('fn 防抖执行了')
+  }, 1000, true)
+  */
+  // 第一次触发 scroll 执行一次 fn，后续只有在停止滑动 1 秒后才执行函数 fn
+  /*
+  document.addEventListener('scroll', betterFn)
+  betterFn(80)
+  */
 
   /**
    * 对象深度克隆
@@ -822,16 +848,19 @@
    * @params[fn]  回调函数
    * @params[delay]  定时器延时
    */
-  var throttle = function throttle() {
-    var fn = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
-    var delay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 200;
+  var throttle = function throttle(fn) {
+    var delay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
     var timer = null;
     return function () {
+      var _this = this;
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
       // 函数在执行中，无论触发几次都不执行。
       if (timer) return;
       clearTimeout(timer);
       timer = setTimeout(function () {
-        fn && fn();
+        fn && fn.apply(_this, args);
         timer = null;
       }, delay);
     };

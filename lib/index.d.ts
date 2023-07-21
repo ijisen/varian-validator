@@ -87,8 +87,9 @@ declare function formatDate(date: any, format?: string): string;
  * description：函数触发后，如果函数还没执行完成，则打断执行，重新执行
  * @params[fn]  回调函数
  * @params[delay]  定时器延时
+ * @params[immediate]  表示第一次是否立即执行
  */
-declare const debounce: (fn?: () => void, delay?: number) => () => void;
+declare const debounce: (fn: Function, delay?: number, immediate?: boolean) => (this: any, ...args: any) => void;
 
 /**
  * 对象深度克隆
@@ -281,7 +282,7 @@ declare const stringToLowerOrUpperCase: (str: any, toUpper?: boolean) => any;
  * @params[fn]  回调函数
  * @params[delay]  定时器延时
  */
-declare const throttle: (fn?: () => void, delay?: number) => () => void;
+declare const throttle: (fn: Function, delay?: number) => (this: any, ...args: any) => void;
 
 /**
  * 标签语义化编译
