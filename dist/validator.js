@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.36 
+ * varian-validator v0.0.37 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2023 ji sen  (https://github.com/ijisen) 
@@ -13,7 +13,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Validator = {}));
 })(this, (function (exports) { 'use strict';
 
-  var version = "0.0.36";
+  var version = "0.0.37";
 
   function ownKeys(object, enumerableOnly) {
     var keys = Object.keys(object);
