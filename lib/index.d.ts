@@ -1,4 +1,4 @@
-var version = "0.0.37";
+var version = "0.0.38";
 
 /**
  * 金额保留两位小数
@@ -26,8 +26,8 @@ declare function numberSubtract(num1: any, num2: any): number;
 /**
  * 乘法运算，避免数据相乘小数点后产生多位数和计算精度损失。
  *
- * @param num1 被乘数
- * @param num2 乘数
+ * @param num1 乘数a
+ * @param num2 乘数b
  */
 declare function numberMultiply(num1: number, num2: number): number;
 /**

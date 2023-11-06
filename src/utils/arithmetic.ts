@@ -89,14 +89,19 @@ export function numberSubtract(num1: any, num2: any) {
 /**
  * 乘法运算，避免数据相乘小数点后产生多位数和计算精度损失。
  *
- * @param num1 被乘数
- * @param num2 乘数
+ * @param num1 乘数a
+ * @param num2 乘数b
  */
 export function numberMultiply(num1: number, num2: number) {
+  if(!isNumber(num1, true) || !isNumber(num2, true)) {
+    return 0
+  }
   let baseNum = 0;
   baseNum += numberFormat(num1);
   baseNum += numberFormat(num2);
-  return Number(num1.toString().replace(".", "")) * Number(num2.toString().replace(".", "")) / Math.pow(10, baseNum);
+  const baseNum3 = Number(num1.toString().replace(".", ""));
+  const baseNum4 = Number(num2.toString().replace(".", ""));
+  return baseNum3 * baseNum4 / Math.pow(10, baseNum);
 }
 
 /**
@@ -106,6 +111,12 @@ export function numberMultiply(num1: number, num2: number) {
  * @param num2 除数
  */
 export function numberDivide(num1: number, num2: number) {
+  if(!isNumber(num1, true) || !isNumber(num2, true)) {
+    return 0
+  }
+  if(num2 === 0) {
+    throw new TypeError('除数不能为0')
+  }
   const baseNum1 = numberFormat(num1);
   const baseNum2 = numberFormat(num2);
   const baseNum3 = Number(num1.toString().replace(".", ""));
