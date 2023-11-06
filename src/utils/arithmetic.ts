@@ -6,6 +6,17 @@
  * ======================================================== */
 import { isNumber } from "./isNumber";
 
+/**
+ * 计算值格式化 - 获取小数位数
+ * @param[num]
+ * */
+const numberFormat = (num: any) => {
+  try {
+    return num.toString().split(".")[1].length;
+  } catch (e) {
+    return 0;
+  }
+}
 
 /**
  * 金额保留两位小数
@@ -35,18 +46,7 @@ export function numberToDecimal2(num: any, ceil?: boolean) {
   while (s.length <= rs + 2) {
     s += '0';
   }
-  return s;
-}
-
-/**
- * 计算值格式化
- * */
-const numberFormat = (num: any) => {
-  try {
-    return num.toString().split(".")[1].length;
-  } catch (e) {
-    return 0;
-  }
+  return Number(s);
 }
 
 
@@ -58,9 +58,13 @@ const numberFormat = (num: any) => {
  * 1.111 + 2 = 3.1109999999999998
  */
 export function numberAdd(num1: any, num2: any) {
-  const baseNum1 = numberFormat(num1);
-  const baseNum2 = numberFormat(num2);
-  const baseNum = Math.pow(10, Math.max(baseNum1, baseNum2));
+  if(!isNumber(num1, true) || !isNumber(num2, true)) {
+    return 0
+  }
+  const num1_decimal_len = numberFormat(num1);
+  const num2_decimal_len = numberFormat(num2);
+  // 保留小数位数
+  const baseNum = Math.pow(10, Math.max(num1_decimal_len, num2_decimal_len));
   return (numberMultiply(num1, baseNum) + numberMultiply(num2, baseNum)) / baseNum;
 }
 
@@ -70,14 +74,16 @@ export function numberAdd(num1: any, num2: any) {
  * @param num1 被减数
  * @param num2 减数
  */
-export function numberSubtract(num1: number, num2: number) {
-  // 精度
-  let precision;
+export function numberSubtract(num1: any, num2: any) {
+  if(!isNumber(num1, true) || !isNumber(num2, true)) {
+    return 0
+  }
   const baseNum1 = numberFormat(num1);
   const baseNum2 = numberFormat(num2);
   const baseNum = Math.pow(10, Math.max(baseNum1, baseNum2));
-  precision = (baseNum1 >= baseNum2) ? baseNum1 : baseNum2;
-  return ((num1 * baseNum - num2 * baseNum) / baseNum).toFixed(precision);
+  // 精度
+  const precision = (baseNum1 >= baseNum2) ? baseNum1 : baseNum2;
+  return Number(((num1 * baseNum - num2 * baseNum) / baseNum).toFixed(precision));
 }
 
 /**
@@ -113,7 +119,7 @@ export function numberDivide(num1: number, num2: number) {
  * @param val 原始数字
  * @param isEn 是否为英文
  */
-export const numberSimplifyCutting  = (val: any, isEn?: boolean) => {
+export const numberSimplifyCutting = (val: any, isEn?: boolean) => {
   // 10000 => 10K
   // 1000000 => 1M
   // 百亿 10 billion(美国、法国)

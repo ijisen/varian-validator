@@ -1,4 +1,4 @@
-var version = "0.0.35";
+var version = "0.0.36";
 
 /**
  * 金额保留两位小数
@@ -22,7 +22,7 @@ declare function numberAdd(num1: any, num2: any): number;
  * @param num1 被减数
  * @param num2 减数
  */
-declare function numberSubtract(num1: number, num2: number): string;
+declare function numberSubtract(num1: any, num2: any): number;
 /**
  * 乘法运算，避免数据相乘小数点后产生多位数和计算精度损失。
  *
