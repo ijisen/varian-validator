@@ -10,6 +10,7 @@ test('isNumber to judge', () => {
   expect(isNumber(-2, true)).toBe(true);
   expect(isNumber('0')).toBe(true);
   expect(isNumber('20')).toBe(true);
+  expect(isNumber('20   5')).toBe(true);
   expect(isNumber(-2)).toBe(false)
   expect(isNumber(true)).toBe(false);
   expect(isNumber(false)).toBe(false);

@@ -579,12 +579,12 @@ var filterStringSpace = function filterStringSpace(str) {
     // return str;
     return '';
   }
-  str = str.trim();
   var reg = /\\0|\\u0000|\s+/g;
   if (filterAllSpace) {
     return str.replace(reg, '');
   } else {
-    return str.replace(reg, ' ');
+    // return str.replace(reg, ' ');
+    return str.trim();
   }
 };
 
@@ -667,19 +667,20 @@ var inputTextareaFormat = function inputTextareaFormat(str) {
  * 判断数据是否存在
  * @param[value] 需要判断的数据
  * @param[returnType] 返回类型，默认返回 boolean
- * @return boolean || string
+ * @param[emptyVal] 返回值，默认返回 N/A
+ * @return any
  */
-var isExistValue = function isExistValue(value) {
-  var returnType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'boolean';
-  var _value = '';
+var isExistValue = function isExistValue(value, returnType, emptyVal) {
+  var _value = false;
+  returnType = returnType || 'boolean';
+  emptyVal = typeof emptyVal === 'undefined' ? 'N/A' : emptyVal;
   if (value === 0 || value === false || value) {
-    _value = value;
-  } else {
-    // null undefined ''
-    _value = '-';
+    _value = true;
   }
-  // console.log(_value);
-  return returnType === 'boolean' ? _value !== '-' : _value;
+  if (returnType === 'boolean') {
+    return _value;
+  }
+  return _value ? value : emptyVal;
 };
 
 /**

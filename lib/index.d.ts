@@ -168,9 +168,10 @@ declare const inputTextareaFormat: (str: any) => any;
  * 判断数据是否存在
  * @param[value] 需要判断的数据
  * @param[returnType] 返回类型，默认返回 boolean
- * @return boolean || string
+ * @param[emptyVal] 返回值，默认返回 N/A
+ * @return any
  */
-declare const isExistValue: (value: any, returnType?: string) => string | boolean;
+declare const isExistValue: (value: any, returnType?: 'boolean' | 'string', emptyVal?: any) => any;
 
 /**
  * 判断参数是否为数字
