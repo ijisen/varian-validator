@@ -12,12 +12,12 @@ const filterStringSpace = (str: any, filterAllSpace = false): string => {
     // return str;
     return ''
   }
-  str = str.trim();
   const reg = /\\0|\\u0000|\s+/g;
   if(filterAllSpace) {
     return str.replace(reg, '')
   } else {
-    return str.replace(reg, ' ')
+    // return str.replace(reg, ' ');
+    return  str.trim();
   }
 };
 
