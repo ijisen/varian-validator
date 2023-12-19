@@ -1,4 +1,5 @@
 
+
 declare const version: string;
 export { version } from '../package.json';
 
