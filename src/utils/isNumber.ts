@@ -1,13 +1,10 @@
 /**
  * 判断参数是否为数字
- *
  * @param[number]
- * @param[allowNegative] 是否允许为负数
+ * @param[allowNegative] 是否允许为负数，默认: false
+ * isNaN([]) || isNaN('') || isNaN(true) || isNaN(false) || isNaN(null) => false
  */
 export const isNumber = (number: any, allowNegative = false) => {
-  /**
-   * isNaN([]) || isNaN('') || isNaN(true) || isNaN(false) || isNaN(null) => false
-   * */
   if(typeof number === 'string') {
     number = number.replace(/\s+/g, '');
   }

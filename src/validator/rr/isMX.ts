@@ -18,10 +18,10 @@ import { isFQDNRes } from "@/validator/http/typings.d";
  * Error codes and messages.
  * */
 const errorCodes = {
-  zh: {
+  'zh-CN': {
     FORMAT_ERROR: 'MX记录的记录值为域名形式（如: abc.example.com）',
   },
-  en: {
+  'en-US': {
     FORMAT_ERROR:
       'The MX record value is in the domain name format (eg: abc.example.com).',
   },

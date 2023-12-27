@@ -23,11 +23,11 @@ import { isFQDNRes } from "@/validator/http/typings.d";
  * */
 
 const errorCodes = {
-  zh: {
+  'zh-CN': {
     FORMAT_ERROR:
       'SRV记录格式为： 优先级 权重 端口 目标地址 ，每项中间需以空格分隔。例如 “0 5 5060 sipserver.example.com”。',
   },
-  en: {
+  'en-US': {
     FORMAT_ERROR:
       'The format of an SRV record is: [Priority] [Weight] [Port number] [Target address]. Separate the priority, weight, port number, and target address with spaces. Example: 0 5 5060 sipserver.example.com',
   },

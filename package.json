@@ -1,6 +1,6 @@
 {
   "name": "varian-validator",
-  "version": "0.0.39",
+  "version": "0.0.40",
   "description": "Lightweight JavaScript form validation.",
   "homepage": "https://github.com/ijisen/varian-validator",
   "author": "ji sen  (https://github.com/ijisen)",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ijisen/varian-validator.git"
+    "url": "git+https://github.com/ijisen/varian-validator.git"
   },
   "keywords": [
     "validator",

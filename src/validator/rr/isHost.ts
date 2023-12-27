@@ -17,7 +17,7 @@ const isHost = (str: string) => {
     allow_trailing_dot: false,
     // 是否允许数字TLD号结尾
     allow_numeric_tld: false,
-    // 是否运通配符 *
+    // 是否允许配符 *
     allow_wildcard: false
   })
   return success;

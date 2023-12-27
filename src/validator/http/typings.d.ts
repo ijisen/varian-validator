@@ -16,7 +16,6 @@ export interface ILabelRegConfig {
   allow_underscores: boolean;
 }
 
-
 /**
  *  域名格式校验 - 传参数格式
  *  */
@@ -37,10 +36,10 @@ export interface IsFQDNConfig extends ITldRegConfig {
  *  域名格式校验返回参数格式
  *  */
 export interface isFQDNRes {
+  // 是否校验成功
   success: boolean;
+  // 校验成功|失败提示消息
   message: string;
+  // 校验的文本
   regValue?: any;
 }
-
-
-

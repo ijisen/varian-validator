@@ -1,4 +1,4 @@
-var version = "0.0.39";
+var version = "0.0.40";
 
 /**
  * 金额保留两位小数
@@ -175,9 +175,9 @@ declare const isExistValue: (value: any, returnType?: 'boolean' | 'string', empt
 
 /**
  * 判断参数是否为数字
- *
  * @param[number]
- * @param[allowNegative] 是否允许为负数
+ * @param[allowNegative] 是否允许为负数，默认: false
+ * isNaN([]) || isNaN('') || isNaN(true) || isNaN(false) || isNaN(null) => false
  */
 declare const isNumber: (number: any, allowNegative?: boolean) => boolean;
 
@@ -238,17 +238,18 @@ declare const getSessionStorage: (name: string) => any;
 declare const removeSessionStorage: (name: string) => boolean;
 
 /**
- * 语言类型
+ * 语言类型枚举值
  * */
 declare enum EnumLanguageType {
     en = "en-US",
     zh = "zh-CN"
 }
+type LanguageType = EnumLanguageType.zh | EnumLanguageType.en | undefined | string;
 /**
  * 设置错误消息语言类型
- * 默认中文
+ * @param[lang] LanguageType 默认: 中文[zh-CN]
  * */
-declare const setErrorCodeLang: (lang?: any) => "en" | "zh";
+declare const setErrorCodeLang: (lang?: LanguageType) => EnumLanguageType;
 
 /**
  * 设置页面标题
@@ -335,7 +336,6 @@ interface ILabelRegConfig {
   allow_underscores: boolean;
 }
 
-
 /**
  *  域名格式校验 - 传参数格式
  *  */
@@ -356,27 +356,47 @@ interface IsFQDNConfig extends ITldRegConfig {
  *  域名格式校验返回参数格式
  *  */
 interface isFQDNRes {
+  // 是否校验成功
   success: boolean;
+  // 校验成功|失败提示消息
   message: string;
+  // 校验的文本
   regValue?: any;
 }
 
-declare const isIPv4: (s: string) => boolean;
-declare const isIPv6: (s: string) => boolean;
-declare const isIP: (s: string) => 0 | 4 | 6;
+/**
+ * 验证 IP V4 合法性
+ * @param[str] 关键词
+ * */
+declare const isIPv4: (str: string) => boolean;
+/**
+ * 验证 IP V6 合法性
+ * @param[str] 关键词
+ * */
+declare const isIPv6: (str: string) => boolean;
+/**
+ * 验证IP合法性
+ * @param[str] 关键词
+ * */
+declare const isIP: (str: string) => 0 | 4 | 6;
 /**
  * IPV4 是否为同一网段判定
+ * @param[startIP] IP开始断
+ * @param[endIP] IP结束断
+ * @param[lang] 国际话语言 默认： zh_CN
  * */
 declare const isSameIPV4Segment: (startIP: string, endIP: string, lang?: any) => isFQDNRes;
 
 /**
  * 域名关键词验证
- *
+ * @param[config.label] 关键词
+ * @param[config.option.allow_underscores] 是否允许包含下划线, 默认: false
+ * @param[config.lang] 国际话语言 默认： zh_CN
  * */
-declare const domainLabelValidator: ({ label, options, lang }: {
+declare const domainLabelValidator: (config: {
     label: any;
-    options?: Partial<ILabelRegConfig> | undefined;
-    lang?: string | undefined;
+    option?: Partial<ILabelRegConfig>;
+    lang?: string;
 }) => {
     success: boolean;
     message: string;
@@ -384,12 +404,14 @@ declare const domainLabelValidator: ({ label, options, lang }: {
 
 /**
  * TLD格式校验
- *
+ * @param[params.tld] 需要校验的TLD
+ * @param[params.option] TLD验证可选参数
+ * @param[params.lang] 国际话语言
  * */
-declare const tldValidator: ({ tld, options, lang }: {
+declare const tldValidator: (params: {
     tld: any;
-    options?: Partial<ITldRegConfig> | undefined;
-    lang?: string | undefined;
+    option?: Partial<ITldRegConfig>;
+    lang?: string;
 }) => {
     success: boolean;
     message: string;
@@ -400,21 +422,33 @@ declare const tldValidator: ({ tld, options, lang }: {
  * FQDN：(Fully Qualified Domain Name)全限定域名：同时带有主机名和域名的名称。（通过符号“.”）
  * 例如：主机名是bigserver,域名是mycompany.com,那么FQDN就是bigserver.mycompany.com。 [1]
  * str: m.zdns.cn || zdns.cn. || h.m.zdns.cn.
+ * @param[str] 需要校验的文本
+ * @param[option] 域名验证可选参数
+ * @param[lang] 国际话语言
  * */
-declare const isFQDN: (str: any, options?: Partial<IsFQDNConfig>, lang?: string) => isFQDNRes;
+declare const isFQDN: (str: any, option?: Partial<IsFQDNConfig>, lang?: string) => isFQDNRes;
 
 /**
  * 域名合法性校验
+ * @param[params.str] 域名
+ * @param[params.lang] 国际话语言
+ * @param[params.config] 域名格式校验参数
+ * @config 参数默认值
+ * @param[params.config.require_tld] 是否包含TLD，默认：true
+ * @param[params.config.allow_underscores] 是否允许包含下划线，默认：true
+ * @param[params.config.allow_trailing_dot] 是否允许 . 号结尾，默认：false
+ * @param[params.config.allow_numeric_tld] 是否允许数字TLD号结尾，默认：false
+ * @param[params.config.allow_wildcard] 是否允许配符 *，默认：false
  * */
-interface IsDomainConfig {
+declare const isDomain: (params?: {
     str: string;
     lang?: string;
     config?: Partial<IsFQDNConfig>;
-}
-declare const isDomain: ({ str, lang, config }?: IsDomainConfig) => isFQDNRes;
+}) => isFQDNRes;
 
 /**
  * 端口号校验
+ * @param[str] 校验的文本
  * */
 declare const isPort: (str: any) => boolean;
 
@@ -437,6 +471,7 @@ declare const enum EnumRecordType {
  * 域名解析记录公共校验
  * @param[str] 校验值
  * @param[type] 校验类型
+ * @param[lang] 国际话语言 默认： zh_CN
  * */
 declare const isRdata: (str: any, type: EnumRecordType, lang?: string) => isFQDNRes;
 
@@ -657,4 +692,4 @@ declare function isURL(url: any, options: Partial<IIsURLDefaultUrlOptions>): boo
  * */
 declare function isUUID(str: any, version: any): any;
 
-export { EnumLanguageType, EnumRecordType, IAnalysisType, IIsURLDefaultUrlOptions, ILabelRegConfig, ITldRegConfig, IsBankCard, IsByteLengthOptions, IsFQDNConfig, IsStrongPasswordOptions, arrayDataGrouping, dateFormatReg, debounce, deepClone, domainLabelValidator, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistString, isExistValue, isFQDN, isFQDNRes, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isObject, isPort, isPostalCode, isRdata, isSameIPV4Segment, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSimplifyCutting, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, stringToArray, stringToLowerOrUpperCase, throttle, tldValidator, unescape, utilToString, utilTypeOf, utilsSubmitForm, version };
+export { EnumLanguageType, EnumRecordType, IAnalysisType, IIsURLDefaultUrlOptions, ILabelRegConfig, ITldRegConfig, IsBankCard, IsByteLengthOptions, IsFQDNConfig, IsStrongPasswordOptions, LanguageType, arrayDataGrouping, dateFormatReg, debounce, deepClone, domainLabelValidator, escape, filterStringSpace, formatDate, getCookieValue, getDomainPeriod, getDomainTld, getLocalStorage, getSessionStorage, getStrByteLength, getUrlParam, inputTextareaFormat, isBooleanTrue, isByteLength, isCellPhone, isCreditCard, isDomain, isEmail, isEmptyArray, isEmptyStr, isEthereumAddress, isExistString, isExistValue, isFQDN, isFQDNRes, isFixedPhone, isHost, isIMEI, isIP, isIPv4, isIPv6, isIdentityCard, isIn, isInRange, isInt, isNumber, isObject, isPort, isPostalCode, isRdata, isSameIPV4Segment, isStrongPassword, isTTL, isTaxpayerNo, isURL, isUUID, isValidParamsTypes, isZone, numberAdd, numberDivide, numberMultiply, numberSimplifyCutting, numberSubtract, numberToDecimal2, removeLocalStorage, removeSessionStorage, setCookie, setErrorCodeLang, setHtmlTitle, setLocalStorage, setSessionStorage, setUrlParam, specialSymbolToComma, stringToArray, stringToLowerOrUpperCase, throttle, tldValidator, unescape, utilToString, utilTypeOf, utilsSubmitForm, version };

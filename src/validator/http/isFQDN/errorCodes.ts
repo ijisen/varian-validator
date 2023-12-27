@@ -2,7 +2,7 @@
  * 域名格式校验 - 错误提示消息.
  * */
 export const errorCodes = {
-  zh: {
+  'zh-CN': {
     DOMAIN_IS_EMPTY: '请输入域名.',
     DOMAIN_FORMAT_ERROR: '域名格式错误.',
     DOMAIN_TOO_SHORT: '域名长度不能小于 1 个字符.',
@@ -19,7 +19,7 @@ export const errorCodes = {
     TLD_WITH_NUMBER: 'TLD不能包含数字.',
     TLD_INVALID_CHARS: 'TLD格式错误.',
   },
-  en: {
+  'en-US': {
     DOMAIN_IS_EMPTY: 'Check content is empty',
     DOMAIN_FORMAT_ERROR: 'Domain name format error',
     DOMAIN_TOO_SHORT: 'Domain name too short.',

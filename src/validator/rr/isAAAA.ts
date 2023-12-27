@@ -17,10 +17,10 @@ import { isFQDNRes } from "@/validator/http/typings.d";
  * Error codes and messages.
  * */
 const errorCodes = {
-  zh: {
+  'zh-CN': {
     FORMAT_ERROR: 'AAAA记录的记录值为IPv6形式（如: ff03:0:0:0:0:0:0:c1）',
   },
-  en: {
+  'en-US': {
     FORMAT_ERROR:
       'The AAAA record value is in the IPv6 format (eg: ff03:0:0:0:0:0:0:c1).',
   },

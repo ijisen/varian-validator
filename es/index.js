@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.39 
+ * varian-validator v0.0.40 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2023 ji sen  (https://github.com/ijisen) 
@@ -7,7 +7,7 @@
  * Licensed under the ISC license 
  */
 
-var version = "0.0.39";
+var version = "0.0.40";
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
@@ -113,15 +113,12 @@ function _nonIterableRest() {
 
 /**
  * 判断参数是否为数字
- *
  * @param[number]
- * @param[allowNegative] 是否允许为负数
+ * @param[allowNegative] 是否允许为负数，默认: false
+ * isNaN([]) || isNaN('') || isNaN(true) || isNaN(false) || isNaN(null) => false
  */
 var isNumber = function isNumber(number) {
   var allowNegative = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-  /**
-   * isNaN([]) || isNaN('') || isNaN(true) || isNaN(false) || isNaN(null) => false
-   * */
   if (typeof number === 'string') {
     number = number.replace(/\s+/g, '');
   }
@@ -792,24 +789,23 @@ var removeSessionStorage = function removeSessionStorage(name) {
 };
 
 /**
- * 语言类型
+ * 语言类型枚举值
  * */
 var EnumLanguageType;
-
-/**
- * 设置错误消息语言类型
- * 默认中文
- * */
 (function (EnumLanguageType) {
   EnumLanguageType["en"] = "en-US";
   EnumLanguageType["zh"] = "zh-CN";
 })(EnumLanguageType || (EnumLanguageType = {}));
+/**
+ * 设置错误消息语言类型
+ * @param[lang] LanguageType 默认: 中文[zh-CN]
+ * */
 var setErrorCodeLang = function setErrorCodeLang() {
   var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : EnumLanguageType.zh;
   if (lang === EnumLanguageType.en) {
-    return 'en';
+    return EnumLanguageType.en;
   }
-  return 'zh';
+  return EnumLanguageType.zh;
 };
 
 /**
@@ -987,7 +983,7 @@ var utilToString = function utilToString(input) {
  * Error codes and messages.
  * */
 var errorCodes$9 = {
-  zh: {
+  'zh-CN': {
     IP_SEGMENT_ERR_FORMAT: 'IP 格式错误',
     IP_SEGMENT_NOT_SUPPORT_V6: '不支持IPV6网段',
     IP_SEGMENT_ERR_TYPE: 'IP类型不一致',
@@ -995,7 +991,7 @@ var errorCodes$9 = {
     IP_SEGMENT_ERR_RANGE: '结束IP不能小于起始IP',
     IP_SEGMENT_SUCCESS: '校验成功'
   },
-  en: {
+  'en-US': {
     IP_SEGMENT_ERR_FORMAT: 'Incorrect IP format',
     IP_SEGMENT_NOT_SUPPORT_V6: 'Does not support IPV6',
     IP_SEGMENT_ERR_TYPE: 'IP types are inconsistent',
@@ -1013,20 +1009,38 @@ var IPv4Reg = new RegExp("^".concat(v4Str, "$"));
 // IPv6 Segment
 var v6Seg = '(?:[0-9a-fA-F]{1,4})';
 var IPv6Reg = new RegExp('^(' + "(?:".concat(v6Seg, ":){7}(?:").concat(v6Seg, "|:)|") + "(?:".concat(v6Seg, ":){6}(?:").concat(v4Str, "|:").concat(v6Seg, "|:)|") + "(?:".concat(v6Seg, ":){5}(?::").concat(v4Str, "|(:").concat(v6Seg, "){1,2}|:)|") + "(?:".concat(v6Seg, ":){4}(?:(:").concat(v6Seg, "){0,1}:").concat(v4Str, "|(:").concat(v6Seg, "){1,3}|:)|") + "(?:".concat(v6Seg, ":){3}(?:(:").concat(v6Seg, "){0,2}:").concat(v4Str, "|(:").concat(v6Seg, "){1,4}|:)|") + "(?:".concat(v6Seg, ":){2}(?:(:").concat(v6Seg, "){0,3}:").concat(v4Str, "|(:").concat(v6Seg, "){1,5}|:)|") + "(?:".concat(v6Seg, ":){1}(?:(:").concat(v6Seg, "){0,4}:").concat(v4Str, "|(:").concat(v6Seg, "){1,6}|:)|") + "(?::((?::".concat(v6Seg, "){0,5}:").concat(v4Str, "|(?::").concat(v6Seg, "){1,7}|:))") + ')(%[0-9a-zA-Z-.:]{1,})?$');
-var isIPv4 = function isIPv4(s) {
-  return IPv4Reg.test(s);
+
+/**
+ * 验证 IP V4 合法性
+ * @param[str] 关键词
+ * */
+var isIPv4 = function isIPv4(str) {
+  return IPv4Reg.test(str);
 };
-var isIPv6 = function isIPv6(s) {
-  return IPv6Reg.test(s);
+
+/**
+ * 验证 IP V6 合法性
+ * @param[str] 关键词
+ * */
+var isIPv6 = function isIPv6(str) {
+  return IPv6Reg.test(str);
 };
-var isIP = function isIP(s) {
-  if (isIPv4(s)) return 4;
-  if (isIPv6(s)) return 6;
+
+/**
+ * 验证IP合法性
+ * @param[str] 关键词
+ * */
+var isIP = function isIP(str) {
+  if (isIPv4(str)) return 4;
+  if (isIPv6(str)) return 6;
   return 0;
 };
 
 /**
  * IPV4 是否为同一网段判定
+ * @param[startIP] IP开始断
+ * @param[endIP] IP结束断
+ * @param[lang] 国际话语言 默认： zh_CN
  * */
 var isSameIPV4Segment = function isSameIPV4Segment(startIP, endIP, lang) {
   var errorMessage = errorCodes$9[setErrorCodeLang(lang)];
@@ -1075,7 +1089,7 @@ var isSameIPV4Segment = function isSameIPV4Segment(startIP, endIP, lang) {
  * 域名格式校验 - 错误提示消息.
  * */
 var errorCodes$8 = {
-  zh: {
+  'zh-CN': {
     DOMAIN_IS_EMPTY: '请输入域名.',
     DOMAIN_FORMAT_ERROR: '域名格式错误.',
     DOMAIN_TOO_SHORT: '域名长度不能小于 1 个字符.',
@@ -1092,7 +1106,7 @@ var errorCodes$8 = {
     TLD_WITH_NUMBER: 'TLD不能包含数字.',
     TLD_INVALID_CHARS: 'TLD格式错误.'
   },
-  en: {
+  'en-US': {
     DOMAIN_IS_EMPTY: 'Check content is empty',
     DOMAIN_FORMAT_ERROR: 'Domain name format error',
     DOMAIN_TOO_SHORT: 'Domain name too short.',
@@ -1113,13 +1127,15 @@ var errorCodes$8 = {
 
 /**
  * 域名关键词验证
- *
+ * @param[config.label] 关键词
+ * @param[config.option.allow_underscores] 是否允许包含下划线, 默认: false
+ * @param[config.lang] 国际话语言 默认： zh_CN
  * */
-var domainLabelValidator = function domainLabelValidator(_ref) {
-  var label = _ref.label,
-    _ref$options = _ref.options,
-    options = _ref$options === void 0 ? {} : _ref$options,
-    lang = _ref.lang;
+var domainLabelValidator = function domainLabelValidator(config) {
+  var label = config.label,
+    _config$option = config.option,
+    option = _config$option === void 0 ? {} : _config$option,
+    lang = config.lang;
   var errorMessage = errorCodes$8[setErrorCodeLang(lang)];
   label = filterStringSpace(label, true);
   if (!label) {
@@ -1128,17 +1144,17 @@ var domainLabelValidator = function domainLabelValidator(_ref) {
       message: errorMessage.LABEL_TOO_SHORT
     };
   }
-  options = _objectSpread2({
+  option = _objectSpread2({
     // 是否允许包含下划线
     allow_underscores: false
-  }, options);
+  }, option);
   if (label.length > 63) {
     return {
       success: false,
       message: errorMessage.LABEL_TOO_LONG
     };
   }
-  if (!options.allow_underscores && /_/.test(label)) {
+  if (!option.allow_underscores && /_/.test(label)) {
     // 不允许下划线
     return {
       success: false,
@@ -1158,7 +1174,7 @@ var domainLabelValidator = function domainLabelValidator(_ref) {
   // \u4E00-\u9FA5 \u00a1-\uffff
   var labelReg = /^[a-z\u00a1-\uffff0-9-]+$/i;
   var labelRegErrMsg = errorMessage.LABEL_INVALID_CHARS;
-  if (options.allow_underscores) {
+  if (option.allow_underscores) {
     // 允许下划线
     labelReg = /^[a-z\u00a1-\uffff0-9-_]+$/i;
     labelRegErrMsg = errorMessage.LABEL_INVALID_CHARS_WITH_UNDERSCORES;
@@ -1193,30 +1209,32 @@ var domainLabelValidator = function domainLabelValidator(_ref) {
 
 /**
  * TLD格式校验
- *
+ * @param[params.tld] 需要校验的TLD
+ * @param[params.option] TLD验证可选参数
+ * @param[params.lang] 国际话语言
  * */
-var tldValidator = function tldValidator(_ref) {
-  var tld = _ref.tld,
-    _ref$options = _ref.options,
-    options = _ref$options === void 0 ? {} : _ref$options,
-    lang = _ref.lang;
-  options = _objectSpread2({
+var tldValidator = function tldValidator(params) {
+  var tld = params.tld,
+    _params$option = params.option,
+    option = _params$option === void 0 ? {} : _params$option,
+    lang = params.lang;
+  option = _objectSpread2({
     // 是否允许纯数字TLD
     allow_numeric_tld: false,
     // 是否允许TLD包含 -
     allow_hyphen_tld: false
-  }, options);
+  }, option);
   var errorMessage = errorCodes$8[setErrorCodeLang(lang)];
 
   // reject numeric TLDs
-  if (!options.allow_numeric_tld && /^\d+$/.test(tld)) {
+  if (!option.allow_numeric_tld && /^\d+$/.test(tld)) {
     return {
       success: false,
       message: errorMessage.TLD_WITH_NUMBER
     };
   }
   var tldReg = /^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{2,}|xn[a-z0-9-]{2,})$/i;
-  if (options.allow_hyphen_tld) {
+  if (option.allow_hyphen_tld) {
     tldReg = /^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF-]{2,})$/i;
   }
   if (!tldReg.test(tld)) {
@@ -1283,14 +1301,17 @@ var default_fqdn_options = {
  * FQDN：(Fully Qualified Domain Name)全限定域名：同时带有主机名和域名的名称。（通过符号“.”）
  * 例如：主机名是bigserver,域名是mycompany.com,那么FQDN就是bigserver.mycompany.com。 [1]
  * str: m.zdns.cn || zdns.cn. || h.m.zdns.cn.
+ * @param[str] 需要校验的文本
+ * @param[option] 域名验证可选参数
+ * @param[lang] 国际话语言
  * */
 var isFQDN = function isFQDN(str) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var lang = arguments.length > 2 ? arguments[2] : undefined;
   var errorMessage = errorCodes$8[setErrorCodeLang(lang)];
   str = filterStringSpace(str, true);
-  options = _objectSpread2(_objectSpread2({}, default_fqdn_options), options);
-  console.log(options);
+  option = _objectSpread2(_objectSpread2({}, default_fqdn_options), option);
+  console.log(option);
   if (!str) {
     return {
       success: false,
@@ -1306,19 +1327,19 @@ var isFQDN = function isFQDN(str) {
   }
 
   /* Remove the optional trailing dot before checking validity */
-  if (options.allow_trailing_dot && str[len - 1] === '.') {
+  if (option.allow_trailing_dot && str[len - 1] === '.') {
     str = str.substring(0, len - 1);
   }
 
   /* Remove the optional wildcard before checking validity */
-  if (options.allow_wildcard && str.indexOf('*.') === 0) {
+  if (option.allow_wildcard && str.indexOf('*.') === 0) {
     str = str.substring(2);
   }
   var nodes = str.split('.');
   console.log(nodes);
   var node_len = nodes.length;
-  var max_node = setMaxNode(options.max_node, options.require_tld || false);
-  if (options.require_tld) {
+  var max_node = setMaxNode(option.max_node, option.require_tld || false);
+  if (option.require_tld) {
     // 域名包含tld
     // 最小节点数据 = 2   a.com b.cn
     if (node_len < 2) {
@@ -1336,9 +1357,9 @@ var isFQDN = function isFQDN(str) {
     }
     var tldResData = tldValidator({
       tld: nodes[node_len - 1],
-      options: {
-        allow_numeric_tld: options.allow_numeric_tld,
-        allow_hyphen_tld: options.allow_hyphen_tld
+      option: {
+        allow_numeric_tld: option.allow_numeric_tld,
+        allow_hyphen_tld: option.allow_hyphen_tld
       },
       lang: lang
     });
@@ -1366,8 +1387,8 @@ var isFQDN = function isFQDN(str) {
     }
     var labelResData = domainLabelValidator({
       label: label,
-      options: {
-        allow_underscores: options.allow_underscores
+      option: {
+        allow_underscores: option.allow_underscores
       },
       lang: lang
     });
@@ -1381,14 +1402,26 @@ var isFQDN = function isFQDN(str) {
   };
 };
 
+/**
+ * 域名合法性校验
+ * @param[params.str] 域名
+ * @param[params.lang] 国际话语言
+ * @param[params.config] 域名格式校验参数
+ * @config 参数默认值
+ * @param[params.config.require_tld] 是否包含TLD，默认：true
+ * @param[params.config.allow_underscores] 是否允许包含下划线，默认：true
+ * @param[params.config.allow_trailing_dot] 是否允许 . 号结尾，默认：false
+ * @param[params.config.allow_numeric_tld] 是否允许数字TLD号结尾，默认：false
+ * @param[params.config.allow_wildcard] 是否允许配符 *，默认：false
+ * */
 var isDomain = function isDomain() {
-  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-      str: ''
-    },
-    str = _ref.str,
-    lang = _ref.lang,
-    _ref$config = _ref.config,
-    config = _ref$config === void 0 ? {} : _ref$config;
+  var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    str: ''
+  };
+  var str = params.str,
+    lang = params.lang,
+    _params$config = params.config,
+    config = _params$config === void 0 ? {} : _params$config;
   return isFQDN(str, _objectSpread2({
     // 是否包含TLD
     require_tld: true,
@@ -1398,7 +1431,7 @@ var isDomain = function isDomain() {
     allow_trailing_dot: false,
     // 是否允许数字TLD号结尾
     allow_numeric_tld: false,
-    // 是否运通配符 *
+    // 是否允许配符 *
     allow_wildcard: false
   }, config), lang);
 };
@@ -1419,6 +1452,7 @@ var isInRange = function isInRange(str, min, max) {
 
 /**
  * 端口号校验
+ * @param[str] 校验的文本
  * */
 var isPort = function isPort(str) {
   var isRange = isInRange(str, 1, 65535);
@@ -1442,10 +1476,10 @@ var isPort = function isPort(str) {
  * Error codes and messages.
  * */
 var errorCodes$7 = {
-  zh: {
+  'zh-CN': {
     FORMAT_ERROR: 'MX记录的记录值为域名形式（如: abc.example.com）'
   },
-  en: {
+  'en-US': {
     FORMAT_ERROR: 'The MX record value is in the domain name format (eg: abc.example.com).'
   }
 };
@@ -1481,10 +1515,10 @@ var isMX = function isMX(str, lang) {
  * Error codes and messages.
  * */
 var errorCodes$6 = {
-  zh: {
+  'zh-CN': {
     TOO_LONG: 'TXT记录值长度限制 255 个字符.'
   },
-  en: {
+  'en-US': {
     TOO_LONG: 'The TXT record value must be 1 to 255 characters in length.'
   }
 };
@@ -1514,10 +1548,10 @@ var isTXT = function isTXT(str) {
  * Error codes and messages.
  * */
 var errorCodes$5 = {
-  zh: {
+  'zh-CN': {
     FORMAT_ERROR: 'NS记录的记录值为域名形式（如: ns1.example.com）'
   },
-  en: {
+  'en-US': {
     FORMAT_ERROR: 'The NS record value is in the domain name format (eg: ns1.example.com).'
   }
 };
@@ -1556,10 +1590,10 @@ var isNS = function isNS(str, lang) {
  * Error codes and messages.
  * */
 var errorCodes$4 = {
-  zh: {
+  'zh-CN': {
     FORMAT_ERROR: 'CAA记录的记录值为字符串形式, 如：0 issue "ca.example.com"'
   },
-  en: {
+  'en-US': {
     FORMAT_ERROR: 'Specify your CAA Record value as a string, (eg: 0 issue "ca.example.com" ).'
   }
 };
@@ -1598,10 +1632,10 @@ var isCAA = function isCAA(str, lang) {
  * */
 
 var errorCodes$3 = {
-  zh: {
+  'zh-CN': {
     FORMAT_ERROR: 'SRV记录格式为： 优先级 权重 端口 目标地址 ，每项中间需以空格分隔。例如 “0 5 5060 sipserver.example.com”。'
   },
-  en: {
+  'en-US': {
     FORMAT_ERROR: 'The format of an SRV record is: [Priority] [Weight] [Port number] [Target address]. Separate the priority, weight, port number, and target address with spaces. Example: 0 5 5060 sipserver.example.com'
   }
 };
@@ -1655,10 +1689,10 @@ var isSRV = function isSRV(str, lang) {
  * Error codes and messages.
  * */
 var errorCodes$2 = {
-  zh: {
+  'zh-CN': {
     FORMAT_ERROR: 'A记录的记录值为IPv4形式（如: 10.10.10.10）'
   },
-  en: {
+  'en-US': {
     FORMAT_ERROR: 'The A record value is in the IPv4 format (eg: 10.10.10.10).'
   }
 };
@@ -1687,10 +1721,10 @@ var isA = function isA(str, lang) {
  * Error codes and messages.
  * */
 var errorCodes$1 = {
-  zh: {
+  'zh-CN': {
     FORMAT_ERROR: 'AAAA记录的记录值为IPv6形式（如: ff03:0:0:0:0:0:0:c1）'
   },
-  en: {
+  'en-US': {
     FORMAT_ERROR: 'The AAAA record value is in the IPv6 format (eg: ff03:0:0:0:0:0:0:c1).'
   }
 };
@@ -1719,10 +1753,10 @@ var isAAAA = function isAAAA(str, lang) {
  * Error codes and messages.
  * */
 var errorCodes = {
-  zh: {
+  'zh-CN': {
     FORMAT_ERROR: 'CNAME记录的记录值为域名形式（如: abc.example.com）'
   },
-  en: {
+  'en-US': {
     FORMAT_ERROR: 'The Canonical Name value is in the domain name format (eg: abc.example.com).'
   }
 };
@@ -1755,6 +1789,7 @@ var EnumRecordType;
  * 域名解析记录公共校验
  * @param[str] 校验值
  * @param[type] 校验类型
+ * @param[lang] 国际话语言 默认： zh_CN
  * */
 (function (EnumRecordType) {
   EnumRecordType["A"] = "A";
@@ -1812,7 +1847,7 @@ var isHost = function isHost(str) {
       allow_trailing_dot: false,
       // 是否允许数字TLD号结尾
       allow_numeric_tld: false,
-      // 是否运通配符 *
+      // 是否允许配符 *
       allow_wildcard: false
     }),
     success = _isFQDN.success;

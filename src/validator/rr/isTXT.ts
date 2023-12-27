@@ -25,10 +25,10 @@ interface Default_Option {
  * Error codes and messages.
  * */
 const errorCodes = {
-  zh: {
+  'zh-CN': {
     TOO_LONG: 'TXT记录值长度限制 255 个字符.',
   },
-  en: {
+  'en-US': {
     TOO_LONG: 'The TXT record value must be 1 to 255 characters in length.',
   },
 };

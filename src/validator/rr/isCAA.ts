@@ -22,10 +22,10 @@ import { isFQDNRes } from "@/validator/http/typings.d";
  * Error codes and messages.
  * */
 const errorCodes = {
-  zh: {
+  'zh-CN': {
     FORMAT_ERROR: 'CAA记录的记录值为字符串形式, 如：0 issue "ca.example.com"',
   },
-  en: {
+  'en-US': {
     FORMAT_ERROR:
       'Specify your CAA Record value as a string, (eg: 0 issue "ca.example.com" ).',
   },

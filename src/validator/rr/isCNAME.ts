@@ -17,10 +17,10 @@ import { isFQDNRes } from "@/validator/http/typings.d";
  * Error codes and messages.
  * */
 const errorCodes = {
-  zh: {
+  'zh-CN': {
     FORMAT_ERROR: 'CNAME记录的记录值为域名形式（如: abc.example.com）',
   },
-  en: {
+  'en-US': {
     FORMAT_ERROR:
       'The Canonical Name value is in the domain name format (eg: abc.example.com).',
   },

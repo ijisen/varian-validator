@@ -17,10 +17,10 @@ import { isFQDNRes } from "../http/typings.d";
  * Error codes and messages.
  * */
 const errorCodes = {
-  zh: {
+  'zh-CN': {
     FORMAT_ERROR: 'A记录的记录值为IPv4形式（如: 10.10.10.10）',
   },
-  en: {
+  'en-US': {
     FORMAT_ERROR: 'The A record value is in the IPv4 format (eg: 10.10.10.10).',
   },
 };

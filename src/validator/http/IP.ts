@@ -7,7 +7,7 @@ import { isFQDNRes } from "./typings.d";
  * Error codes and messages.
  * */
 const errorCodes = {
-  zh: {
+  'zh-CN': {
     IP_SEGMENT_ERR_FORMAT: 'IP 格式错误',
     IP_SEGMENT_NOT_SUPPORT_V6: '不支持IPV6网段',
     IP_SEGMENT_ERR_TYPE: 'IP类型不一致',
@@ -15,7 +15,7 @@ const errorCodes = {
     IP_SEGMENT_ERR_RANGE: '结束IP不能小于起始IP',
     IP_SEGMENT_SUCCESS: '校验成功',
   },
-  en: {
+  'en-US': {
     IP_SEGMENT_ERR_FORMAT: 'Incorrect IP format',
     IP_SEGMENT_NOT_SUPPORT_V6: 'Does not support IPV6',
     IP_SEGMENT_ERR_TYPE: 'IP types are inconsistent',
@@ -46,22 +46,37 @@ const IPv6Reg = new RegExp(
   ')(%[0-9a-zA-Z-.:]{1,})?$',
 );
 
-export const isIPv4 = (s: string) => {
-  return IPv4Reg.test(s);
+/**
+ * 验证 IP V4 合法性
+ * @param[str] 关键词
+ * */
+export const isIPv4 = (str: string) => {
+  return IPv4Reg.test(str);
 };
 
-export const isIPv6 = (s: string) => {
-  return IPv6Reg.test(s);
+/**
+ * 验证 IP V6 合法性
+ * @param[str] 关键词
+ * */
+export const isIPv6 = (str: string) => {
+  return IPv6Reg.test(str);
 };
 
-export const isIP = (s: string) => {
-  if(isIPv4(s)) return 4;
-  if(isIPv6(s)) return 6;
+/**
+ * 验证IP合法性
+ * @param[str] 关键词
+ * */
+export const isIP = (str: string) => {
+  if(isIPv4(str)) return 4;
+  if(isIPv6(str)) return 6;
   return 0;
 };
 
 /**
  * IPV4 是否为同一网段判定
+ * @param[startIP] IP开始断
+ * @param[endIP] IP结束断
+ * @param[lang] 国际话语言 默认： zh_CN
  * */
 export const isSameIPV4Segment = (startIP: string, endIP: string, lang?: any): isFQDNRes => {
   let errorMessage = errorCodes[setErrorCodeLang(lang)];

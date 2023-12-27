@@ -28,6 +28,7 @@ export const enum EnumRecordType {
  * 域名解析记录公共校验
  * @param[str] 校验值
  * @param[type] 校验类型
+ * @param[lang] 国际话语言 默认： zh_CN
  * */
 export const isRdata = (str: any,
                         type: EnumRecordType,

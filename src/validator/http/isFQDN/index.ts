@@ -59,15 +59,18 @@ const default_fqdn_options = {
  * FQDN：(Fully Qualified Domain Name)全限定域名：同时带有主机名和域名的名称。（通过符号“.”）
  * 例如：主机名是bigserver,域名是mycompany.com,那么FQDN就是bigserver.mycompany.com。 [1]
  * str: m.zdns.cn || zdns.cn. || h.m.zdns.cn.
+ * @param[str] 需要校验的文本
+ * @param[option] 域名验证可选参数
+ * @param[lang] 国际话语言
  * */
-const isFQDN = (str: any, options: Partial<IsFQDNConfig> = {}, lang?: string): isFQDNRes => {
+const isFQDN = (str: any, option: Partial<IsFQDNConfig> = {}, lang?: string): isFQDNRes => {
   let errorMessage = errorCodes[setErrorCodeLang(lang)];
   str = filterStringSpace(str, true);
-  options = {
+  option = {
     ...default_fqdn_options,
-    ...options,
+    ...option,
   };
-  console.log(options);
+  console.log(option);
 
   if(!str) {
     return {
@@ -85,21 +88,21 @@ const isFQDN = (str: any, options: Partial<IsFQDNConfig> = {}, lang?: string): i
   }
 
   /* Remove the optional trailing dot before checking validity */
-  if(options.allow_trailing_dot && str[len - 1] === '.') {
+  if(option.allow_trailing_dot && str[len - 1] === '.') {
     str = str.substring(0, len - 1);
   }
 
   /* Remove the optional wildcard before checking validity */
-  if(options.allow_wildcard && str.indexOf('*.') === 0) {
+  if(option.allow_wildcard && str.indexOf('*.') === 0) {
     str = str.substring(2);
   }
 
   const nodes = str.split('.');
   console.log(nodes);
   const node_len = nodes.length;
-  let max_node = setMaxNode(options.max_node, options.require_tld || false);
+  let max_node = setMaxNode(option.max_node, option.require_tld || false);
 
-  if(options.require_tld) {
+  if(option.require_tld) {
     // 域名包含tld
     // 最小节点数据 = 2   a.com b.cn
     if(node_len < 2) {
@@ -119,9 +122,9 @@ const isFQDN = (str: any, options: Partial<IsFQDNConfig> = {}, lang?: string): i
 
     const tldResData = tldValidator({
       tld: nodes[node_len - 1],
-      options: {
-        allow_numeric_tld: options.allow_numeric_tld,
-        allow_hyphen_tld: options.allow_hyphen_tld,
+      option: {
+        allow_numeric_tld: option.allow_numeric_tld,
+        allow_hyphen_tld: option.allow_hyphen_tld,
       },
       lang
     })
@@ -149,8 +152,8 @@ const isFQDN = (str: any, options: Partial<IsFQDNConfig> = {}, lang?: string): i
     }
     const labelResData = domainLabelValidator({
       label: label,
-      options: {
-        allow_underscores: options.allow_underscores,
+      option: {
+        allow_underscores: option.allow_underscores,
       },
       lang
     })
