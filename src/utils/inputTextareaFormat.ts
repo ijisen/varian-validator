@@ -4,6 +4,12 @@ import { specialSymbolToComma } from "./specialSymbolToComma";
  * @names：textarea 输入内容格式化
  * @params[str] string
  * @return [] Array
+ * @description:
+ * 1、去掉首位空格
+ * 2、大写转小写
+ * 3、去除多余的空格
+ * 4、specialSymbolToComma 转 英文,
+ * 5、数组去重
  * */
 export const inputTextareaFormat = (str: any) => {
   if(typeof str !== "string") {
