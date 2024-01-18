@@ -1,4 +1,4 @@
-var version = "0.0.40";
+var version = "0.0.41";
 
 /**
  * 金额保留两位小数
@@ -161,6 +161,12 @@ declare function getUrlParam(name: string, param: string): string | null;
  * @names：textarea 输入内容格式化
  * @params[str] string
  * @return [] Array
+ * @description:
+ * 1、去掉首位空格
+ * 2、大写转小写
+ * 3、去除多余的空格
+ * 4、specialSymbolToComma 转 英文,
+ * 5、数组去重
  * */
 declare const inputTextareaFormat: (str: any) => any;
 
@@ -266,9 +272,10 @@ declare function setHtmlTitle(title: string): void;
 declare function setUrlParam(data: string): string | undefined;
 
 /**
- * @names：特殊符号转 , 英文号
+ * 特殊符号转 , 英文号
  * @params[str] string
  * @return string
+ * @description： \r|\s|\n|， => 英文，
  * */
 declare const specialSymbolToComma: (str: any) => string;
 
@@ -542,7 +549,7 @@ declare const isEmail: (str: any) => boolean;
  * @names：判断数组是否为空数据
  * @params[data] Array
  * */
-declare const isEmptyArray: (data: any) => boolean;
+declare const isEmptyArray: (data: any) => data is any[];
 
 /**
  * 判断字符串是否为空值

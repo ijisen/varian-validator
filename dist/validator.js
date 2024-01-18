@@ -1,8 +1,8 @@
 /**! 
- * varian-validator v0.0.40 
+ * varian-validator v0.0.41 
  * Lightweight JavaScript form validation. 
  * 
- * Copyright (c) 2023 ji sen  (https://github.com/ijisen) 
+ * Copyright (c) 2024 ji sen  (https://github.com/ijisen) 
  * https://github.com/ijisen/varian-validator 
  * Licensed under the ISC license 
  */
@@ -13,7 +13,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Validator = {}));
 })(this, (function (exports) { 'use strict';
 
-  var version = "0.0.40";
+  var version = "0.0.41";
 
   function ownKeys(object, enumerableOnly) {
     var keys = Object.keys(object);
@@ -631,9 +631,10 @@
   }
 
   /**
-   * @names：特殊符号转 , 英文号
+   * 特殊符号转 , 英文号
    * @params[str] string
    * @return string
+   * @description： \r|\s|\n|， => 英文，
    * */
   var specialSymbolToComma = function specialSymbolToComma(str) {
     if (typeof str === "string") {
@@ -646,6 +647,12 @@
    * @names：textarea 输入内容格式化
    * @params[str] string
    * @return [] Array
+   * @description:
+   * 1、去掉首位空格
+   * 2、大写转小写
+   * 3、去除多余的空格
+   * 4、specialSymbolToComma 转 英文,
+   * 5、数组去重
    * */
   var inputTextareaFormat = function inputTextareaFormat(str) {
     if (typeof str !== "string") {
