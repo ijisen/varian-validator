@@ -1,7 +1,8 @@
 
 
-declare const version: string;
-export { version } from '../package.json';
+// declare const version: string;
+// export { version } from '../package.json';
+export { default as version } from './version';
 
 // export type { ButtonProps } from './button';
 // export { default as Button } from './button';
