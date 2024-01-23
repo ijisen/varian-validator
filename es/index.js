@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.42 
+ * varian-validator v0.0.43 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2024 ji sen  (https://github.com/ijisen) 
@@ -7,7 +7,7 @@
  * Licensed under the ISC license 
  */
 
-var version = "0.0.42";
+var version = "0.0.43";
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);

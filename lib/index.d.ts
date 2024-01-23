@@ -1,4 +1,4 @@
-var version = "0.0.42";
+declare const version = "0.0.43";
 
 /**
  * 金额保留两位小数
