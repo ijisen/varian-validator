@@ -1,4 +1,4 @@
-var version = "0.0.41";
+var version = "0.0.42";
 
 /**
  * 金额保留两位小数
@@ -549,7 +549,7 @@ declare const isEmail: (str: any) => boolean;
  * @names：判断数组是否为空数据
  * @params[data] Array
  * */
-declare const isEmptyArray: (data: any) => data is any[];
+declare const isEmptyArray: (data: any) => boolean;
 
 /**
  * 判断字符串是否为空值
