@@ -28,9 +28,6 @@ test('isExistValue validate test', () => {
 
   expect(isExistValue('')).toStrictEqual(false);
   expect(isExistValue('', 'string')).toStrictEqual('N/A');
-  expect(isExistValue(null, 'string', '')).toStrictEqual('');
-  expect(isExistValue(null, 'string', false)).toStrictEqual(false);
-  expect(isExistValue(null, 'string', 0)).toStrictEqual(0);
 
   expect(isExistValue('123123')).toStrictEqual(true);
   expect(isExistValue('N/A', 'string')).toStrictEqual('N/A');
@@ -39,9 +36,6 @@ test('isExistValue validate test', () => {
   // undefined
   expect(isExistValue(undefined)).toStrictEqual(false);
   expect(isExistValue(undefined, 'string')).toStrictEqual('N/A');
-
-  // null
-  expect(isExistValue(null, 'string', 'n/a')).toStrictEqual('n/a');
 
   // Object
   expect(isExistValue({})).toStrictEqual(true);
@@ -59,5 +53,9 @@ test('isExistValue validate test', () => {
   expect(isExistValue(null)).toStrictEqual(false);
   expect(isExistValue(null, 'string')).toStrictEqual('N/A');
   expect(isExistValue(null, 'string', '-')).toStrictEqual('-');
+  expect(isExistValue(null, 'string', 'n/a')).toStrictEqual('n/a');
+  expect(isExistValue(null, 'string', '')).toStrictEqual('');
+  expect(isExistValue(null, 'string', false)).toStrictEqual(false);
+  expect(isExistValue(null, 'string', 0)).toStrictEqual(0);
 
 })
