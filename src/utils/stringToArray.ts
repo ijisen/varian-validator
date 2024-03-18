@@ -4,6 +4,8 @@
  * @param[str] 需要拆分的数据
  * @param[separator] 拆分标识符，默认 ,
  * */
+
+//@deception
 const stringToArray = (str: any, separator?: string) => {
   separator = separator || ','
   if (typeof str === 'string') {

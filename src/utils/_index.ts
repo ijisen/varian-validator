@@ -21,7 +21,7 @@ export { default as escape } from './escape';
 export { default as filterStringSpace } from './filterStringSpace';
 export { getStrByteLength } from './getStrByteLength';
 export { getUrlParam } from './getUrlParam';
-export { inputTextareaFormat } from './inputTextareaFormat';
+export { inputTextareaFormat, inputValueFormatBr } from './inputTextareaFormat';
 export { isExistValue } from './isExistValue';
 export { isNumber } from './isNumber';
 export { default as isValidParamsTypes } from './isValidParamsTypes';
