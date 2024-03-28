@@ -39,6 +39,7 @@ export { isRdata } from './rr/isRdata';
 export { default as isHost } from './rr/isHost';
 export { default as isTTL } from './rr/isTTL';
 export { default as isZone } from './rr/isZone';
+export { default as isNS } from './rr/isNS';
 /** ========  END 域名解析 模块 ======== */
 
 
