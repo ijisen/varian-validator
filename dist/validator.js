@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.43 
+ * varian-validator v0.0.44 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2024 ji sen  (https://github.com/ijisen) 
@@ -13,7 +13,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Validator = {}));
 })(this, (function (exports) { 'use strict';
 
-  var version = "0.0.43";
+  var version = "0.0.44";
 
   function ownKeys(object, enumerableOnly) {
     var keys = Object.keys(object);
@@ -655,7 +655,7 @@
    * 5、数组去重
    * */
   var inputTextareaFormat = function inputTextareaFormat(str) {
-    if (typeof str !== "string") {
+    if (typeof str !== 'string') {
       return [];
     }
     // 去除首尾空格
@@ -671,6 +671,23 @@
     return str.filter(function (item) {
       return item !== '';
     });
+  };
+
+  /**
+   * 文本去重并换行
+   * @params[str] 字符串|数组 => ''
+   */
+  var inputValueFormatBr = function inputValueFormatBr(str) {
+    var _arr = [];
+    if (Array.isArray(str)) {
+      _arr = str;
+    } else if (typeof str === 'string') {
+      _arr = inputTextareaFormat(str);
+    }
+    if (_arr.length) {
+      return _arr.toString().replace(/,/g, '\n');
+    }
+    return '';
   };
 
   /**
@@ -962,6 +979,8 @@
    * @param[str] 需要拆分的数据
    * @param[separator] 拆分标识符，默认 ,
    * */
+
+  //@deception
   var stringToArray = function stringToArray(str, separator) {
     separator = separator || ',';
     if (typeof str === 'string') {
@@ -3010,6 +3029,7 @@
   exports.getStrByteLength = getStrByteLength;
   exports.getUrlParam = getUrlParam;
   exports.inputTextareaFormat = inputTextareaFormat;
+  exports.inputValueFormatBr = inputValueFormatBr;
   exports.isBooleanTrue = isBooleanTrue;
   exports.isByteLength = isByteLength;
   exports.isCellPhone = isCellPhone;
@@ -3032,6 +3052,7 @@
   exports.isIn = isIn;
   exports.isInRange = isInRange;
   exports.isInt = isInt;
+  exports.isNS = isNS;
   exports.isNumber = isNumber;
   exports.isObject = isObject;
   exports.isPort = isPort;
