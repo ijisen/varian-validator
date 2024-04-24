@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.44 
+ * varian-validator v0.0.45 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2024 ji sen  (https://github.com/ijisen) 
@@ -13,7 +13,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Validator = {}));
 })(this, (function (exports) { 'use strict';
 
-  var version = "0.0.44";
+  var version = "0.0.45";
 
   function ownKeys(object, enumerableOnly) {
     var keys = Object.keys(object);
@@ -1133,8 +1133,8 @@
       LABEL_TOO_SHORT: '请输入域名关键字.',
       LABEL_WITH_UNDERSCORES: '域名关键字不能包含 _',
       LABEL_ENDS_WITH_UNDERSCORES: '域名关键字不能以 _ 结尾.',
-      LABEL_INVALID_CHARS: '域名关键字只能包含a-z、A-Z、0-9、-、.、中文汉字.',
-      LABEL_INVALID_CHARS_WITH_UNDERSCORES: '域名关键字只能包含a-z、A-Z、0-9、-、_、.、中文汉字.',
+      LABEL_INVALID_CHARS: '域名关键字只能包含a-z、A-Z、0-9、-、中文汉字.',
+      LABEL_INVALID_CHARS_WITH_UNDERSCORES: '域名关键字只能包含a-z、A-Z、0-9、-、_、中文汉字.',
       TLD_WITH_NUMBER: 'TLD不能包含数字.',
       TLD_INVALID_CHARS: 'TLD格式错误.'
     },
@@ -1150,8 +1150,8 @@
       LABEL_TOO_SHORT: 'Domain name label should be at least 1 character long.',
       LABEL_WITH_UNDERSCORES: 'Domain labels cannot contain _',
       LABEL_ENDS_WITH_UNDERSCORES: 'Domain labels can not end with _',
-      LABEL_INVALID_CHARS: 'Domain name label can only contain a-z、A-Z、0-9、-、.、中文汉字.',
-      LABEL_INVALID_CHARS_WITH_UNDERSCORES: 'Domain name label can only contain a-z、A-Z、0-9、-、_、.、中文汉字.',
+      LABEL_INVALID_CHARS: 'Domain name label can only contain a-z、A-Z、0-9、-、中文汉字.',
+      LABEL_INVALID_CHARS_WITH_UNDERSCORES: 'Domain name label can only contain a-z、A-Z、0-9、-、_、中文汉字.',
       TLD_WITH_NUMBER: 'TLD cannot contain numbers',
       TLD_INVALID_CHARS: 'TLD format error'
     }
@@ -1205,6 +1205,7 @@
 
     // \u4E00-\u9FA5 \u00a1-\uffff
     var labelReg = /^[a-z\u00a1-\uffff0-9-]+$/i;
+    // 域名关键字只能包含a-z、A-Z、0-9、-、中文汉字.
     var labelRegErrMsg = errorMessage.LABEL_INVALID_CHARS;
     if (option.allow_underscores) {
       // 允许下划线

@@ -58,6 +58,7 @@ const domainLabelValidator = (config: {
 
   // \u4E00-\u9FA5 \u00a1-\uffff
   let labelReg = /^[a-z\u00a1-\uffff0-9-]+$/i;
+  // 域名关键字只能包含a-z、A-Z、0-9、-、中文汉字.
   let labelRegErrMsg = errorMessage.LABEL_INVALID_CHARS;
   if (option.allow_underscores) {
     // 允许下划线
