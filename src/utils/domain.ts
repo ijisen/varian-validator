@@ -7,8 +7,9 @@
 /**
  *  获取【域名】的TLD
  *  abc.com => com
- *  abc.com.cn =>cn
+ *  abc.com.cn => cn
  *  blog.zdns.com.cn => zdns.com.cn
+ *  baidu.com.cn.net => com.cn.net
  * */
 export function getDomainTld(domain: any) {
   if(typeof domain !== 'string') {
