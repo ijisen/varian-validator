@@ -109,8 +109,9 @@ declare function deepClone(obj: any[] | {
 /**
  *  获取【域名】的TLD
  *  abc.com => com
- *  abc.com.cn =>cn
+ *  abc.com.cn => cn
  *  blog.zdns.com.cn => zdns.com.cn
+ *  baidu.com.cn.net => com.cn.net
  * */
 declare function getDomainTld(domain: any): string;
 /**
@@ -179,9 +180,14 @@ declare const inputValueFormatBr: (str: any) => string;
  * 判断数据是否存在
  * @param[value] 需要判断的数据
  * @param[returnType] 返回类型，默认返回 boolean
- * @param[emptyVal] 返回值，默认返回 N/A
+ * @param[emptyVal] 当returnType=string时，返回值; 默认返回 N/A
  * @return any
- */
+ * @description:
+ * --> value=0 => true
+ * --> value=false => true
+ * --> value=undefined => false
+ * --> value=null => true
+ * */
 declare const isExistValue: (value: any, returnType?: 'boolean' | 'string', emptyVal?: any) => any;
 
 /**
