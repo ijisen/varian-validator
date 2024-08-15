@@ -1,4 +1,4 @@
-var version = "0.0.46";
+var version = "0.0.47";
 
 /**
  * 金额保留两位小数
@@ -174,8 +174,9 @@ declare const inputTextareaFormat: (str: any, needToLowerCase?: boolean) => any[
 /**
  * 文本去重并换行
  * @params[str] 字符串|数组 => ''
+ * @params[needToLowerCase] boolean 是否需要转小写
  */
-declare const inputValueFormatBr: (str: any) => string;
+declare const inputValueFormatBr: (str: any, needToLowerCase: boolean) => string;
 
 /**
  * 判断数据是否存在

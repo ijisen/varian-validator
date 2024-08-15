@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.46 
+ * varian-validator v0.0.47 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2024 ji sen  (https://github.com/ijisen) 
@@ -7,7 +7,7 @@
  * Licensed under the ISC license 
  */
 
-var version = "0.0.46";
+var version = "0.0.47";
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
@@ -674,13 +674,14 @@ var inputTextareaFormat = function inputTextareaFormat(str, needToLowerCase) {
 /**
  * 文本去重并换行
  * @params[str] 字符串|数组 => ''
+ * @params[needToLowerCase] boolean 是否需要转小写
  */
-var inputValueFormatBr = function inputValueFormatBr(str) {
+var inputValueFormatBr = function inputValueFormatBr(str, needToLowerCase) {
   var _arr = [];
   if (Array.isArray(str)) {
     _arr = str;
   } else if (typeof str === 'string') {
-    _arr = inputTextareaFormat(str);
+    _arr = inputTextareaFormat(str, needToLowerCase);
   }
   if (_arr.length) {
     return _arr.toString().replace(/,/g, '\n');
