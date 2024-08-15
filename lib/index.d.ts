@@ -1,4 +1,4 @@
-var version = "0.0.45";
+var version = "0.0.46";
 
 /**
  * 金额保留两位小数
@@ -161,6 +161,7 @@ declare function getUrlParam(name: string, param: string): string | null;
 /**
  * @names：textarea 输入内容格式化
  * @params[str] string
+ * @params[needToLowerCase] boolean 是否需要转小写
  * @return [] Array
  * @description:
  * 1、去掉首位空格
@@ -169,7 +170,7 @@ declare function getUrlParam(name: string, param: string): string | null;
  * 4、specialSymbolToComma 转 英文,
  * 5、数组去重
  * */
-declare const inputTextareaFormat: (str: any) => any[];
+declare const inputTextareaFormat: (str: any, needToLowerCase?: boolean) => any[];
 /**
  * 文本去重并换行
  * @params[str] 字符串|数组 => ''

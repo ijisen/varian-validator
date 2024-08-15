@@ -1,5 +1,5 @@
 /**! 
- * varian-validator v0.0.45 
+ * varian-validator v0.0.46 
  * Lightweight JavaScript form validation. 
  * 
  * Copyright (c) 2024 ji sen  (https://github.com/ijisen) 
@@ -7,7 +7,7 @@
  * Licensed under the ISC license 
  */
 
-var version = "0.0.45";
+var version = "0.0.46";
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
@@ -641,6 +641,7 @@ var specialSymbolToComma = function specialSymbolToComma(str) {
 /**
  * @names：textarea 输入内容格式化
  * @params[str] string
+ * @params[needToLowerCase] boolean 是否需要转小写
  * @return [] Array
  * @description:
  * 1、去掉首位空格
@@ -649,14 +650,16 @@ var specialSymbolToComma = function specialSymbolToComma(str) {
  * 4、specialSymbolToComma 转 英文,
  * 5、数组去重
  * */
-var inputTextareaFormat = function inputTextareaFormat(str) {
+var inputTextareaFormat = function inputTextareaFormat(str, needToLowerCase) {
   if (typeof str !== 'string') {
     return [];
   }
   // 去除首尾空格
   str = str.trim();
   // 大写转小写
-  str = str.toLowerCase();
+  if (needToLowerCase !== false) {
+    str = str.toLowerCase();
+  }
   // 去除多余的空格
   str = str.replace(/\s+|\n+/g, ' ');
   // 特殊符号转 ,
