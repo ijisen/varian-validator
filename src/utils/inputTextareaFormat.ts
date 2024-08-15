@@ -34,13 +34,14 @@ export const inputTextareaFormat = (str: any, needToLowerCase?: boolean): any[] 
 /**
  * 文本去重并换行
  * @params[str] 字符串|数组 => ''
+ * @params[needToLowerCase] boolean 是否需要转小写
  */
-export const inputValueFormatBr = (str: any): string => {
+export const inputValueFormatBr = (str: any, needToLowerCase: boolean): string => {
   let _arr = [];
   if (Array.isArray(str)) {
     _arr = str;
   } else if (typeof str === 'string') {
-    _arr = inputTextareaFormat(str);
+    _arr = inputTextareaFormat(str, needToLowerCase);
   }
   if (_arr.length) {
     return _arr.toString().replace(/,/g, '\n');
